@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "814319972990",
+    "project_id": "turbotransport-2a507",
+    "storage_bucket": "turbotransport-2a507.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:814319972990:android:25aeffdbfc8afd002e5e2f",
+        "android_client_info": {
+          "package_name": "com.example.turbo_transport"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBmUcUr_bhKPV7hkNYvBhEBwJoUBZ0ZXzI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
