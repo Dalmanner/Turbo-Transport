@@ -131,7 +131,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun goToSignUp() {
-        val intent = Intent(this, ListDeliveries::class.java)
+        val intent = Intent(this, PackageActivity::class.java)
         startActivity(intent)
     }
 
