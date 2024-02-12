@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:backgroundTint="@color/blue">
+    android:backgroundTint="@color/blue_500">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/deliveriesRecycleView"
@@ -31,7 +31,7 @@
             android:id="@+id/topAppBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/blue"
+            android:background="@color/blue_500"
             android:minHeight="?attr/actionBarSize">
 
             <ImageButton
@@ -49,7 +49,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="start"
                 android:layout_marginStart="16dp"
-                android:backgroundTint="@color/blue"
+                android:backgroundTint="@color/blue_500"
                 app:srcCompat="@drawable/menu_24px" />
 
             <TextView
@@ -74,7 +74,7 @@
         android:layout_width="match_parent"
         android:layout_height="72dp"
         android:layout_gravity="bottom"
-        app:backgroundTint="@color/blue"
+        app:backgroundTint="@color/blue_500"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -84,7 +84,7 @@
         android:id="@+id/imageButton3"
         android:layout_width="100dp"
         android:layout_height="70dp"
-        android:backgroundTint="@color/blue"
+        android:backgroundTint="@color/blue_500"
         app:layout_anchor="@id/bottomAppBar"
         app:layout_anchorGravity="center"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -100,7 +100,7 @@
         android:layout_width="100dp"
         android:layout_height="70dp"
         android:layout_gravity="center"
-        android:backgroundTint="@color/blue"
+        android:backgroundTint="@color/blue_500"
         app:layout_constraintBottom_toBottomOf="@+id/bottomAppBar"
         app:layout_constraintEnd_toEndOf="@+id/bottomAppBar"
         app:layout_constraintStart_toStartOf="@+id/bottomAppBar"
@@ -113,7 +113,7 @@
         android:layout_width="100dp"
         android:layout_height="70dp"
         android:layout_gravity="end"
-        android:backgroundTint="@color/blue"
+        android:backgroundTint="@color/blue_500"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"

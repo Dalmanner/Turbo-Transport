@@ -51,11 +51,11 @@ class MainActivity : AppCompatActivity() {
             Log.d("!!!", "pressed")
             login()
         }
-//
-//        if (auth.currentUser != null) {
-//            val intent = Intent(this, ListDeliveries::class.java)
-//            startActivity(intent)
-//        }
+
+        if (auth.currentUser != null) {
+            val intent = Intent(this, ListDeliveries::class.java)
+            startActivity(intent)
+        }
         email.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 hideKeyboard()

@@ -26,9 +26,9 @@ class ListDeliveries : AppCompatActivity() {
 
         deliveryRecycleView = findViewById(R.id.deliveriesRecycleView)
         deliveryRecycleView.layoutManager = LinearLayoutManager(this)
-        //loadPackageDb()
+        loadPackageDb()
     }
-    /*
+
     fun loadPackageDb(){
         val packagesRef = db.collection("packages")
                 packagesRef.get()
@@ -39,6 +39,4 @@ class ListDeliveries : AppCompatActivity() {
                         deliveryRecycleView.adapter = DeliveriesRecyclerAdapter(this, packageList)
                     }
     }
-
-     */
 }
