@@ -54,10 +54,13 @@ class PackageActivity : AppCompatActivity() {
         storage = Firebase.storage
 
         //Initialize all of our views
-        initlizeViews()
+        initializeViews()
 
-        getPackage("LYb36CcZPYGvldWAyBuN")
-
+        //Get documentId
+        val documentId = intent.getStringExtra("documentId")
+        if (documentId != null) {
+            getPackage(documentId)
+        }
     }
 
     private fun getPackage(documentId: String) {
@@ -112,7 +115,7 @@ class PackageActivity : AppCompatActivity() {
         }
     }
 
-    private fun initlizeViews() {
+    private fun initializeViews() {
         appBarLayout = findViewById(R.id.appBarLayout)
         topAppBar = findViewById(R.id.topAppBar)
         imageView = findViewById(R.id.imageView)

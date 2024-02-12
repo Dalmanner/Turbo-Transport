@@ -2,6 +2,7 @@ package com.example.turbo_transport
 
 import android.content.Context
 import android.content.Intent
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,16 +20,14 @@ class DeliveriesRecyclerAdapter(val context: Context, var lists: List<Package>) 
         var etaTimeTextView = itemView.findViewById<TextView>(R.id.etaTimeTextView)
         var itemPosistion = 0
 
-       /* init {
-            itemView.setOnClickListener {
-                val intent = Intent(context,DeliveryInformation::class.java)
-                intent.putExtra(ITEM_POSISTION_KEY,itemPosistion)
-                context.startActivity(intent)
-            }
-
-        }
-
-        */
+////       init {
+////            itemView.setOnClickListener {
+////                val intent = Intent(context,PackageActivity::class.java)
+////                intent.putExtra(ITEM_POSISTION_KEY,itemPosistion)
+////                context.startActivity(intent)
+////            }
+//
+//        }
 
     }
 
@@ -42,10 +41,17 @@ class DeliveriesRecyclerAdapter(val context: Context, var lists: List<Package>) 
 
     override fun onBindViewHolder(holder: DeliveriesRecyclerAdapter.ViewHolder, position: Int) {
         var deliveryList = lists[position]
+        holder.itemView.tag = deliveryList.documentId
         holder.addressTextView.text = deliveryList.address
         holder.etaTimeTextView.text=deliveryList.expectedDeliveryTime
         holder.itemPosistion = position
+        holder.itemView.setOnClickListener {
 
+            val documentId = it.tag as String
+            val intent = Intent(context,PackageActivity::class.java)
+            intent.putExtra("documentId",documentId)
+            context.startActivity(intent)
+        }
     }
 
     override fun getItemCount(): Int {
