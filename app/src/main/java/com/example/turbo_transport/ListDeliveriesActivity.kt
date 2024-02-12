@@ -1,7 +1,9 @@
 package com.example.turbo_transport
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.widget.ImageButton
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -20,6 +22,7 @@ class ListDeliveries : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_listdeliveries)
+        val MapButton= findViewById<ImageButton>(R.id.mapImageButton)
 
         db = Firebase.firestore
         auth = Firebase.auth
@@ -27,6 +30,14 @@ class ListDeliveries : AppCompatActivity() {
         deliveryRecycleView = findViewById(R.id.deliveriesRecycleView)
         deliveryRecycleView.layoutManager = LinearLayoutManager(this)
         loadPackageDb()
+
+        MapButton.setOnClickListener {
+            showLocation()
+        }
+    }
+    fun showLocation() {
+        val intent = Intent(this,MapsActivity::class.java)
+        startActivity(intent)
     }
 
     fun loadPackageDb(){
