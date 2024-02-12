@@ -15,7 +15,9 @@ var documentId : String? = null,
     var telephoneNumber: String? = null,
     var deliveryNote: String? = null,
     var packageWeight: Double? = null,
-    //var size: Triple<Int, Int, Int>? = null,
+    var packageHeight: Double? = null,
+    var packageLength: Double? = null,
+    var packageDepth: Double? = null,
     var requestedDeliveryTime: String? = null,
     var expectedDeliveryTime: String? = null,
     var leaveAtTheDoor: Boolean? = null,
@@ -27,10 +29,6 @@ var documentId : String? = null,
     var senderName: String? = null,
     @ServerTimestamp
     var lastEdited: Timestamp? = null,
-
-
-
-
     @ServerTimestamp
     var timestamp: Timestamp? = null) {
     }

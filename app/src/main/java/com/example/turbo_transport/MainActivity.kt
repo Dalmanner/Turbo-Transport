@@ -86,8 +86,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun login() {
-        val emailLogin = email.text.toString()
-        val passwordLogin = password.text.toString()
+        val emailLogin = email.text.toString().trim()
+        val passwordLogin = password.text.toString().trim()
 
         if (emailLogin.isEmpty()) {
             return
@@ -131,7 +131,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun goToSignUp() {
-        val intent = Intent(this, ListDeliveries::class.java)
+        val intent = Intent(this, PackageActivity::class.java)
         startActivity(intent)
     }
 
