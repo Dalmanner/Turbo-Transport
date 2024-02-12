@@ -82,8 +82,8 @@
 
     <ImageButton
         android:id="@+id/imageButton3"
-        android:layout_width="100dp"
-        android:layout_height="70dp"
+        android:layout_width="70dp"
+        android:layout_height="50dp"
         android:backgroundTint="@color/blue_500"
         app:layout_anchor="@id/bottomAppBar"
         app:layout_anchorGravity="center"
@@ -92,33 +92,32 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/deliveriesRecycleView"
-        app:layout_constraintVertical_bias="0.0"
         app:srcCompat="@drawable/segment_1text" />
 
     <ImageButton
-        android:id="@+id/imageButton4"
-        android:layout_width="100dp"
-        android:layout_height="70dp"
+        android:id="@+id/mapImageButton"
+        android:layout_width="70dp"
+        android:layout_height="50dp"
         android:layout_gravity="center"
         android:backgroundTint="@color/blue_500"
         app:layout_constraintBottom_toBottomOf="@+id/bottomAppBar"
         app:layout_constraintEnd_toEndOf="@+id/bottomAppBar"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="@+id/bottomAppBar"
         app:layout_constraintTop_toBottomOf="@+id/deliveriesRecycleView"
-        app:layout_constraintVertical_bias="1.0"
         app:srcCompat="@drawable/segment_2" />
 
     <ImageButton
         android:id="@+id/imageButton5"
-        android:layout_width="100dp"
-        android:layout_height="70dp"
+        android:layout_width="70dp"
+        android:layout_height="50dp"
         android:layout_gravity="end"
         android:backgroundTint="@color/blue_500"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/imageButton4"
+        app:layout_constraintTop_toTopOf="@+id/mapImageButton"
         app:layout_constraintVertical_bias="0.0"
         app:srcCompat="@drawable/segment_3" />
 
