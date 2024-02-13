@@ -47,7 +47,6 @@ class PackageActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_package)
 
-
         //Setup firebase variables
         db = Firebase.firestore
         auth = Firebase.auth
@@ -56,13 +55,33 @@ class PackageActivity : AppCompatActivity() {
         //Initialize all of our views
         initializeViews()
 
+        showMenu()
+
         //Get documentId
         val documentId = intent.getStringExtra("documentId")
         if (documentId != null) {
             getPackage(documentId)
         }
     }
+    private fun showMenu(){
+        topAppBar.setNavigationOnClickListener {
+           finish()
+        }
 
+        topAppBar.setOnMenuItemClickListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.user -> {
+                    // Handle edit text press
+                    true
+                }
+                R.id.help -> {
+                    // Handle favorite icon press
+                    true
+                }
+                else -> false
+            }
+        }
+    }
     private fun getPackage(documentId: String) {
         db.collection("packages").document(documentId).addSnapshotListener { snapshot, e ->
             if (e != null) {
@@ -92,21 +111,6 @@ class PackageActivity : AppCompatActivity() {
 
                     textViewKolliId.text = thisPackage.kolliId
                     textViewETA.text = thisPackage.expectedDeliveryTime
-
-
-//                    //Get user info userId
-//                    val userId = thisPackage.userIdReceiver
-//                    if (userId != null) {
-//                        getUserName(userId, thisPackage)
-//                    }
-
-//                    //Get and set Image
-//                    if (thisPackage.imageLink != null) {
-//                        Glide.with(requireContext()).load(thisPackage.imageLink).centerCrop()
-//                            .into(imageView)
-//                    } else {
-//                        imageView.setImageResource(R.drawable.default1)
-//                    }
 
                 }
             } else {
