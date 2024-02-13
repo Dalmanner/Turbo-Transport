@@ -9,8 +9,6 @@
         app:showAsAction="ifRoom"
         />
 
-
-
     <item
         android:id="@+id/user"
         android:contentDescription="User profile"

@@ -26,8 +26,12 @@
         -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="${API_KEY}" />
+            android:value="YOUR_API_KEY" />
 
+        <activity
+            android:name=".RouteActivity"
+            android:exported="false"
+            android:label="@string/title_activity_route" />
         <activity
             android:name=".MapsActivity"
             android:exported="false"
