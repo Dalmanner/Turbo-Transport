@@ -1,5 +1,6 @@
 package com.example.turbo_transport
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -62,12 +63,16 @@ class PackageActivity : AppCompatActivity() {
         if (documentId != null) {
             getPackage(documentId)
         }
+        button.setOnClickListener {
+            if (documentId != null) {
+                sendToRoute(documentId)
+            }
+        }
     }
     private fun showMenu(){
         topAppBar.setNavigationOnClickListener {
            finish()
         }
-
         topAppBar.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.user -> {
@@ -81,6 +86,13 @@ class PackageActivity : AppCompatActivity() {
                 else -> false
             }
         }
+    }
+    private fun sendToRoute(documentId: String){
+
+        //Send to route activity
+        val intent = Intent(this, RouteActivity::class.java)
+        intent.putExtra("documentId", documentId)
+        startActivity(intent)
     }
     private fun getPackage(documentId: String) {
         db.collection("packages").document(documentId).addSnapshotListener { snapshot, e ->
