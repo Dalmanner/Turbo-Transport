@@ -1,8 +1,10 @@
 package com.example.turbo_transport
 
+import android.Manifest
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -14,6 +16,9 @@ import android.widget.Button
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.core.content.ContextCompat
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
@@ -21,6 +26,9 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
 class MainActivity : AppCompatActivity() {
+    companion object {
+        private const val REQUEST_ALL_PERMISSIONS = 101
+    }
 
     private lateinit var auth: FirebaseAuth
 
@@ -39,7 +47,8 @@ class MainActivity : AppCompatActivity() {
 
         auth = Firebase.auth
 
-        initilizeViews()
+        initializeViews()
+        requestPermission()
 
         signupView.setOnClickListener {
             goToSignUp()
@@ -52,10 +61,14 @@ class MainActivity : AppCompatActivity() {
             login()
         }
 
+        //Keep user logged in
         if (auth.currentUser != null) {
+//            auth.signOut()
             val intent = Intent(this, ListDeliveries::class.java)
             startActivity(intent)
         }
+
+        //Hide keyboard on enter
         email.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 hideKeyboard()
@@ -122,7 +135,7 @@ class MainActivity : AppCompatActivity() {
             }
             .addOnFailureListener {
 
-                Log.d("!!!", "Something went wrong")
+                Log.d("!!!", "$it")
                 progressBar.visibility = View.GONE
                 emailView.error = "Wrong e-mail or password"
                 passwordView.error = "Wrong e-mail or password"
@@ -146,7 +159,53 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun initilizeViews() {
+    private fun requestPermission() {
+        //First check permissions
+        if (!checkPermissions()) {
+
+            // Request permissions
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(
+                    Manifest.permission.ACCESS_COARSE_LOCATION,
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                ),
+                REQUEST_ALL_PERMISSIONS
+            )
+        }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == REQUEST_ALL_PERMISSIONS) {
+            if (grantResults.isNotEmpty() && grantResults.all { it == PackageManager.PERMISSION_GRANTED }) {
+                Toast.makeText(this, "Location permissions granted, continue to log in.", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(
+                    this,
+                    "Permission denied, app will not be able to show your position",
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+        }
+    }
+
+
+    private fun checkPermissions(): Boolean {
+        return ContextCompat.checkSelfPermission(
+            this,
+            Manifest.permission.ACCESS_COARSE_LOCATION
+        ) == PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(
+            this,
+            Manifest.permission.ACCESS_FINE_LOCATION
+        ) == PackageManager.PERMISSION_GRANTED
+    }
+
+    private fun initializeViews() {
         emailView = findViewById(R.id.emailView)
         passwordView = findViewById(R.id.passwordView)
         email = findViewById(R.id.email)
