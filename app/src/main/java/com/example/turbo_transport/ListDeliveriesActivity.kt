@@ -42,12 +42,16 @@ class ListDeliveries : AppCompatActivity() {
 
     fun loadPackageDb(){
         val packagesRef = db.collection("packages")
-                packagesRef.get()
-                    .addOnSuccessListener { result ->
-                        val packageList = result.map { document ->
-                            document.toObject(Package::class.java)
-                        }
-                        deliveryRecycleView.adapter = DeliveriesRecyclerAdapter(this, packageList)
-                    }
+        packagesRef.addSnapshotListener { snapshot, e ->
+            if (e != null) {
+                return@addSnapshotListener
+            }
+            if (snapshot != null && !snapshot.isEmpty) {
+                val packageList = snapshot.documents.map { document ->
+                    document.toObject(Package::class.java)
+                }
+                deliveryRecycleView.adapter = DeliveriesRecyclerAdapter(this@ListDeliveries, packageList.filterNotNull())
+            }
+        }
     }
 }
