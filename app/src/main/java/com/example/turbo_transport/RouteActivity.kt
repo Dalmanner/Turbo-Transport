@@ -93,10 +93,12 @@ class RouteActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
 
-        // Add a marker in Sydney and move the camera
-//        val sydney = LatLng(-34.0, 151.0)
-//        mMap.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
-//        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
+
+        val start = LatLng(59.32846029942097, 18.076083053637152)
+        val end = LatLng(58.894891236287506, 17.938753962524725)
+        mMap.addMarker(MarkerOptions().position(start).title("Start"))
+        mMap.addMarker(MarkerOptions().position(end).title("End"))
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(start))
 
 
         val startLatLng = LatLng(59.32846029942097, 18.076083053637152)
@@ -127,7 +129,7 @@ class RouteActivity : AppCompatActivity(), OnMapReadyCallback {
                 for (location in locationResult.locations) {
                     // Uppdatera UI med platsinformation
                     val currentLatLng = LatLng(location.latitude, location.longitude)
-                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 15f))
+                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 18f))
                 }
             }
         }

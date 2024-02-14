@@ -135,7 +135,7 @@ class MainActivity : AppCompatActivity() {
             }
             .addOnFailureListener {
 
-                Log.d("!!!", "Something went wrong")
+                Log.d("!!!", "$it")
                 progressBar.visibility = View.GONE
                 emailView.error = "Wrong e-mail or password"
                 passwordView.error = "Wrong e-mail or password"
