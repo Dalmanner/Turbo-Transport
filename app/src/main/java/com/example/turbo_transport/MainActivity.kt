@@ -63,9 +63,9 @@ class MainActivity : AppCompatActivity() {
 
         //Keep user logged in
         if (auth.currentUser != null) {
-            auth.signOut()
-//            val intent = Intent(this, ListDeliveries::class.java)
-//            startActivity(intent)
+//            auth.signOut()
+            val intent = Intent(this, ListDeliveries::class.java)
+            startActivity(intent)
         }
 
         //Hide keyboard on enter
