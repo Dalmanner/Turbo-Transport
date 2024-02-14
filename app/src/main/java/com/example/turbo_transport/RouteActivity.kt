@@ -34,6 +34,7 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.ktx.storage
 import com.google.gson.Gson
+import kotlinx.coroutines.tasks.await
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okio.IOException
@@ -59,6 +60,8 @@ class RouteActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var locationCallback: LocationCallback
 
+    lateinit var documentId: String
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -67,7 +70,7 @@ class RouteActivity : AppCompatActivity(), OnMapReadyCallback {
         auth = Firebase.auth
         storage = Firebase.storage
 
-        val documentId = intent.getStringExtra("documentId")
+        documentId = intent.getStringExtra("documentId").toString()
 
         if (documentId != null) {
             Log.d("!!!", documentId)
@@ -88,38 +91,19 @@ class RouteActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
 
-
     @SuppressLint("MissingPermission")
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
 
-
-        val start = LatLng(59.32846029942097, 18.076083053637152)
-        val end = LatLng(58.894891236287506, 17.938753962524725)
-        mMap.addMarker(MarkerOptions().position(start).title("Start"))
-        mMap.addMarker(MarkerOptions().position(end).title("End"))
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(start))
-
-
-        val startLatLng = LatLng(59.32846029942097, 18.076083053637152)
-        val endLatLng = LatLng(58.894891236287506, 17.938753962524725)
-
-        val cameraUpdate = CameraUpdateFactory.newLatLngZoom(startLatLng, 10f)
-        googleMap.moveCamera(cameraUpdate)
-        fetchDirections(startLatLng, endLatLng, googleMap)
-
-        if (checkPermissions()) {
-            mMap.isMyLocationEnabled = true
-            startLocationUpdates()
-        }
+        getPackage(documentId, mMap)
 
     }
 
     @SuppressLint("MissingPermission")
     private fun startLocationUpdates() {
         val locationRequest = LocationRequest.create().apply {
-            interval = 10000
-            fastestInterval = 5000
+            interval = 1000000
+            fastestInterval = 500000
             priority = LocationRequest.PRIORITY_HIGH_ACCURACY
         }
 
@@ -158,28 +142,48 @@ class RouteActivity : AppCompatActivity(), OnMapReadyCallback {
         fusedLocationClient.removeLocationUpdates(locationCallback)
     }
 
-    private fun getPackage(documentId: String) {
+    @SuppressLint("MissingPermission")
+    private fun getPackage(documentId: String, mMap: GoogleMap) {
         db.collection("packages").document(documentId).addSnapshotListener { snapshot, e ->
             if (e != null) {
                 Log.w("!!!", "Listen failed.", e)
                 return@addSnapshotListener
             }
+            val thisPackage = snapshot?.toObject(Package::class.java)
 
             if (snapshot != null && snapshot.exists()) {
-                val thisPackage = snapshot.toObject(Package::class.java)
 
                 if (thisPackage != null) {
-
                     val lat = thisPackage.latitude
                     val long = thisPackage.longitude
 
                     if (checkLatLong(lat, long)) {
 
-                    }
+                        val endLatLng = LatLng(thisPackage.latitude!!, thisPackage.longitude!!)
 
+                        var startLatLng = LatLng(59.32846029942097, 18.076083053637152)
+
+
+                        val currentUserLocation = LocationServices.getFusedLocationProviderClient(this)
+                        currentUserLocation.lastLocation.addOnSuccessListener { location ->
+                            val startLatLng = LatLng(location.latitude, location.longitude)
+
+                            mMap.addMarker(MarkerOptions().position(startLatLng).title("Start"))
+                            endLatLng?.let { MarkerOptions().position(it).title("End") }
+                                ?.let { mMap.addMarker(it) }
+                            mMap.moveCamera(CameraUpdateFactory.newLatLng(startLatLng))
+
+                            val cameraUpdate = CameraUpdateFactory.newLatLngZoom(startLatLng, 10f)
+                            mMap.moveCamera(cameraUpdate)
+                            fetchDirections(startLatLng, endLatLng, mMap)
+                        }
+
+                        mMap.isMyLocationEnabled = true
+                        startLocationUpdates()
+                    }
+                } else {
+                    Log.d("getPackage", "Invalid latitude or longitude")
                 }
-            } else {
-                Log.d("!!!", "Current data: null")
             }
         }
     }
@@ -204,7 +208,11 @@ class RouteActivity : AppCompatActivity(), OnMapReadyCallback {
         return false
     }
 
-    private fun fetchDirections(startLatLng: LatLng, endLatLng: LatLng, googleMap: GoogleMap) {
+    private fun fetchDirections(
+        startLatLng: LatLng,
+        endLatLng: LatLng,
+        googleMap: GoogleMap
+    ) {
         val apiKey = BuildConfig.API_KEY
         val client = OkHttpClient()
         val request = Request.Builder()
@@ -222,7 +230,8 @@ class RouteActivity : AppCompatActivity(), OnMapReadyCallback {
 
                     val responseData = it.body?.string()
                     val gson = Gson()
-                    val directionsResult = gson.fromJson(responseData, DirectionsResult::class.java)
+                    val directionsResult =
+                        gson.fromJson(responseData, DirectionsResult::class.java)
                     if (directionsResult.routes.isNotEmpty() && directionsResult.routes[0].legs.isNotEmpty()) {
                         val steps = directionsResult.routes[0].legs[0].steps
                         //Update map on main thread
@@ -299,8 +308,7 @@ class RouteActivity : AppCompatActivity(), OnMapReadyCallback {
         if (requestCode == PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION) {
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 startLocationUpdates()
-            }
-            else {
+            } else {
 
             }
         }
