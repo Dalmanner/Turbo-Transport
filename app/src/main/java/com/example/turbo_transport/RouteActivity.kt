@@ -91,20 +91,21 @@ class RouteActivity : AppCompatActivity(), OnMapReadyCallback {
 
     }
 
-
     @SuppressLint("MissingPermission")
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
 
+        //When map is ready, get package
         getPackage(documentId, mMap)
 
     }
 
+    //Function to get new location updates so we can focus and follow with the camera map.
     @SuppressLint("MissingPermission")
     private fun startLocationUpdates() {
         val locationRequest = LocationRequest.create().apply {
-            interval = 1000000
-            fastestInterval = 500000
+            interval = 10000
+            fastestInterval = 5000
             priority = LocationRequest.PRIORITY_HIGH_ACCURACY
         }
 
@@ -112,7 +113,7 @@ class RouteActivity : AppCompatActivity(), OnMapReadyCallback {
             override fun onLocationResult(locationResult: LocationResult) {
                 locationResult ?: return
                 for (location in locationResult.locations) {
-                    // Uppdatera UI med platsinformation
+                    //Update location
                     val currentLatLng = LatLng(location.latitude, location.longitude)
                     mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 18f))
                 }
@@ -135,7 +136,7 @@ class RouteActivity : AppCompatActivity(), OnMapReadyCallback {
 
     override fun onResume() {
         super.onResume()
-        startLocationUpdates()
+//        startLocationUpdates()
     }
 
 
@@ -211,8 +212,10 @@ class RouteActivity : AppCompatActivity(), OnMapReadyCallback {
         //Show position on map
         mMap.isMyLocationEnabled = true
 
-        //Run frequent updates
-        startLocationUpdates()
+        //Run frequent updates when driver mode is selected
+        continueDeliverButton.setOnClickListener {
+            startLocationUpdates()
+        }
     }
 
     //Function to check value of coordinates
@@ -236,6 +239,7 @@ class RouteActivity : AppCompatActivity(), OnMapReadyCallback {
         return false
     }
 
+    //Get the directions
     private fun fetchDirections(
         startLatLng: LatLng,
         endLatLng: LatLng,
@@ -260,15 +264,17 @@ class RouteActivity : AppCompatActivity(), OnMapReadyCallback {
                     val gson = Gson()
                     val directionsResult =
                         gson.fromJson(responseData, DirectionsResult::class.java)
+
                     if (directionsResult.routes.isNotEmpty() && directionsResult.routes[0].legs.isNotEmpty()) {
                         val steps = directionsResult.routes[0].legs[0].steps
+
                         //Update map on main thread
                         runOnUiThread {
                             val polylineOptions = PolylineOptions().width(10f)
-                                .color(Color.BLUE) // Anpassa utseendet på din polyline här
+                                .color(Color.BLUE) //Custom design of route
                             steps.forEach { step ->
                                 val decodedPath =
-                                    decodePolyline(step.polyline.points) // Dekodera polyline-strängen till LatLng-punkter
+                                    decodePolyline(step.polyline.points) //decode each line to latlng
                                 polylineOptions.addAll(decodedPath)
                             }
                             googleMap.addPolyline(polylineOptions)
@@ -347,5 +353,6 @@ class RouteActivity : AppCompatActivity(), OnMapReadyCallback {
         topAppBar = findViewById(R.id.topAppBar)
         notDeliveredButton = findViewById(R.id.notDeliveredButton)
         continueDeliverButton = findViewById(R.id.continueDeliverButton)
+
     }
 }
