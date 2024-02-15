@@ -63,7 +63,7 @@
         <!-- Lägg till dina vyer här, inklusive dina knappar -->
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="394dp"
+            android:layout_width="match_parent"
             android:layout_height="174dp"
             android:background="@color/blue_500">
 
