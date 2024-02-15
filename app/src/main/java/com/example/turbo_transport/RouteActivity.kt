@@ -61,6 +61,7 @@ class RouteActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var topAppBar: MaterialToolbar
     private lateinit var notDeliveredButton: Button
     private lateinit var continueDeliverButton: Button
+    private lateinit var driveMapButton: Button
 
     private lateinit var mMap: GoogleMap
     private lateinit var binding: ActivityRouteBinding
@@ -228,7 +229,7 @@ class RouteActivity : AppCompatActivity(), OnMapReadyCallback {
         mMap.isMyLocationEnabled = true
 
         //Run frequent updates when driver mode is selected
-        continueDeliverButton.setOnClickListener {
+        driveMapButton.setOnClickListener {
             startLocationUpdates()
         }
     }
@@ -404,7 +405,7 @@ class RouteActivity : AppCompatActivity(), OnMapReadyCallback {
         appBarLayout = findViewById(R.id.appBarLayout)
         topAppBar = findViewById(R.id.topAppBar)
         notDeliveredButton = findViewById(R.id.notDeliveredButton)
-        continueDeliverButton = findViewById(R.id.continueButton)
+        driveMapButton = findViewById(R.id.driveMapButton)
         topAdressTextView = findViewById(R.id.topAdressTextView)
         postCodeTextView = findViewById(R.id.postCodeTextView)
         travelTimeTextView = findViewById(R.id.travelTimeTextView)
