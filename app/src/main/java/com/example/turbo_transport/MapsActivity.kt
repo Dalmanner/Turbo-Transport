@@ -151,27 +151,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     }
 
-    //Function to check value of coordinates
-    private fun checkLatLong(latStr: Double?, longStr: Double?): Boolean {
-
-        try {
-            val lat = latStr
-            val long = longStr
-
-            if (lat == null || long == null) {
-                return false
-            }
-
-            if (lat !in -90.0..90.0 || long !in -180.0..180.0) {
-                return false
-            }
-            return true
-        } catch (e: NumberFormatException) {
-            Log.d("!!!", "error with lat lng")
-        }
-        return false
-    }
-
     //Get the directions
     private fun fetchDirections(
         startLatLng: LatLng,
