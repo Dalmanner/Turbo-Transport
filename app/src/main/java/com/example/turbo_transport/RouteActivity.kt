@@ -11,8 +11,9 @@ import android.view.View
 import android.widget.Button
 import android.widget.ProgressBar
 import android.widget.TextView
+import android.widget.Toast
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -68,8 +69,7 @@ class RouteActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var locationCallback: LocationCallback
 
     private lateinit var mapProgressBar: ProgressBar
-
-    lateinit var documentId: String
+    private lateinit var documentId: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -104,22 +104,23 @@ class RouteActivity : AppCompatActivity(), OnMapReadyCallback {
 
     }
 
-
     @SuppressLint("MissingPermission")
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
 
+        //When map is ready, get package
         getPackage(documentId, mMap)
         android.os.Handler().postDelayed({
             mapProgressBar.visibility = View.GONE
         }, 1000)
     }
 
+    //Function to get new location updates so we can focus and follow with the camera map.
     @SuppressLint("MissingPermission")
     private fun startLocationUpdates() {
         val locationRequest = LocationRequest.create().apply {
-            interval = 1000000
-            fastestInterval = 500000
+            interval = 10000
+            fastestInterval = 5000
             priority = LocationRequest.PRIORITY_HIGH_ACCURACY
         }
 
@@ -127,7 +128,7 @@ class RouteActivity : AppCompatActivity(), OnMapReadyCallback {
             override fun onLocationResult(locationResult: LocationResult) {
                 locationResult ?: return
                 for (location in locationResult.locations) {
-                    // Uppdatera UI med platsinformation
+                    //Update location
                     val currentLatLng = LatLng(location.latitude, location.longitude)
                     mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 18f))
                 }
@@ -150,7 +151,7 @@ class RouteActivity : AppCompatActivity(), OnMapReadyCallback {
 
     override fun onResume() {
         super.onResume()
-        startLocationUpdates()
+//        startLocationUpdates()
     }
 
 
@@ -168,42 +169,71 @@ class RouteActivity : AppCompatActivity(), OnMapReadyCallback {
             val thisPackage = snapshot?.toObject(Package::class.java)
 
             if (snapshot != null && snapshot.exists()) {
-
                 if (thisPackage != null) {
-                    val lat = thisPackage.latitude
-                    val long = thisPackage.longitude
-
-                    if (checkLatLong(lat, long)) {
-
-                        val endLatLng = LatLng(thisPackage.latitude!!, thisPackage.longitude!!)
-
-                        var startLatLng = LatLng(59.32846029942097, 18.076083053637152)
-
-
-                        val currentUserLocation = LocationServices.getFusedLocationProviderClient(this)
-                        currentUserLocation.lastLocation.addOnSuccessListener { location ->
-                            val startLatLng = LatLng(location.latitude, location.longitude)
-
-                            mMap.addMarker(MarkerOptions().position(startLatLng).title("Start"))
-                            endLatLng?.let { MarkerOptions().position(it).title("End") }
-                                ?.let { mMap.addMarker(it) }
-                            mMap.moveCamera(CameraUpdateFactory.newLatLng(startLatLng))
-
-                            val cameraUpdate = CameraUpdateFactory.newLatLngZoom(startLatLng, 10f)
-                            mMap.moveCamera(cameraUpdate)
-                            fetchDirections(startLatLng, endLatLng, mMap)
-                        }
-
-                        mMap.isMyLocationEnabled = true
-                        startLocationUpdates()
+                    if (checkLatLong(thisPackage.latitude, thisPackage.longitude)) {
+                        //If coordinates are OK, go ahead and create map with markers and route
+                        setCameraAndMap(thisPackage, mMap)
                     }
                 } else {
-                    Log.d("getPackage", "Invalid latitude or longitude")
+
+                    //Create toast in case of error
+                    Toast.makeText(
+                        this,
+                        "Error loading route, something wrong with coordinates, check with admin",
+                        Toast.LENGTH_LONG
+                    ).show()
+
+                    //Go back to previous activity, perhaps suggest open google maps app?
+                    finish()
                 }
             }
         }
     }
 
+    private fun setMarkersAndRoute(startLatLng: LatLng, endLatLng: LatLng) {
+        mMap.addMarker(MarkerOptions().position(startLatLng).title("Start"))
+        endLatLng?.let { MarkerOptions().position(it).title("End") }
+            ?.let { mMap.addMarker(it) }
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(startLatLng))
+
+        val cameraUpdate = CameraUpdateFactory.newLatLngZoom(startLatLng, 10f)
+        mMap.moveCamera(cameraUpdate)
+        fetchDirections(startLatLng, endLatLng, mMap)
+    }
+
+    @SuppressLint("MissingPermission")
+    private fun setCameraAndMap(thisPackage: Package, mMap: GoogleMap) {
+        val endLatLng = thisPackage.latitude?.let {
+            thisPackage.longitude?.let { it1 ->
+                LatLng(
+                    it,
+                    it1
+                )
+            }
+        }
+
+        //Get user current position
+        val currentUserLocation =
+            LocationServices.getFusedLocationProviderClient(this)
+        currentUserLocation.lastLocation.addOnSuccessListener { location ->
+
+            //Check to see if it is not null, then get coordinates
+            if (location != null) {
+                val startLatLng = LatLng(location.latitude, location.longitude)
+                endLatLng?.let { setMarkersAndRoute(startLatLng, it) }
+            }
+        }
+
+        //Show position on map
+        mMap.isMyLocationEnabled = true
+
+        //Run frequent updates when driver mode is selected
+        continueDeliverButton.setOnClickListener {
+            startLocationUpdates()
+        }
+    }
+
+    //Function to check value of coordinates
     private fun checkLatLong(latStr: Double?, longStr: Double?): Boolean {
 
         try {
@@ -224,6 +254,7 @@ class RouteActivity : AppCompatActivity(), OnMapReadyCallback {
         return false
     }
 
+    //Get the directions
     private fun fetchDirections(
         startLatLng: LatLng,
         endLatLng: LatLng,
@@ -248,15 +279,17 @@ class RouteActivity : AppCompatActivity(), OnMapReadyCallback {
                     val gson = Gson()
                     val directionsResult =
                         gson.fromJson(responseData, DirectionsResult::class.java)
+
                     if (directionsResult.routes.isNotEmpty() && directionsResult.routes[0].legs.isNotEmpty()) {
                         val steps = directionsResult.routes[0].legs[0].steps
+
                         //Update map on main thread
                         runOnUiThread {
                             val polylineOptions = PolylineOptions().width(10f)
-                                .color(Color.BLUE) // Anpassa utseendet på din polyline här
+                                .color(Color.BLUE) //Custom design of route
                             steps.forEach { step ->
                                 val decodedPath =
-                                    decodePolyline(step.polyline.points) // Dekodera polyline-strängen till LatLng-punkter
+                                    decodePolyline(step.polyline.points) //decode each line to latlng
                                 polylineOptions.addAll(decodedPath)
                             }
                             googleMap.addPolyline(polylineOptions)
@@ -376,5 +409,7 @@ class RouteActivity : AppCompatActivity(), OnMapReadyCallback {
         postCodeTextView = findViewById(R.id.postCodeTextView)
         travelTimeTextView = findViewById(R.id.travelTimeTextView)
         kmLeftTextView = findViewById(R.id.kmLeftTextView)
+       
+
     }
 }
