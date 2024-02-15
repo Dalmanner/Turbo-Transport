@@ -11,9 +11,9 @@ import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
 import androidx.core.content.ContextCompat
-import com.google.mlkit.vision.barcode.BarcodeScannerOptions
+import com.google.android.material.appbar.AppBarLayout
+import com.google.android.material.appbar.MaterialToolbar
 import com.google.mlkit.vision.barcode.BarcodeScanning
-import com.google.mlkit.vision.barcode.common.Barcode
 import com.google.mlkit.vision.common.InputImage
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
@@ -23,24 +23,29 @@ class BarCodeReaderActivity : AppCompatActivity() {
     private lateinit var cameraExecutor: ExecutorService
     private var barcodeValue = ""
     private var barcodeProcessed = false
+    private lateinit var appBarLayout: AppBarLayout
+    private lateinit var topAppBar: MaterialToolbar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_bar_code_reader)
-        viewFinder = findViewById(R.id.viewFinder)
+
+        initializeViews()
+
         cameraExecutor = Executors.newSingleThreadExecutor()
 
+        //Get the barcodevalue from last activity
         barcodeValue = intent.getStringExtra("barcodeValue").toString()
 
         startCamera()
-
     }
 
     @OptIn(ExperimentalGetImage::class)
     private fun startCamera() {
         val cameraProviderFuture = ProcessCameraProvider.getInstance(this)
         cameraProviderFuture.addListener(Runnable {
-            // Använd kameraprovidern
+
+            //Use cameraprovider
             val cameraProvider: ProcessCameraProvider = cameraProviderFuture.get()
 
             val preview = Preview.Builder()
@@ -72,10 +77,10 @@ class BarCodeReaderActivity : AppCompatActivity() {
             val cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
 
             try {
-                // Koppla från alla användningsfall innan de binds igen
+                //Unbind all
                 cameraProvider.unbindAll()
 
-                // Bind användningsfallen till kameran
+               //Bind necessary stuff
                 cameraProvider.bindToLifecycle(
                     this, cameraSelector, preview, imageAnalysis
                 )
@@ -95,22 +100,23 @@ class BarCodeReaderActivity : AppCompatActivity() {
 
                     if (barcodeValue == rawValue) {
 
-
-                        // Kontrollera om vi redan har behandlat en streckkod
+                        //Check if you have already proccessed the bar code
                         if (!barcodeProcessed) {
                             barcodeProcessed = true // Uppdatera flaggan
 
-                            // Kör på huvudtråden
+                            //Make sure to run the intent on main thread
                             runOnUiThread {
-                                // Starta en ny aktivitet med intent och skicka med streckkodsvärdet som extra data
+
+                                //Send to customerdelivery activity for further actions
                                 val intent = Intent(
                                     this@BarCodeReaderActivity,
-                                    ListDeliveries::class.java
+                                    CustomerDeliveryActivity::class.java
                                 ).apply {
-                                    putExtra("barcode_value", rawValue)
+                                    putExtra("barcodeValue", rawValue)
                                 }
                                 startActivity(intent)
 
+                                //Lets toast!
                                 Toast.makeText(
                                     this,
                                     "Scanning successful, $barcodeValue",
@@ -118,22 +124,52 @@ class BarCodeReaderActivity : AppCompatActivity() {
                                 ).show()
 
                             }
-                            break // Bryt loop efter första framgångsrika avläsningen
+                            break //No need to repeat process
                         }
                     }
+                    //In case we took the wrong package.. maybe add sound?
+                    Toast.makeText(
+                        this,
+                        "Wrong code, try again, $barcodeValue",
+                        Toast.LENGTH_SHORT
+                    ).show()
 
                 }
             }
             .addOnFailureListener {
-                // Hantera fel här
+                //Any errors..
             }
             .addOnCompleteListener {
-                imageProxy.close() // Glöm inte att stänga ImageProxy
+                imageProxy.close() //Close
             }
     }
 
     override fun onDestroy() {
         super.onDestroy()
         cameraExecutor.shutdown()
+    }
+
+    private fun showMenu(){
+        topAppBar.setNavigationOnClickListener {
+            finish()
+        }
+        topAppBar.setOnMenuItemClickListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.user -> {
+                    // Handle edit text press
+                    true
+                }
+                R.id.help -> {
+                    // Handle favorite icon press
+                    true
+                }
+                else -> false
+            }
+        }
+    }
+    private fun initializeViews() {
+        viewFinder = findViewById(R.id.viewFinder)
+        appBarLayout = findViewById(R.id.appBarLayout)
+        topAppBar = findViewById(R.id.topAppBar)
     }
 }
