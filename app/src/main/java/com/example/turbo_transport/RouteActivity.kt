@@ -45,7 +45,7 @@ import java.util.logging.Handler
 class RouteActivity : AppCompatActivity(), OnMapReadyCallback {
 
     companion object {
-        private const val PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 101
+        const val PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 101
     }
 
     private lateinit var db: FirebaseFirestore
