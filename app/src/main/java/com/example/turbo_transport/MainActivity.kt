@@ -167,6 +167,7 @@ class MainActivity : AppCompatActivity() {
             ActivityCompat.requestPermissions(
                 this,
                 arrayOf(
+                    Manifest.permission.CAMERA,
                     Manifest.permission.ACCESS_COARSE_LOCATION,
                     Manifest.permission.ACCESS_FINE_LOCATION
                 ),
@@ -202,6 +203,9 @@ class MainActivity : AppCompatActivity() {
         ) == PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(
             this,
             Manifest.permission.ACCESS_FINE_LOCATION
+        ) == PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(
+            this,
+            Manifest.permission.CAMERA
         ) == PackageManager.PERMISSION_GRANTED
     }
 
