@@ -99,8 +99,8 @@ class RouteActivity : AppCompatActivity(), OnMapReadyCallback {
         mapFragment.getMapAsync(this)
 
         getPackageInformation(documentId)
-         mapProgressBar = findViewById(R.id.mapProgressBar)
-         mapProgressBar.visibility = View.VISIBLE
+        mapProgressBar = findViewById(R.id.mapProgressBar)
+        mapProgressBar.visibility = View.VISIBLE
 
         showMenu()
 
@@ -148,7 +148,11 @@ class RouteActivity : AppCompatActivity(), OnMapReadyCallback {
 
     override fun onPause() {
         super.onPause()
-        stopLocationUpdates()
+        try {
+            stopLocationUpdates()
+        } catch (e: UninitializedPropertyAccessException) {
+            Log.d("LocationCallback", "locationCallback is not initialized.")
+        }
     }
 
     override fun onResume() {
@@ -364,6 +368,7 @@ class RouteActivity : AppCompatActivity(), OnMapReadyCallback {
             }
         }
     }
+
     private fun getPackageInformation(documentId: String) {
         db.collection("packages").document(documentId).addSnapshotListener { snapshot, e ->
             if (e != null) {
@@ -384,7 +389,8 @@ class RouteActivity : AppCompatActivity(), OnMapReadyCallback {
             }
         }
     }
-    private fun showMenu(){
+
+    private fun showMenu() {
         topAppBar.setNavigationOnClickListener {
             finish()
         }
@@ -394,14 +400,17 @@ class RouteActivity : AppCompatActivity(), OnMapReadyCallback {
                     // Handle edit text press
                     true
                 }
+
                 R.id.help -> {
                     // Handle favorite icon press
                     true
                 }
+
                 else -> false
             }
         }
     }
+
     private fun initializeViews() {
         appBarLayout = findViewById(R.id.appBarLayout)
         topAppBar = findViewById(R.id.topAppBar)
@@ -411,7 +420,6 @@ class RouteActivity : AppCompatActivity(), OnMapReadyCallback {
         postCodeTextView = findViewById(R.id.postCodeTextView)
         travelTimeTextView = findViewById(R.id.travelTimeTextView)
         kmLeftTextView = findViewById(R.id.kmLeftTextView)
-       
 
     }
 }
