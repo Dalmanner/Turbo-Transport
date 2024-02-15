@@ -82,6 +82,8 @@ class RouteActivity : AppCompatActivity(), OnMapReadyCallback {
 
         documentId = intent.getStringExtra("documentId").toString()
 
+
+
         if (documentId != null) {
             Log.d("!!!", documentId)
         }
@@ -91,7 +93,6 @@ class RouteActivity : AppCompatActivity(), OnMapReadyCallback {
 
         initializeViews()
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
-
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
