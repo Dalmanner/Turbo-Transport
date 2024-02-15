@@ -10,4 +10,10 @@
         <item name="android:textColor">@color/white</item>
         <!-- Anpassa andra attribut som önskat -->
     </style>
+    <style name="blueButton" parent="Widget.Material3.Button">
+        <item name="backgroundTint">@color/blue_700</item>
+        <item name="android:textColor">@color/black</item>
+        <!-- Anpassa andra attribut som önskat -->
+    </style>
+
 </resources>

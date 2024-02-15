@@ -7,11 +7,13 @@ import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Button
+import android.widget.ProgressBar
+import android.widget.TextView
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -35,10 +37,10 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.ktx.storage
 import com.google.gson.Gson
-import kotlinx.coroutines.tasks.await
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okio.IOException
+import java.util.logging.Handler
 
 class RouteActivity : AppCompatActivity(), OnMapReadyCallback {
 
@@ -49,6 +51,11 @@ class RouteActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var db: FirebaseFirestore
     private lateinit var auth: FirebaseAuth
     private lateinit var storage: FirebaseStorage
+
+    private lateinit var topAdressTextView: TextView
+    private lateinit var postCodeTextView: TextView
+    private lateinit var travelTimeTextView: TextView
+    private lateinit var kmLeftTextView: TextView
 
     private lateinit var appBarLayout: AppBarLayout
     private lateinit var topAppBar: MaterialToolbar
@@ -61,6 +68,7 @@ class RouteActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var locationCallback: LocationCallback
 
+    private lateinit var mapProgressBar: ProgressBar
     private lateinit var documentId: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -88,6 +96,11 @@ class RouteActivity : AppCompatActivity(), OnMapReadyCallback {
             .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
 
+        getPackageInformation(documentId)
+         mapProgressBar = findViewById(R.id.mapProgressBar)
+         mapProgressBar.visibility = View.VISIBLE
+
+        showMenu()
 
     }
 
@@ -97,7 +110,9 @@ class RouteActivity : AppCompatActivity(), OnMapReadyCallback {
 
         //When map is ready, get package
         getPackage(documentId, mMap)
-
+        android.os.Handler().postDelayed({
+            mapProgressBar.visibility = View.GONE
+        }, 1000)
     }
 
     //Function to get new location updates so we can focus and follow with the camera map.
@@ -347,12 +362,54 @@ class RouteActivity : AppCompatActivity(), OnMapReadyCallback {
             }
         }
     }
-
+    private fun getPackageInformation(documentId: String) {
+        db.collection("packages").document(documentId).addSnapshotListener { snapshot, e ->
+            if (e != null) {
+                Log.w("!!!", "Listen failed.", e)
+                return@addSnapshotListener
+            }
+            if (snapshot != null && snapshot.exists()) {
+                val thisPackage = snapshot.toObject(Package::class.java)
+                if (thisPackage != null) {
+                    //Start setting values from Firebase
+                    topAdressTextView.text = thisPackage.address
+                    postCodeTextView.text = thisPackage.postCodeAddress
+                    travelTimeTextView.text = thisPackage.requestedDeliveryTime
+                    kmLeftTextView.text = thisPackage.kmLeft
+                }
+            } else {
+                Log.d("!!!", "Current data: null")
+            }
+        }
+    }
+    private fun showMenu(){
+        topAppBar.setNavigationOnClickListener {
+            finish()
+        }
+        topAppBar.setOnMenuItemClickListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.user -> {
+                    // Handle edit text press
+                    true
+                }
+                R.id.help -> {
+                    // Handle favorite icon press
+                    true
+                }
+                else -> false
+            }
+        }
+    }
     private fun initializeViews() {
         appBarLayout = findViewById(R.id.appBarLayout)
         topAppBar = findViewById(R.id.topAppBar)
         notDeliveredButton = findViewById(R.id.notDeliveredButton)
-        continueDeliverButton = findViewById(R.id.continueDeliverButton)
+        continueDeliverButton = findViewById(R.id.continueButton)
+        topAdressTextView = findViewById(R.id.topAdressTextView)
+        postCodeTextView = findViewById(R.id.postCodeTextView)
+        travelTimeTextView = findViewById(R.id.travelTimeTextView)
+        kmLeftTextView = findViewById(R.id.kmLeftTextView)
+       
 
     }
 }
