@@ -264,10 +264,10 @@ class AddPackageActivity : AppCompatActivity() {
                 address = "Some address", // Example data
                 telephoneNumber = "1234567890", // Example data
                 deliveryNote = "Some", // Example data
-               // packageWeight = 10.0, // Example data
-                //packageHeight = 10.0, // Example data
-                //packageLength = 10.0, // Example data
-                //packageDepth = 10.0, // Example data
+                packageWeight = 10.0, // Example data
+                packageHeight = 10.0, // Example data
+                packageLength = 10.0, // Example data
+                packageDepth = 10.0, // Example data
                 requestedDeliveryTime = "Some time", // Example data
                 expectedDeliveryTime = "Some time", // Example data
                 leaveAtTheDoor = true, // Example data
