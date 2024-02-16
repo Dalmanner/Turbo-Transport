@@ -61,21 +61,21 @@ class AddPackageActivity : AppCompatActivity() {
 
             val packageInfo = Package(
                 userIdReceiver = userIdReceiver,
-                address = address, // Example data
-                telephoneNumber = telephoneNumber, // Example data
-                deliveryNote = deliveryNote, // Example data
-                packageWeight = packageWeight, // Example data
-                packageHeight = packageHeight, // Example data
-                packageLength = packageLength, // Example data
-                packageDepth = packageDepth, // Example data
-                requestedDeliveryTime = requestedDeliveryTime, // Example data
-                expectedDeliveryTime = expectedDeliveryTime, // Example data
-                leaveAtTheDoor = leaveAtTheDoor, // Example data
-                deliveryStatus = true, // Example data
-                identityCheck = identityCheck, // Example data
-                kolliId = kolliId, // Example data
-                latitude = latitude, // Example data
-                longitude = longitude, // Example data
+                address = address, t p
+                telephoneNumber = telephoneNumber,
+                deliveryNote = deliveryNote,
+                packageWeight = packageWeight,
+                packageHeight = packageHeight,
+                packageLength = packageLength,
+                packageDepth = packageDepth,
+                requestedDeliveryTime = requestedDeliveryTime,
+                expectedDeliveryTime = expectedDeliveryTime,
+                leaveAtTheDoor = leaveAtTheDoor,
+                deliveryStatus = true,
+                identityCheck = identityCheck,
+                kolliId = kolliId,
+                latitude = latitude,
+                longitude = longitude,
                 senderName = senderName,
                 lastEdited = Timestamp.now()
             )
