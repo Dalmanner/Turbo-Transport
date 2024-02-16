@@ -9,10 +9,10 @@
 
     <EditText
         android:id="@+id/etUserIdReceiver"
-        android:layout_width="150dp"
+        android:layout_width="120dp"
         android:layout_height="50dp"
         android:layout_marginTop="10dp"
-        android:layout_marginEnd="10dp"
+        android:layout_marginEnd="20dp"
         android:ems="10"
         android:hint="Receiver"
         app:layout_constraintEnd_toEndOf="parent"
@@ -20,9 +20,9 @@
 
     <EditText
         android:id="@+id/etAddress"
-        android:layout_width="150dp"
+        android:layout_width="120dp"
         android:layout_height="50dp"
-        android:layout_marginStart="10dp"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="10dp"
         android:ems="10"
         android:hint="Address"
@@ -31,9 +31,9 @@
 
     <EditText
         android:id="@+id/etPackageType"
-        android:layout_width="150dp"
+        android:layout_width="120dp"
         android:layout_height="50dp"
-        android:layout_marginStart="10dp"
+        android:layout_marginStart="20dp"
         android:ems="10"
         android:hint="Package Type"
         app:layout_constraintStart_toStartOf="parent"
@@ -41,9 +41,9 @@
 
     <EditText
         android:id="@+id/etPhoneNumber"
-        android:layout_width="150dp"
+        android:layout_width="120dp"
         android:layout_height="50dp"
-        android:layout_marginEnd="10dp"
+        android:layout_marginEnd="20dp"
         android:ems="10"
         android:hint="Phone Number"
         app:layout_constraintEnd_toEndOf="parent"
@@ -51,9 +51,9 @@
 
     <EditText
         android:id="@+id/etExpectedDeliveryTime"
-        android:layout_width="150dp"
+        android:layout_width="120dp"
         android:layout_height="50dp"
-        android:layout_marginStart="10dp"
+        android:layout_marginStart="20dp"
         android:ems="10"
         android:hint="ETA"
         app:layout_constraintStart_toStartOf="parent"
@@ -61,9 +61,9 @@
 
     <EditText
         android:id="@+id/etLatitude"
-        android:layout_width="150dp"
+        android:layout_width="120dp"
         android:layout_height="50dp"
-        android:layout_marginStart="10dp"
+        android:layout_marginStart="20dp"
         android:ems="10"
         android:hint="etLatitude"
         app:layout_constraintStart_toStartOf="parent"
@@ -71,20 +71,20 @@
 
     <EditText
         android:id="@+id/etRequestedDeliveryTime"
-        android:layout_width="150dp"
+        android:layout_width="120dp"
         android:layout_height="50dp"
-        android:layout_marginStart="10dp"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="4dp"
         android:ems="10"
-        android:hint="etRequestedDeliveryTime"
+        android:hint="Requested ETA"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/etExpectedDeliveryTime" />
 
     <EditText
         android:id="@+id/etKolliId"
-        android:layout_width="150dp"
+        android:layout_width="120dp"
         android:layout_height="50dp"
-        android:layout_marginStart="10dp"
+        android:layout_marginStart="20dp"
         android:ems="10"
         android:hint="Kolli ID"
         app:layout_constraintStart_toStartOf="parent"
@@ -92,9 +92,9 @@
 
     <EditText
         android:id="@+id/etPackageWeight"
-        android:layout_width="150dp"
+        android:layout_width="120dp"
         android:layout_height="50dp"
-        android:layout_marginStart="10dp"
+        android:layout_marginStart="20dp"
         android:ems="10"
         android:hint="Package Weight"
         app:layout_constraintStart_toStartOf="parent"
@@ -102,9 +102,9 @@
 
     <EditText
         android:id="@+id/etPackageHeight"
-        android:layout_width="150dp"
+        android:layout_width="120dp"
         android:layout_height="50dp"
-        android:layout_marginStart="10dp"
+        android:layout_marginStart="20dp"
         android:ems="10"
         android:hint="Package Height"
         app:layout_constraintStart_toStartOf="parent"
@@ -112,9 +112,9 @@
 
     <EditText
         android:id="@+id/etSenderName2"
-        android:layout_width="150dp"
+        android:layout_width="120dp"
         android:layout_height="50dp"
-        android:layout_marginEnd="10dp"
+        android:layout_marginEnd="20dp"
         android:ems="10"
         android:hint="Sender Name"
         app:layout_constraintEnd_toEndOf="parent"
@@ -122,9 +122,9 @@
 
     <EditText
         android:id="@+id/etLongitude"
-        android:layout_width="150dp"
+        android:layout_width="120dp"
         android:layout_height="50dp"
-        android:layout_marginEnd="10dp"
+        android:layout_marginEnd="20dp"
         android:ems="10"
         android:hint="etLongitude"
         app:layout_constraintEnd_toEndOf="parent"
@@ -132,9 +132,9 @@
 
     <EditText
         android:id="@+id/etDeliveryNote"
-        android:layout_width="150dp"
+        android:layout_width="120dp"
         android:layout_height="50dp"
-        android:layout_marginEnd="10dp"
+        android:layout_marginEnd="20dp"
         android:ems="10"
         android:hint="Delivery Note"
         app:layout_constraintEnd_toEndOf="parent"
@@ -142,9 +142,9 @@
 
     <EditText
         android:id="@+id/etPackageLength"
-        android:layout_width="150dp"
+        android:layout_width="120dp"
         android:layout_height="50dp"
-        android:layout_marginEnd="10dp"
+        android:layout_marginEnd="20dp"
         android:ems="10"
         android:hint="Package Length"
         app:layout_constraintEnd_toEndOf="parent"
@@ -152,9 +152,9 @@
 
     <EditText
         android:id="@+id/etPackageDepth"
-        android:layout_width="150dp"
+        android:layout_width="120dp"
         android:layout_height="50dp"
-        android:layout_marginEnd="10dp"
+        android:layout_marginEnd="20dp"
         android:ems="10"
         android:hint="Package Depth"
         app:layout_constraintEnd_toEndOf="parent"
