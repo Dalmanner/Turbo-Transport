@@ -2,6 +2,7 @@ package com.example.turbo_transport
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
@@ -72,6 +73,8 @@ class RouteActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var mapProgressBar: ProgressBar
     private lateinit var documentId: String
 
+    private var barcode = ""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -104,6 +107,10 @@ class RouteActivity : AppCompatActivity(), OnMapReadyCallback {
 
         showMenu()
 
+
+        continueDeliverButton.setOnClickListener {
+            sendToBarCodeReader(barcode)
+        }
     }
 
     @SuppressLint("MissingPermission")
@@ -369,6 +376,13 @@ class RouteActivity : AppCompatActivity(), OnMapReadyCallback {
         }
     }
 
+    private fun sendToBarCodeReader(packageBarcode: String) {
+
+        val intent = Intent(this, BarCodeReaderActivity::class.java)
+        intent.putExtra("barcodeValue", packageBarcode)
+        startActivity(intent)
+    }
+
     private fun getPackageInformation(documentId: String) {
         db.collection("packages").document(documentId).addSnapshotListener { snapshot, e ->
             if (e != null) {
@@ -383,6 +397,8 @@ class RouteActivity : AppCompatActivity(), OnMapReadyCallback {
                     postCodeTextView.text = thisPackage.postCodeAddress
                     travelTimeTextView.text = thisPackage.requestedDeliveryTime
                     kmLeftTextView.text = thisPackage.kmLeft
+
+                    barcode = thisPackage.kolliId.toString()
                 }
             } else {
                 Log.d("!!!", "Current data: null")
@@ -415,6 +431,7 @@ class RouteActivity : AppCompatActivity(), OnMapReadyCallback {
         appBarLayout = findViewById(R.id.appBarLayout)
         topAppBar = findViewById(R.id.topAppBar)
         notDeliveredButton = findViewById(R.id.notDeliveredButton)
+        continueDeliverButton = findViewById(R.id.continueButton)
         driveMapButton = findViewById(R.id.driveMapButton)
         topAdressTextView = findViewById(R.id.topAdressTextView)
         postCodeTextView = findViewById(R.id.postCodeTextView)
