@@ -23,6 +23,8 @@ import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
 class MainActivity : AppCompatActivity() {
@@ -31,6 +33,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private lateinit var auth: FirebaseAuth
+    private lateinit var db: FirebaseFirestore
 
     private lateinit var emailView: TextInputLayout
     private lateinit var passwordView: TextInputLayout
@@ -46,6 +49,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         auth = Firebase.auth
+        db = Firebase.firestore
+       // auth.signOut()
 
         initializeViews()
         requestPermission()
@@ -61,12 +66,32 @@ class MainActivity : AppCompatActivity() {
             login()
         }
 
+
         //Keep user logged in
         if (auth.currentUser != null) {
 //            auth.signOut()
-            val intent = Intent(this, ListDeliveries::class.java)
-            startActivity(intent)
+            val user = auth.currentUser
+            if (user != null) {
+                db.collection("users").document(user.uid)
+                    .get().addOnSuccessListener { document ->
+                        val item = document.toObject(User::class.java)
+                        Log.d("!!!", "User ID is: ${user.uid}")
+                        if (item?.level == 1) {
+                            val intent = Intent(this, ListReceiverPackage::class.java)
+                            startActivity(intent)
+                        }  else if (item?.level == 2){
+                            val intent = Intent(this, ListDeliveries::class.java)
+                            startActivity(intent)
+
+                        }
+                    }
+            }
+
+            //val intent = Intent(this, ListDeliveries::class.java)
+           // startActivity(intent)
         }
+
+
 
         //Hide keyboard on enter
         email.setOnEditorActionListener { _, actionId, _ ->
@@ -99,6 +124,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun login() {
+
         val emailLogin = email.text.toString().trim()
         val passwordLogin = password.text.toString().trim()
 
@@ -124,11 +150,27 @@ class MainActivity : AppCompatActivity() {
         auth.signInWithEmailAndPassword(emailLogin, passwordLogin)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-
+                    val user = auth.currentUser
                     progressBar.visibility = View.GONE
-                    val intent = Intent(this, ListDeliveries::class.java)
-                    startActivity(intent)
+                    if (user != null) {
+                        db.collection("users").document(user.uid)
+                            .get().addOnSuccessListener { document ->
+                                val item = document.toObject(User::class.java)
+                                Log.d("!!!", "User ID is: ${user.uid}")
+                                if (item?.level == 1) {
+                                    val intent = Intent(this, ListReceiverPackage::class.java)
+                                    startActivity(intent)
+                                }  else if (item?.level == 2){
+                                    val intent = Intent(this, ListDeliveries::class.java)
+                                    startActivity(intent)
 
+                                }
+                            }
+                    }
+                    else {
+                        //val intent = Intent(this, ListDeliveries::class.java)
+                        //tartActivity(intent)
+                    }
                     Toast.makeText(this, "Welcome back!", Toast.LENGTH_SHORT)
                         .show()
                 }
