@@ -12,6 +12,7 @@ import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.firestore
 
 class ListDeliveries : AppCompatActivity() {
@@ -34,6 +35,12 @@ class ListDeliveries : AppCompatActivity() {
         MapButton.setOnClickListener {
             showLocation()
         }
+    }
+    override fun onBackPressed() {
+        super.onBackPressed()
+        auth.signOut()
+        val intent = Intent(this,MainActivity::class.java)
+        startActivity(intent)
     }
     fun showLocation() {
         val intent = Intent(this,MapsActivity::class.java)
