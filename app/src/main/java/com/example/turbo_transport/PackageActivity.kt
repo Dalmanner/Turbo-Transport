@@ -111,8 +111,8 @@ class PackageActivity : AppCompatActivity() {
                     textViewName.text = thisPackage.nameOfReceiver
                     textViewPhonenumber.text = thisPackage.telephoneNumber
                     textViewDeliveryInstructions.text = thisPackage.deliveryNote
-                    textViewPackageInfoWeight.text = thisPackage.packageWeight.toString()
-                    textViewPackageInfoDimensions.text = "${thisPackage.packageHeight.toString()} x ${thisPackage.packageLength.toString()} x ${thisPackage.packageDepth.toString()}"
+                    //textViewPackageInfoWeight.text = thisPackage.packageWeight.toString()
+                    //textViewPackageInfoDimensions.text = "${thisPackage.packageHeight.toString()} x ${thisPackage.packageLength.toString()} x ${thisPackage.packageDepth.toString()}"
 
                     if (thisPackage.identityCheck == true){
                         textViewSign.text = "Yes"
