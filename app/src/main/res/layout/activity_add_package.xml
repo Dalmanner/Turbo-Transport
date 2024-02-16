@@ -30,16 +30,6 @@
         app:layout_constraintTop_toBottomOf="@+id/topAppBar" />
 
     <EditText
-        android:id="@+id/etPackageType"
-        android:layout_width="120dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="20dp"
-        android:ems="10"
-        android:hint="Package Type"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etPackageHeight" />
-
-    <EditText
         android:id="@+id/etPhoneNumber"
         android:layout_width="120dp"
         android:layout_height="50dp"
@@ -48,37 +38,6 @@
         android:hint="Phone Number"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/etPackageLength" />
-
-    <EditText
-        android:id="@+id/etExpectedDeliveryTime"
-        android:layout_width="120dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="20dp"
-        android:ems="10"
-        android:hint="ETA"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etLatitude" />
-
-    <EditText
-        android:id="@+id/etLatitude"
-        android:layout_width="120dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="20dp"
-        android:ems="10"
-        android:hint="etLatitude"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etPackageType" />
-
-    <EditText
-        android:id="@+id/etRequestedDeliveryTime"
-        android:layout_width="120dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="4dp"
-        android:ems="10"
-        android:hint="Requested ETA"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etExpectedDeliveryTime" />
 
     <EditText
         android:id="@+id/etKolliId"
@@ -91,24 +50,70 @@
         app:layout_constraintTop_toBottomOf="@+id/etAddress" />
 
     <EditText
-        android:id="@+id/etPackageWeight"
+        android:id="@+id/etRequestedDeliveryTime"
         android:layout_width="120dp"
         android:layout_height="50dp"
         android:layout_marginStart="20dp"
+        android:layout_marginTop="12dp"
         android:ems="10"
-        android:hint="Package Weight"
+        android:hint="Requested ETA"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etKolliId" />
+        app:layout_constraintTop_toBottomOf="@+id/etExpectedDeliveryTime" />
+
+    <EditText
+        android:id="@+id/etExpectedDeliveryTime"
+        android:layout_width="120dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:hint="ETA"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etLatitude" />
 
     <EditText
         android:id="@+id/etPackageHeight"
         android:layout_width="120dp"
         android:layout_height="50dp"
         android:layout_marginStart="20dp"
+        android:layout_marginTop="8dp"
         android:ems="10"
         android:hint="Package Height"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/etPackageWeight" />
+
+    <EditText
+        android:id="@+id/etPackageType"
+        android:layout_width="120dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="4dp"
+        android:ems="10"
+        android:hint="Package Type"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etPackageHeight" />
+
+    <EditText
+        android:id="@+id/etLatitude"
+        android:layout_width="120dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:hint="Latitude"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etPackageType" />
+
+    <EditText
+        android:id="@+id/etPackageWeight"
+        android:layout_width="120dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="4dp"
+        android:ems="10"
+        android:hint="Package Weight"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etKolliId" />
 
     <EditText
         android:id="@+id/etSenderName2"
@@ -126,7 +131,7 @@
         android:layout_height="50dp"
         android:layout_marginEnd="20dp"
         android:ems="10"
-        android:hint="etLongitude"
+        android:hint="Longitude"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/etPhoneNumber" />
 
@@ -164,27 +169,23 @@
         android:id="@+id/etIdentityCheck"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="500dp"
-        android:layout_marginBottom="19dp"
+        android:layout_marginStart="92dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="50dp"
         android:text="ID Check"
-        app:layout_constraintBottom_toTopOf="@+id/etLeaveAtTheDoor"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintBottom_toTopOf="@+id/bottomAppBar"
+        app:layout_constraintEnd_toStartOf="@+id/etLeaveAtTheDoor"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <RadioButton
         android:id="@+id/etLeaveAtTheDoor"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginEnd="40dp"
         android:layout_marginBottom="50dp"
         android:text="Leave At The Door"
         app:layout_constraintBottom_toTopOf="@+id/bottomAppBar"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etIdentityCheck"
-        app:layout_constraintVertical_bias="0.73" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/topAppBar"
