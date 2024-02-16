@@ -2,6 +2,7 @@ package com.example.turbo_transport
 
 import android.content.Intent
 import android.graphics.ImageFormat
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -100,6 +101,8 @@ class BarCodeReaderActivity : AppCompatActivity() {
 
                     if (barcodeValue == rawValue) {
 
+                        playTaDaSound()
+
                         //Check if you have already proccessed the bar code
                         if (!barcodeProcessed) {
                             barcodeProcessed = true // Uppdatera flaggan
@@ -127,12 +130,7 @@ class BarCodeReaderActivity : AppCompatActivity() {
                             break //No need to repeat process
                         }
                     }
-                    //In case we took the wrong package.. maybe add sound?
-                    Toast.makeText(
-                        this,
-                        "Wrong code, try again, $barcodeValue",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    playErrorSound()
 
                 }
             }
@@ -166,6 +164,24 @@ class BarCodeReaderActivity : AppCompatActivity() {
                 else -> false
             }
         }
+    }
+    private fun playErrorSound() {
+
+        val mediaPlayer = MediaPlayer.create(this, R.raw.error)
+        mediaPlayer.setOnCompletionListener {
+            //Release resources
+            it.release()
+        }
+        mediaPlayer.start() //Play sound
+    }
+    private fun playTaDaSound() {
+
+        val mediaPlayer = MediaPlayer.create(this, R.raw.tada)
+        mediaPlayer.setOnCompletionListener {
+            //Release resources
+            it.release()
+        }
+        mediaPlayer.start() //Play sound
     }
     private fun initializeViews() {
         viewFinder = findViewById(R.id.viewFinder)
