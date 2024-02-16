@@ -68,7 +68,7 @@ class MainActivity : AppCompatActivity() {
 
 
         //Keep user logged in
-        if (auth.currentUser != null) {
+       /* if (auth.currentUser != null) {
 //            auth.signOut()
             val user = auth.currentUser
             if (user != null) {
@@ -90,6 +90,8 @@ class MainActivity : AppCompatActivity() {
             //val intent = Intent(this, ListDeliveries::class.java)
            // startActivity(intent)
         }
+
+        */
 
 
 
