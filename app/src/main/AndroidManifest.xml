@@ -38,6 +38,10 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="${API_KEY}" />
 
+        <activity android:name=".AddPackageActivity"
+            android:exported="false"
+            android:label="AddPackageActivity"/>
+
         <activity
             android:name=".RouteActivity"
             android:exported="false"
