@@ -1,8 +1,9 @@
 package com.example.turbo_transport
 
 import android.os.Bundle
-import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageButton
+import android.widget.RadioButton
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.Timestamp
@@ -14,224 +15,8 @@ class AddPackageActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_package)
 
-        val etPackageName: EditText = findViewById(R.id.etPackageName)
-        // Initialize other EditTexts <EditText
-        //        android:id="@+id/etPackageName"
-        //        android:layout_width="180dp"
-        //        android:layout_height="50dp"
-        //        android:layout_marginStart="10dp"
-        //        android:layout_marginTop="20dp"
-        //        android:ems="10"
-        //        android:hint="Package Name"
-        //        android:text="Address"
-        //        app:layout_constraintStart_toStartOf="parent"
-        //        app:layout_constraintTop_toBottomOf="@+id/add_top_bar" />
-        //
-        //    <EditText
-        //        android:id="@+id/etPackageType"
-        //        android:layout_width="180dp"
-        //        android:layout_height="50dp"
-        //        android:layout_marginStart="10dp"
-        //        android:layout_marginTop="10dp"
-        //        android:ems="10"
-        //        android:hint="Package Type"
-        //        android:text="Package Type"
-        //        app:layout_constraintStart_toStartOf="parent"
-        //        app:layout_constraintTop_toBottomOf="@+id/etPackageName" />
-        //
-        //    <EditText
-        //        android:id="@+id/etWeight"
-        //        android:layout_width="180dp"
-        //        android:layout_height="50dp"
-        //        android:layout_marginStart="10dp"
-        //        android:layout_marginTop="10dp"
-        //        android:layout_marginEnd="8dp"
-        //        android:ems="10"
-        //        android:hint="Weight"
-        //        android:text="Weight"
-        //        app:layout_constraintEnd_toEndOf="parent"
-        //        app:layout_constraintHorizontal_bias="0.0"
-        //        app:layout_constraintStart_toStartOf="parent"
-        //        app:layout_constraintTop_toBottomOf="@+id/etPackageType" />
-        //
-        //    <EditText
-        //        android:id="@+id/etLocation"
-        //        android:layout_width="180dp"
-        //        android:layout_height="50dp"
-        //        android:layout_marginStart="10dp"
-        //        android:layout_marginTop="10dp"
-        //        android:ems="10"
-        //        android:hint="Location"
-        //        android:text="Location"
-        //        app:layout_constraintStart_toStartOf="parent"
-        //        app:layout_constraintTop_toBottomOf="@+id/etWeight" />
-        //
-        //    <EditText
-        //        android:id="@+id/etPhoneNumber"
-        //        android:layout_width="180dp"
-        //        android:layout_height="50dp"
-        //        android:layout_marginStart="10dp"
-        //        android:layout_marginTop="10dp"
-        //        android:layout_marginEnd="8dp"
-        //        android:ems="10"
-        //        android:hint="Phone Number"
-        //        android:text="Phone Number"
-        //        app:layout_constraintEnd_toEndOf="parent"
-        //        app:layout_constraintHorizontal_bias="0.0"
-        //        app:layout_constraintStart_toStartOf="parent"
-        //        app:layout_constraintTop_toBottomOf="@+id/etLocation" />
-        //
-        //    <EditText
-        //        android:id="@+id/etLatitude"
-        //        android:layout_width="180dp"
-        //        android:layout_height="50dp"
-        //        android:layout_marginStart="10dp"
-        //        android:layout_marginTop="10dp"
-        //        android:layout_marginEnd="8dp"
-        //        android:ems="10"
-        //        android:hint="Latitude"
-        //        android:text="Latidude"
-        //        app:layout_constraintEnd_toEndOf="parent"
-        //        app:layout_constraintHorizontal_bias="0.0"
-        //        app:layout_constraintStart_toStartOf="parent"
-        //        app:layout_constraintTop_toBottomOf="@+id/etPhoneNumber" />
-        //
-        //    <EditText
-        //        android:id="@+id/etLongitude"
-        //        android:layout_width="180dp"
-        //        android:layout_height="50dp"
-        //        android:layout_marginStart="10dp"
-        //        android:layout_marginTop="10dp"
-        //        android:autofillHints=""
-        //        android:ems="10"
-        //        android:hint="Longitude"
-        //        android:text="Longitude"
-        //        app:layout_constraintStart_toStartOf="parent"
-        //        app:layout_constraintTop_toBottomOf="@+id/etLatitude"
-        //        tools:ignore="TextFields" />
-        //
-        //    <EditText
-        //        android:id="@+id/etRequestedDeliveryTime"
-        //        android:layout_width="180dp"
-        //        android:layout_height="50dp"
-        //        android:layout_marginStart="10dp"
-        //        android:layout_marginTop="10dp"
-        //        android:layout_marginEnd="8dp"
-        //        android:ems="10"
-        //        android:hint="Requested Delivery Time"
-        //        android:text="Requested Delivery Time"
-        //        app:layout_constraintEnd_toEndOf="parent"
-        //        app:layout_constraintHorizontal_bias="0.0"
-        //        app:layout_constraintStart_toStartOf="parent"
-        //        app:layout_constraintTop_toBottomOf="@+id/etLongitude" />
-        //
-        //    <EditText
-        //        android:id="@+id/etExpectedDeliveryTime"
-        //        android:layout_width="180dp"
-        //        android:layout_height="50dp"
-        //        android:layout_marginTop="20dp"
-        //        android:layout_marginEnd="10dp"
-        //        android:ems="10"
-        //        android:hint="Expected Delivery Time"
-        //        android:text="ETA"
-        //        app:layout_constraintEnd_toEndOf="parent"
-        //        app:layout_constraintTop_toBottomOf="@+id/add_top_bar" />
-        //
-        //    <EditText
-        //        android:id="@+id/etKolliId"
-        //        android:layout_width="180dp"
-        //        android:layout_height="50dp"
-        //        android:layout_marginTop="10dp"
-        //        android:layout_marginEnd="10dp"
-        //        android:ems="10"
-        //        android:hint="Kolli Id"
-        //        android:text="Kolli Id"
-        //        app:layout_constraintEnd_toEndOf="parent"
-        //        app:layout_constraintTop_toBottomOf="@+id/etExpectedDeliveryTime" />
-        //
-        //    <EditText
-        //        android:id="@+id/etSenderName"
-        //        android:layout_width="180dp"
-        //        android:layout_height="50dp"
-        //        android:layout_marginTop="10dp"
-        //        android:layout_marginEnd="10dp"
-        //        android:ems="10"
-        //        android:hint="Sender Name"
-        //        android:text="Sender Name"
-        //        app:layout_constraintEnd_toEndOf="parent"
-        //        app:layout_constraintTop_toBottomOf="@+id/etKolliId" />
-        //
-        //    <EditText
-        //        android:id="@+id/etDeliveryNote"
-        //        android:layout_width="180dp"
-        //        android:layout_height="50dp"
-        //        android:layout_marginTop="10dp"
-        //        android:layout_marginEnd="10dp"
-        //        android:ems="10"
-        //        android:hint="Delivery Note"
-        //        android:text="Delivery Note"
-        //        app:layout_constraintEnd_toEndOf="parent"
-        //        app:layout_constraintTop_toBottomOf="@+id/etSenderName" />
-        //
-        //    <EditText
-        //        android:id="@+id/etPackageWeight"
-        //        android:layout_width="180dp"
-        //        android:layout_height="50dp"
-        //        android:layout_marginTop="10dp"
-        //        android:layout_marginEnd="10dp"
-        //        android:ems="10"
-        //        android:hint="Package Weight"
-        //        android:text="Package Weight"
-        //        app:layout_constraintEnd_toEndOf="parent"
-        //        app:layout_constraintTop_toBottomOf="@+id/etDeliveryNote" />
-        //
-        //    <EditText
-        //        android:id="@+id/etPackageHeight"
-        //        android:layout_width="180dp"
-        //        android:layout_height="50dp"
-        //        android:layout_marginTop="10dp"
-        //        android:layout_marginEnd="10dp"
-        //        android:ems="10"
-        //        android:hint="Package Height"
-        //        android:text="Package Height"
-        //        app:layout_constraintEnd_toEndOf="parent"
-        //        app:layout_constraintTop_toBottomOf="@+id/etPackageWeight" />
-        //
-        //    <EditText
-        //        android:id="@+id/etPackageLength"
-        //        android:layout_width="180dp"
-        //        android:layout_height="50dp"
-        //        android:layout_marginTop="10dp"
-        //        android:layout_marginEnd="10dp"
-        //        android:ems="10"
-        //        android:hint="Package Length"
-        //        android:text="Package Length"
-        //        app:layout_constraintEnd_toEndOf="parent"
-        //        app:layout_constraintTop_toBottomOf="@+id/etPackageHeight" />
-        //
-        //    <TextView
-        //        android:id="@+id/add_top_bar"
-        //        android:layout_width="362dp"
-        //        android:layout_height="51dp"
-        //        android:text="ADD PACKAGE"
-        //        app:layout_constraintEnd_toEndOf="parent"
-        //        app:layout_constraintStart_toStartOf="parent"
-        //        app:layout_constraintTop_toTopOf="parent" />
-        //
-        //    <EditText
-        //        android:id="@+id/etPackageDepth"
-        //        android:layout_width="180dp"
-        //        android:layout_height="50dp"
-        //        android:layout_marginTop="10dp"
-        //        android:layout_marginEnd="10dp"
-        //        android:ems="10"
-        //        android:hint="Package Depth"
-        //        android:text="Package Depth"
-        //        app:layout_constraintEnd_toEndOf="parent"
-        //        app:layout_constraintTop_toBottomOf="@+id/etPackageLength" />
-
-        val etSenderName: EditText = findViewById(R.id.etSenderName)
-        val etAddress: EditText = findViewById(R.id.etPackageName)
+        val etSenderName: EditText = findViewById(R.id.etSenderName2)
+        val etAddress: EditText = findViewById(R.id.etAddress)
         val etTelephoneNumber: EditText = findViewById(R.id.etPhoneNumber)
         val etDeliveryNote: EditText = findViewById(R.id.etDeliveryNote)
         val etPackageWeight: EditText = findViewById(R.id.etPackageWeight)
@@ -243,40 +28,55 @@ class AddPackageActivity : AppCompatActivity() {
         val etKolliId: EditText = findViewById(R.id.etKolliId)
         val etLatitude: EditText = findViewById(R.id.etLatitude)
         val etLongitude: EditText = findViewById(R.id.etLongitude)
-        val etLocation: EditText = findViewById(R.id.etLocation)
+        val etUserIdReceiver: EditText = findViewById(R.id.etUserIdReceiver)
+        val etIdentityCheck: RadioButton = findViewById(R.id.etIdentityCheck)
+        val etLeaveAtTheDoor: RadioButton = findViewById(R.id.etLeaveAtTheDoor)
 
-
-
-        val btnSubmit: Button = findViewById(R.id.btnSubmit)
+        val btnSubmit: ImageButton = findViewById(R.id.btnSubmit)
 
         btnSubmit.setOnClickListener {
-            val packageName = etPackageName.text.toString()
-            // Collect data from other EditTexts similarly
+            val userIdReceiver = etUserIdReceiver.text.toString()
+            val address = etAddress.text.toString()
+            val senderName = etSenderName.text.toString()
+            val telephoneNumber = etTelephoneNumber.text.toString()
+            val deliveryNote = etDeliveryNote.text.toString()
+            val packageWeight = etPackageWeight.text.toString().toDouble()
+            val packageHeight = etPackageHeight.text.toString().toDouble()
+            val packageLength = etPackageLength.text.toString().toDouble()
+            val packageDepth = etPackageDepth.text.toString().toDouble()
+            val requestedDeliveryTime = etRequestedDeliveryTime.text.toString()
+            val expectedDeliveryTime = etExpectedDeliveryTime.text.toString()
+            val kolliId = etKolliId.text.toString()
+            val latitude = etLatitude.text.toString().toDouble()
+            val longitude = etLongitude.text.toString().toDouble()
+            val identityCheck = etIdentityCheck.isChecked
+            val leaveAtTheDoor = etLeaveAtTheDoor.isChecked
 
-            if (packageName.isEmpty()) {
-                Toast.makeText(this, "Package name is required", Toast.LENGTH_SHORT).show()
+            if (senderName.isEmpty() || address.isEmpty() || telephoneNumber.isEmpty() || deliveryNote.isEmpty() || packageWeight.isNaN() || packageHeight.isNaN() || packageLength.isNaN() || packageDepth.isNaN() || requestedDeliveryTime.isEmpty() || expectedDeliveryTime.isEmpty() || kolliId.isEmpty() || latitude.isNaN() || longitude.isNaN() || userIdReceiver.isEmpty()) {
+                Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
+            } else {
+                Toast.makeText(this, "Package added", Toast.LENGTH_SHORT).show()
             }
 
             val packageInfo = Package(
-                userIdReceiver = "SomeUserID", // Example data
-                nameOfReceiver = packageName,
-                address = "Some address", // Example data
-                telephoneNumber = "1234567890", // Example data
-                deliveryNote = "Some", // Example data
-                packageWeight = 10.0, // Example data
-                packageHeight = 10.0, // Example data
-                packageLength = 10.0, // Example data
-                packageDepth = 10.0, // Example data
-                requestedDeliveryTime = "Some time", // Example data
-                expectedDeliveryTime = "Some time", // Example data
-                leaveAtTheDoor = true, // Example data
-                deliveryStatus = false, // Example data
-                identityCheck = true, // Example data
-                kolliId = "Some ID", // Example data
-                latitude = 0.0, // Example data
-                longitude = 0.0, // Example data
-                senderName = "Some name",
+                userIdReceiver = userIdReceiver,
+                address = address, // Example data
+                telephoneNumber = telephoneNumber, // Example data
+                deliveryNote = deliveryNote, // Example data
+                packageWeight = packageWeight, // Example data
+                packageHeight = packageHeight, // Example data
+                packageLength = packageLength, // Example data
+                packageDepth = packageDepth, // Example data
+                requestedDeliveryTime = requestedDeliveryTime, // Example data
+                expectedDeliveryTime = expectedDeliveryTime, // Example data
+                leaveAtTheDoor = leaveAtTheDoor, // Example data
+                deliveryStatus = true, // Example data
+                identityCheck = identityCheck, // Example data
+                kolliId = kolliId, // Example data
+                latitude = latitude, // Example data
+                longitude = longitude, // Example data
+                senderName = senderName,
                 lastEdited = Timestamp.now()
             )
 
