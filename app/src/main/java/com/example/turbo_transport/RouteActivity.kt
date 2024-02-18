@@ -351,8 +351,7 @@ class RouteActivity : AppCompatActivity(), OnMapReadyCallback {
 
         val totalHours = totalDurationSeconds / 3600
         val totalMinutes = (totalDurationSeconds % 3600) / 60
-        val totalDurationText =
-            String.format("%d h %02d min", totalHours, totalMinutes)
+        val totalDurationText ="${totalHours} h ${totalMinutes} min"
 
         runOnUiThread {
             //Remove previous polyline before creating new one.
