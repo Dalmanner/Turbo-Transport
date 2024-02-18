@@ -2,6 +2,7 @@ package com.example.turbo_transport
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -59,6 +60,7 @@ class ListDeliveries : AppCompatActivity() {
                 return@addSnapshotListener
             }
             if (snapshot != null && !snapshot.isEmpty) {
+                Log.d("!!!", "Got snapshot: ${snapshot.documents}")
                 val packageList = snapshot.documents.map { document ->
                     document.toObject(Package::class.java)
                 }

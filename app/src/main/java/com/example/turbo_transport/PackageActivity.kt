@@ -18,6 +18,8 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.ktx.storage
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 class PackageActivity : AppCompatActivity() {
 
@@ -122,7 +124,12 @@ class PackageActivity : AppCompatActivity() {
                     }
 
                     textViewKolliId.text = thisPackage.kolliId
-                    textViewETA.text = thisPackage.expectedDeliveryTime
+
+                    val timestamp = thisPackage.expectedDeliveryTime
+                    val date = timestamp?.toDate() // Konvertera till Date
+                    val format = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
+                    val dateString = format.format(date)
+                    textViewETA.text = dateString
 
                 }
             } else {

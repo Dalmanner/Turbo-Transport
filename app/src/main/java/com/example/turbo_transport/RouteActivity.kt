@@ -40,7 +40,9 @@ import com.google.gson.Gson
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okio.IOException
-import java.util.logging.Handler
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class RouteActivity : AppCompatActivity(), OnMapReadyCallback {
 
@@ -316,43 +318,8 @@ class RouteActivity : AppCompatActivity(), OnMapReadyCallback {
                     val directionsResult = gson.fromJson(responseData, DirectionsResult::class.java)
 
                     if (directionsResult.routes.isNotEmpty() && directionsResult.routes[0].legs.isNotEmpty()) {
-                        var totalDistanceMeters = 0 //dist
-                        var totalDurationSeconds = 0 //time
-                        val route =
-                            directionsResult.routes[0] //First route
-                        for (leg in route.legs) {
-                            totalDistanceMeters += leg.distance.value
-                            totalDurationSeconds += leg.duration.value
-                        }
 
-                        //Convert distance and time to string
-                        val totalDistanceKm =
-                            totalDistanceMeters / 1000.0 //Convert to km
-                        val totalDistanceText = String.format("%.2f km", totalDistanceKm)
-
-                        val totalHours = totalDurationSeconds / 3600
-                        val totalMinutes = (totalDurationSeconds % 3600) / 60
-                        val totalDurationText =
-                            String.format("%d h %02d min", totalHours, totalMinutes)
-
-                        runOnUiThread {
-                            //Remove previous polyline before creating new one.
-                            currentPolyline?.remove()
-
-                            val polylineOptions = PolylineOptions().width(10f).color(Color.BLUE)
-                            val steps =
-                                directionsResult.routes[0].legs[0].steps
-                            steps.forEach { step ->
-                                val decodedPath = decodePolyline(step.polyline.points)
-                                polylineOptions.addAll(decodedPath)
-                            }
-                            //Save new polyline
-                            currentPolyline = googleMap.addPolyline(polylineOptions)
-
-                            //Update views
-                            travelTimeTextView.text = totalDurationText
-                            kmLeftTextView.text = totalDistanceText
-                        }
+                        handleDirectionResults(directionsResult, googleMap)
 
                     } else {
                         runOnUiThread {
@@ -367,7 +334,47 @@ class RouteActivity : AppCompatActivity(), OnMapReadyCallback {
             }
         })
     }
+    private fun handleDirectionResults(directionsResult: DirectionsResult, googleMap: GoogleMap){
+        var totalDistanceMeters = 0 //dist
+        var totalDurationSeconds = 0 //time
+        val route =
+            directionsResult.routes[0] //First route
+        for (leg in route.legs) {
+            totalDistanceMeters += leg.distance.value
+            totalDurationSeconds += leg.duration.value
+        }
 
+        //Convert distance and time to string
+        val totalDistanceKm =
+            totalDistanceMeters / 1000.0 //Convert to km
+        val totalDistanceText = String.format("%.2f km", totalDistanceKm)
+
+        val totalHours = totalDurationSeconds / 3600
+        val totalMinutes = (totalDurationSeconds % 3600) / 60
+        val totalDurationText =
+            String.format("%d h %02d min", totalHours, totalMinutes)
+
+        runOnUiThread {
+            //Remove previous polyline before creating new one.
+            currentPolyline?.remove()
+
+            val polylineOptions = PolylineOptions().width(10f).color(Color.BLUE)
+            val steps =
+                directionsResult.routes[0].legs[0].steps
+            steps.forEach { step ->
+                val decodedPath = decodePolyline(step.polyline.points)
+                polylineOptions.addAll(decodedPath)
+            }
+            //Save new polyline
+            currentPolyline = googleMap.addPolyline(polylineOptions)
+
+            //Update views
+            travelTimeTextView.text = totalDurationText
+            //Update database with delivery time
+            calculateAndUpdateETA(totalDurationSeconds)
+            kmLeftTextView.text = totalDistanceText
+        }
+    }
 
     fun decodePolyline(encoded: String): List<LatLng> {
         val poly = ArrayList<LatLng>()
@@ -403,6 +410,31 @@ class RouteActivity : AppCompatActivity(), OnMapReadyCallback {
         }
 
         return poly
+    }
+
+    private fun calculateAndUpdateETA(totalDurationInSeconds: Int) {
+
+        // Beräkna den nya ETA
+        val currentTime = System.currentTimeMillis()
+        val etaMillis = currentTime + totalDurationInSeconds * 1000 //Convert to milliseconds
+        val newETA = com.google.firebase.Timestamp(Date(etaMillis))
+
+        updateFirestoreTimestamp(newETA)
+    }
+    private fun updateFirestoreTimestamp(newETA: com.google.firebase.Timestamp) {
+        val db = FirebaseFirestore.getInstance()
+
+        val collectionPath = "packages"
+
+        // Uppdatera dokumentet med den nya ETA
+        db.collection(collectionPath).document(documentId)
+            .update("expectedDeliveryTime", newETA)
+            .addOnSuccessListener {
+                Log.d("!!!", "DocumentSnapshot successfully updated!")
+            }
+            .addOnFailureListener { e ->
+                Log.w("!!!", "Error updating document", e)
+            }
     }
 
     private fun checkPermissions(): Boolean {
@@ -448,7 +480,14 @@ class RouteActivity : AppCompatActivity(), OnMapReadyCallback {
                 if (thisPackage != null) {
                     //Start setting values from Firebase
                     topAdressTextView.text = thisPackage.address
-                    postCodeTextView.text = thisPackage.postCodeAddress
+
+                    val timestamp = thisPackage.expectedDeliveryTime
+                    val date = timestamp?.toDate() // Konvertera till Date
+                    val format = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
+                    val dateString = format.format(date)
+                    postCodeTextView.text = dateString
+
+//                    postCodeTextView.text = thisPackage.expectedDeliveryTime.toString()
 
                     barcode = thisPackage.kolliId.toString()
                 }
