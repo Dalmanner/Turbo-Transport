@@ -7,6 +7,7 @@ import android.content.pm.PackageManager
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Looper
 import android.util.Log
 import android.view.View
 import android.widget.Button
@@ -43,6 +44,7 @@ import okio.IOException
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import java.util.logging.Handler
 
 class RouteActivity : AppCompatActivity(), OnMapReadyCallback {
 
@@ -79,6 +81,8 @@ class RouteActivity : AppCompatActivity(), OnMapReadyCallback {
     private var start = LatLng(57.1, 18.1)
     private var end = LatLng(57.0, 18.0)
     private var currentPolyline: com.google.android.gms.maps.model.Polyline? = null
+    private var driverMode = false
+    private var lastUpdatedLocation: LatLng? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -108,8 +112,8 @@ class RouteActivity : AppCompatActivity(), OnMapReadyCallback {
         mapFragment.getMapAsync(this)
 
         getPackageInformation(documentId)
-        mapProgressBar = findViewById(R.id.mapProgressBar)
-        mapProgressBar.visibility = View.VISIBLE
+
+
 
         showMenu()
 
@@ -125,7 +129,8 @@ class RouteActivity : AppCompatActivity(), OnMapReadyCallback {
 
         //When map is ready, get package
         getPackage(documentId, mMap)
-        android.os.Handler().postDelayed({
+
+        android.os.Handler(Looper.getMainLooper()).postDelayed({
             mapProgressBar.visibility = View.GONE
         }, 1000)
     }
@@ -334,7 +339,9 @@ class RouteActivity : AppCompatActivity(), OnMapReadyCallback {
             }
         })
     }
-    private fun handleDirectionResults(directionsResult: DirectionsResult, googleMap: GoogleMap){
+
+    private fun handleDirectionResults(directionsResult: DirectionsResult, googleMap: GoogleMap) {
+
         var totalDistanceMeters = 0 //dist
         var totalDurationSeconds = 0 //time
         val route =
@@ -351,7 +358,8 @@ class RouteActivity : AppCompatActivity(), OnMapReadyCallback {
 
         val totalHours = totalDurationSeconds / 3600
         val totalMinutes = (totalDurationSeconds % 3600) / 60
-        val totalDurationText ="${totalHours} h ${totalMinutes} min"
+        val totalDurationText = "${totalHours} h ${totalMinutes} min"
+
 
         runOnUiThread {
             //Remove previous polyline before creating new one.
@@ -413,19 +421,19 @@ class RouteActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private fun calculateAndUpdateETA(totalDurationInSeconds: Int) {
 
-        // Beräkna den nya ETA
+        //Calculate new ETA
         val currentTime = System.currentTimeMillis()
         val etaMillis = currentTime + totalDurationInSeconds * 1000 //Convert to milliseconds
         val newETA = com.google.firebase.Timestamp(Date(etaMillis))
 
         updateFirestoreTimestamp(newETA)
     }
+
     private fun updateFirestoreTimestamp(newETA: com.google.firebase.Timestamp) {
-        val db = FirebaseFirestore.getInstance()
 
         val collectionPath = "packages"
 
-        // Uppdatera dokumentet med den nya ETA
+        //Update database with new ETA
         db.collection(collectionPath).document(documentId)
             .update("expectedDeliveryTime", newETA)
             .addOnSuccessListener {
@@ -481,8 +489,8 @@ class RouteActivity : AppCompatActivity(), OnMapReadyCallback {
                     topAdressTextView.text = thisPackage.address
 
                     val timestamp = thisPackage.expectedDeliveryTime
-                    val date = timestamp?.toDate() // Konvertera till Date
-                    val format = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
+                    val date = timestamp?.toDate() //Conert to date
+                    val format = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
                     val dateString = format.format(date)
                     postCodeTextView.text = dateString
 
@@ -527,6 +535,9 @@ class RouteActivity : AppCompatActivity(), OnMapReadyCallback {
         postCodeTextView = findViewById(R.id.postCodeTextView)
         travelTimeTextView = findViewById(R.id.travelTimeTextView)
         kmLeftTextView = findViewById(R.id.kmLeftTextView)
+
+        mapProgressBar = findViewById(R.id.mapProgressBar)
+        mapProgressBar.visibility = View.VISIBLE
 
     }
 }

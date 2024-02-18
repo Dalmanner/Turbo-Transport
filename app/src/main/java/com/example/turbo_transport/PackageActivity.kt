@@ -3,10 +3,14 @@ package com.example.turbo_transport
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
+import android.view.View
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.ProgressBar
 import android.widget.TextView
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.appbar.MaterialToolbar
@@ -90,11 +94,16 @@ class PackageActivity : AppCompatActivity() {
         }
     }
     private fun sendToRoute(documentId: String){
-
+        val progressBar = findViewById<ProgressBar>(R.id.packageProgressBar)
+        progressBar.visibility = View.VISIBLE
         //Send to route activity
         val intent = Intent(this, RouteActivity::class.java)
         intent.putExtra("documentId", documentId)
         startActivity(intent)
+        Handler(Looper.getMainLooper()).postDelayed({
+            progressBar.visibility = View.GONE
+        }, 2000)
+
     }
     private fun getPackage(documentId: String) {
         db.collection("packages").document(documentId).addSnapshotListener { snapshot, e ->
