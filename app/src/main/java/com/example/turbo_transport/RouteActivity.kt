@@ -327,7 +327,7 @@ class RouteActivity : AppCompatActivity(), OnMapReadyCallback {
 
                         //Convert distance and time to string
                         val totalDistanceKm =
-                            totalDistanceMeters / 1000.0 // Konvertera meter till kilometer
+                            totalDistanceMeters / 1000.0 //Convert to km
                         val totalDistanceText = String.format("%.2f km", totalDistanceKm)
 
                         val totalHours = totalDurationSeconds / 3600
@@ -449,8 +449,6 @@ class RouteActivity : AppCompatActivity(), OnMapReadyCallback {
                     //Start setting values from Firebase
                     topAdressTextView.text = thisPackage.address
                     postCodeTextView.text = thisPackage.postCodeAddress
-//                    travelTimeTextView.text = thisPackage.requestedDeliveryTime
-//                    kmLeftTextView.text = thisPackage.kmLeft
 
                     barcode = thisPackage.kolliId.toString()
                 }
