@@ -13,7 +13,6 @@ import android.widget.Button
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -75,6 +74,11 @@ class RouteActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private var barcode = ""
 
+    private var start = LatLng(57.1, 18.1)
+    private var end = LatLng(57.0, 18.0)
+    private var currentPolyline: com.google.android.gms.maps.model.Polyline? = null
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -128,8 +132,8 @@ class RouteActivity : AppCompatActivity(), OnMapReadyCallback {
     @SuppressLint("MissingPermission")
     private fun startLocationUpdates() {
         val locationRequest = LocationRequest.create().apply {
-            interval = 10000
-            fastestInterval = 5000
+            interval = 5000
+            fastestInterval = 3000
             priority = LocationRequest.PRIORITY_HIGH_ACCURACY
         }
 
@@ -140,6 +144,10 @@ class RouteActivity : AppCompatActivity(), OnMapReadyCallback {
                     //Update location
                     val currentLatLng = LatLng(location.latitude, location.longitude)
                     mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 18f))
+
+                    //Get new times
+                    fetchDirections(currentLatLng, end, mMap)
+
                 }
             }
         }
@@ -206,7 +214,10 @@ class RouteActivity : AppCompatActivity(), OnMapReadyCallback {
     private fun setMarkersAndRoute(startLatLng: LatLng, endLatLng: LatLng) {
         mMap.addMarker(MarkerOptions().position(startLatLng).title("Start"))
         endLatLng?.let { MarkerOptions().position(it).title("End") }
-            ?.let { mMap.addMarker(it) }
+            ?.let {
+                mMap.addMarker(it)
+                end = endLatLng
+            }
         mMap.moveCamera(CameraUpdateFactory.newLatLng(startLatLng))
 
         val cameraUpdate = CameraUpdateFactory.newLatLngZoom(startLatLng, 10f)
@@ -268,11 +279,7 @@ class RouteActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     //Get the directions
-    private fun fetchDirections(
-        startLatLng: LatLng,
-        endLatLng: LatLng,
-        googleMap: GoogleMap
-    ) {
+    private fun fetchDirections(startLatLng: LatLng, endLatLng: LatLng, googleMap: GoogleMap) {
         val apiKey = BuildConfig.API_KEY
         val client = OkHttpClient()
         val request = Request.Builder()
@@ -282,38 +289,85 @@ class RouteActivity : AppCompatActivity(), OnMapReadyCallback {
         client.newCall(request).enqueue(object : okhttp3.Callback {
             override fun onFailure(call: okhttp3.Call, e: IOException) {
                 e.printStackTrace()
+                runOnUiThread {
+                    Toast.makeText(
+                        applicationContext,
+                        "Error fetching directions",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
             }
 
             override fun onResponse(call: okhttp3.Call, response: okhttp3.Response) {
                 response.use {
-                    if (!it.isSuccessful) throw IOException("Unexpected code $it")
+                    if (!it.isSuccessful) {
+                        runOnUiThread {
+                            Toast.makeText(
+                                applicationContext,
+                                "Failed to fetch directions",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                        return
+                    }
 
                     val responseData = it.body?.string()
                     val gson = Gson()
-                    val directionsResult =
-                        gson.fromJson(responseData, DirectionsResult::class.java)
+                    val directionsResult = gson.fromJson(responseData, DirectionsResult::class.java)
 
                     if (directionsResult.routes.isNotEmpty() && directionsResult.routes[0].legs.isNotEmpty()) {
-                        val steps = directionsResult.routes[0].legs[0].steps
+                        var totalDistanceMeters = 0 //dist
+                        var totalDurationSeconds = 0 //time
+                        val route =
+                            directionsResult.routes[0] //First route
+                        for (leg in route.legs) {
+                            totalDistanceMeters += leg.distance.value
+                            totalDurationSeconds += leg.duration.value
+                        }
 
-                        //Update map on main thread
+                        //Convert distance and time to string
+                        val totalDistanceKm =
+                            totalDistanceMeters / 1000.0 //Convert to km
+                        val totalDistanceText = String.format("%.2f km", totalDistanceKm)
+
+                        val totalHours = totalDurationSeconds / 3600
+                        val totalMinutes = (totalDurationSeconds % 3600) / 60
+                        val totalDurationText =
+                            String.format("%d h %02d min", totalHours, totalMinutes)
+
                         runOnUiThread {
-                            val polylineOptions = PolylineOptions().width(10f)
-                                .color(Color.BLUE) //Custom design of route
+                            //Remove previous polyline before creating new one.
+                            currentPolyline?.remove()
+
+                            val polylineOptions = PolylineOptions().width(10f).color(Color.BLUE)
+                            val steps =
+                                directionsResult.routes[0].legs[0].steps
                             steps.forEach { step ->
-                                val decodedPath =
-                                    decodePolyline(step.polyline.points) //decode each line to latlng
+                                val decodedPath = decodePolyline(step.polyline.points)
                                 polylineOptions.addAll(decodedPath)
                             }
-                            googleMap.addPolyline(polylineOptions)
+                            //Save new polyline
+                            currentPolyline = googleMap.addPolyline(polylineOptions)
+
+                            //Update views
+                            travelTimeTextView.text = totalDurationText
+                            kmLeftTextView.text = totalDistanceText
                         }
+
                     } else {
-                        //If results are empty, handle that...
+                        runOnUiThread {
+                            Toast.makeText(
+                                applicationContext,
+                                "No routes found",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
                     }
                 }
             }
         })
     }
+
 
     fun decodePolyline(encoded: String): List<LatLng> {
         val poly = ArrayList<LatLng>()
@@ -395,8 +449,6 @@ class RouteActivity : AppCompatActivity(), OnMapReadyCallback {
                     //Start setting values from Firebase
                     topAdressTextView.text = thisPackage.address
                     postCodeTextView.text = thisPackage.postCodeAddress
-                    travelTimeTextView.text = thisPackage.requestedDeliveryTime
-                    kmLeftTextView.text = thisPackage.kmLeft
 
                     barcode = thisPackage.kolliId.toString()
                 }

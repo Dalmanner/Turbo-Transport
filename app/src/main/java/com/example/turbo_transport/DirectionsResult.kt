@@ -10,8 +10,21 @@ data class Route(
 )
 
 data class Leg(
-    val steps: List<Step>
+    val steps: List<Step>,
+    val distance: Distance,
+    val duration: Duration
 )
+
+data class Distance(
+    val value: Int,
+    val text: String
+)
+
+data class Duration(
+    val value: Int, // Tid i sekunder
+    val text: String // Tid som läsbar text, exempelvis "1 min"
+)
+
 
 data class Step(
     val start_location: Location,
