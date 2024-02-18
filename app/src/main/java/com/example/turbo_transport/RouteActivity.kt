@@ -95,12 +95,6 @@ class RouteActivity : AppCompatActivity(), OnMapReadyCallback {
 
         documentId = intent.getStringExtra("documentId").toString()
 
-
-
-        if (documentId != null) {
-            Log.d("!!!", documentId)
-        }
-
         binding = ActivityRouteBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -112,11 +106,7 @@ class RouteActivity : AppCompatActivity(), OnMapReadyCallback {
         mapFragment.getMapAsync(this)
 
         getPackageInformation(documentId)
-
-
-
         showMenu()
-
 
         continueDeliverButton.setOnClickListener {
             sendToBarCodeReader(barcode)
@@ -200,7 +190,9 @@ class RouteActivity : AppCompatActivity(), OnMapReadyCallback {
                 if (thisPackage != null) {
                     if (checkLatLong(thisPackage.latitude, thisPackage.longitude)) {
                         //If coordinates are OK, go ahead and create map with markers and route
-                        setCameraAndMap(thisPackage, mMap)
+                        if (!driverMode){
+                            setCameraAndMap(thisPackage, mMap)
+                        }
                     }
                 } else {
 
@@ -261,6 +253,7 @@ class RouteActivity : AppCompatActivity(), OnMapReadyCallback {
         //Run frequent updates when driver mode is selected
         driveMapButton.setOnClickListener {
             startLocationUpdates()
+            driverMode = true
         }
     }
 
@@ -360,6 +353,8 @@ class RouteActivity : AppCompatActivity(), OnMapReadyCallback {
         val totalMinutes = (totalDurationSeconds % 3600) / 60
         val totalDurationText = "${totalHours} h ${totalMinutes} min"
 
+        //Update database with delivery time
+        calculateAndUpdateETA(totalDurationSeconds)
 
         runOnUiThread {
             //Remove previous polyline before creating new one.
@@ -377,8 +372,6 @@ class RouteActivity : AppCompatActivity(), OnMapReadyCallback {
 
             //Update views
             travelTimeTextView.text = totalDurationText
-            //Update database with delivery time
-            calculateAndUpdateETA(totalDurationSeconds)
             kmLeftTextView.text = totalDistanceText
         }
     }
