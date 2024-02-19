@@ -466,6 +466,7 @@ class RouteActivity : AppCompatActivity(), OnMapReadyCallback {
 
         val intent = Intent(this, BarCodeReaderActivity::class.java)
         intent.putExtra("barcodeValue", packageBarcode)
+        intent.putExtra("documentId", documentId)
         startActivity(intent)
     }
 

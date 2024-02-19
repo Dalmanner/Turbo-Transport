@@ -26,6 +26,7 @@ class BarCodeReaderActivity : AppCompatActivity() {
     private var barcodeProcessed = false
     private lateinit var appBarLayout: AppBarLayout
     private lateinit var topAppBar: MaterialToolbar
+    private lateinit var documentId: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,6 +38,7 @@ class BarCodeReaderActivity : AppCompatActivity() {
 
         //Get the barcodevalue from last activity
         barcodeValue = intent.getStringExtra("barcodeValue").toString()
+        documentId = intent.getStringExtra("documentId").toString()
 
         startCamera()
     }
@@ -116,6 +118,7 @@ class BarCodeReaderActivity : AppCompatActivity() {
                                     CustomerDeliveryActivity::class.java
                                 ).apply {
                                     putExtra("barcodeValue", rawValue)
+                                    putExtra("documentId", documentId)
                                 }
                                 startActivity(intent)
 

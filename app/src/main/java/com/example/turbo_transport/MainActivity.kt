@@ -62,7 +62,6 @@ class MainActivity : AppCompatActivity() {
         val loginButton = findViewById<Button>(R.id.loginButton)
 
         loginButton.setOnClickListener {
-            Log.d("!!!", "pressed")
             login()
         }
 
