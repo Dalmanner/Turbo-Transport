@@ -38,7 +38,7 @@ class SignatureView(context: Context, attrs: AttributeSet? = null) : View(contex
                 path.lineTo(x, y)
             }
             MotionEvent.ACTION_UP -> {
-                // Implementera logik här om så önskas
+                //Any actions here?
             }
             else -> return false
         }
