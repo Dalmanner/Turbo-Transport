@@ -69,7 +69,7 @@ class AddPackageActivity : AppCompatActivity() {
                 packageLength = packageLength,
                 packageDepth = packageDepth,
                 requestedDeliveryTime = requestedDeliveryTime,
-                expectedDeliveryTime = expectedDeliveryTime,
+                expectedDeliveryTime = null,
                 leaveAtTheDoor = leaveAtTheDoor,
                 deliveryStatus = true,
                 identityCheck = identityCheck,
