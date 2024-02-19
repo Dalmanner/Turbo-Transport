@@ -1,6 +1,7 @@
 package com.example.turbo_transport
 
 import android.content.Context
+import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
@@ -51,4 +52,16 @@ class SignatureView(context: Context, attrs: AttributeSet? = null) : View(contex
         path.reset()
         invalidate()
     }
+    fun getSignatureBitmap(): Bitmap {
+        //Create a bitmap where the signature will be drawn
+        val bitmap = Bitmap.createBitmap(this.width, this.height, Bitmap.Config.ARGB_8888)
+        //use canvas
+        val canvas = Canvas(bitmap)
+        //create background otherwise transparent
+        canvas.drawColor(Color.WHITE)
+        //Draw other signatureview onto the canvas and return the bitmap created
+        this.draw(canvas)
+        return bitmap
+    }
+
 }

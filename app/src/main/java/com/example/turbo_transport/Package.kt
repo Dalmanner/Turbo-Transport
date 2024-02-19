@@ -26,10 +26,12 @@ var documentId : String? = null,
     var leaveAtTheDoor: Boolean? = null,
     var deliveryStatus: Boolean? = null,
     var identityCheck: Boolean? = null,
+    var signatureLink: String? = null, //for fire storage
     var kolliId: String? = null,
     var latitude: Double? = null,
     var longitude: Double? = null,
     var senderName: String? = null,
+    var isDelivered: Boolean? = null,
     @ServerTimestamp
     var lastEdited: Timestamp? = null,
     @ServerTimestamp
