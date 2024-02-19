@@ -3,6 +3,7 @@ package com.example.turbo_transport
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
@@ -23,7 +24,7 @@ class PackageDeliveredActivity : AppCompatActivity() {
 
         documentId = intent.getStringExtra("documentId").toString()
         initializeViews()
-
+        packageDeliveredProgressBar.visibility = View.GONE
         closeButtonDeliveredPackage.setOnClickListener {
             goBackToStartPage()
         }

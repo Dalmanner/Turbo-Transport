@@ -35,12 +35,15 @@ class SignatureView(context: Context, attrs: AttributeSet? = null) : View(contex
                 path.moveTo(x, y)
                 return true
             }
+
             MotionEvent.ACTION_MOVE -> {
                 path.lineTo(x, y)
             }
+
             MotionEvent.ACTION_UP -> {
                 //Any actions here?
             }
+
             else -> return false
         }
 
@@ -52,6 +55,7 @@ class SignatureView(context: Context, attrs: AttributeSet? = null) : View(contex
         path.reset()
         invalidate()
     }
+
     fun getSignatureBitmap(): Bitmap {
         //Create a bitmap where the signature will be drawn
         val bitmap = Bitmap.createBitmap(this.width, this.height, Bitmap.Config.ARGB_8888)

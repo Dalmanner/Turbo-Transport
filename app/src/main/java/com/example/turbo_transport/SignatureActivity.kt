@@ -65,7 +65,7 @@ class SignatureActivity : AppCompatActivity() {
 
         val uploadTask = signatureRef.putBytes(data)
         uploadTask.addOnSuccessListener { taskSnapshot ->
-            // Efter lyckad uppladdning, hämta den nedladdningsbara URL:en
+            //After successfully uploaded the image/signature, get the link and save it to firestore
             taskSnapshot.storage.downloadUrl.addOnSuccessListener { downloadUri ->
                 val signatureUrl = downloadUri.toString()
                 updateFirestoreDocument(signatureUrl) // Uppdatera med korrekt URL
