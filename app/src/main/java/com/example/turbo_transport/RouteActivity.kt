@@ -83,6 +83,7 @@ class RouteActivity : AppCompatActivity(), OnMapReadyCallback {
     private var end = LatLng(57.0, 18.0)
     private var currentPolyline: com.google.android.gms.maps.model.Polyline? = null
     private var driverMode = false
+    private var firstRun = true
     private var lastUpdatedLocation: LatLng? = null
 
     private var lastTimestamp: Timestamp? = null
@@ -172,6 +173,15 @@ class RouteActivity : AppCompatActivity(), OnMapReadyCallback {
         }
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        try {
+            stopLocationUpdates()
+        } catch (e: UninitializedPropertyAccessException) {
+            Log.d("LocationCallback", "locationCallback is not initialized.")
+        }
+    }
+
     override fun onResume() {
         super.onResume()
 //        startLocationUpdates()
@@ -197,6 +207,7 @@ class RouteActivity : AppCompatActivity(), OnMapReadyCallback {
                         //If coordinates are OK, go ahead and create map with markers and route
                         if (!driverMode){
                             setCameraAndMap(thisPackage, mMap)
+//                            lastTimestamp = Timestamp(Date()) // Update current timestamp to now
                         }
                     }
                 } else {
@@ -356,7 +367,7 @@ class RouteActivity : AppCompatActivity(), OnMapReadyCallback {
 
         val totalHours = totalDurationSeconds / 3600
         val totalMinutes = (totalDurationSeconds % 3600) / 60
-        val totalDurationText = "${totalHours} h ${totalMinutes} min"
+        val totalDurationText = "$totalHours h $totalMinutes min"
 
         //Update database with delivery time
         checkAndCalculateETA(totalDurationSeconds)
@@ -381,7 +392,7 @@ class RouteActivity : AppCompatActivity(), OnMapReadyCallback {
         }
     }
 
-    fun decodePolyline(encoded: String): List<LatLng> {
+    private fun decodePolyline(encoded: String): List<LatLng> {
         val poly = ArrayList<LatLng>()
         var index = 0
         val len = encoded.length
@@ -425,13 +436,17 @@ class RouteActivity : AppCompatActivity(), OnMapReadyCallback {
             val difference = currentTimestamp!!.toDate().time - lastTimestamp!!.toDate().time
 
             // If more than 5 minutes apart, execute your code
-            if (difference > 5 * 60 * 1000) { // 5 minutes in milliseconds
+            if (difference > 1 * 60 * 1000) { // 1 minutes in milliseconds
                 calculateAndUpdateETA(totalDurationInSeconds)
+                // Update lastTimestamp to currentTimestamp after checking
+                lastTimestamp = currentTimestamp
             }
         }
-
-        // Update lastTimestamp to currentTimestamp after checking
-        lastTimestamp = currentTimestamp
+        else if (firstRun && driverMode){
+            calculateAndUpdateETA(totalDurationInSeconds)
+            lastTimestamp = currentTimestamp
+            firstRun = false
+        }
     }
     private fun calculateAndUpdateETA(totalDurationInSeconds: Int) {
 
@@ -477,8 +492,6 @@ class RouteActivity : AppCompatActivity(), OnMapReadyCallback {
         if (requestCode == PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION) {
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 startLocationUpdates()
-            } else {
-
             }
         }
     }
@@ -504,11 +517,19 @@ class RouteActivity : AppCompatActivity(), OnMapReadyCallback {
                     topAdressTextView.text = thisPackage.address
 
                     val timestamp = thisPackage.expectedDeliveryTime
-                    val date = timestamp?.toDate() //Conert to date
-                    val format = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
+                    val date = timestamp?.toDate() //Convert to date
+                    val format = SimpleDateFormat("HH:mm", Locale.getDefault())
                     val dateString = format.format(date)
-                    postCodeTextView.text = dateString
+//                    postCodeTextView.text = dateString
 
+                    if (!driverMode) {
+                        postCodeTextView.text =
+                            "Requested delivery time: ${thisPackage.requestedDeliveryTime}"
+                    }
+                    else {
+                        postCodeTextView.text =
+                            "Estimated delivery time: $dateString"
+                    }
 //                    postCodeTextView.text = thisPackage.expectedDeliveryTime.toString()
 
                     barcode = thisPackage.kolliId.toString()
