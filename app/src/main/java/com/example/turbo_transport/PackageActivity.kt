@@ -119,7 +119,7 @@ class PackageActivity : AppCompatActivity() {
 
                     //Start setting values from Firebase
                     textViewAddress.text = thisPackage.address
-                    textViewName.text = thisPackage.userIdReceiver
+                    textViewName.text = thisPackage.nameOfReceiver
                     textViewPhonenumber.text = thisPackage.telephoneNumber
                     textViewDeliveryInstructions.text = thisPackage.deliveryNote
                     textViewPackageInfoWeight.text = thisPackage.packageWeight.toString() + " kg"

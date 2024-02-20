@@ -30,6 +30,7 @@ import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.PolylineOptions
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.appbar.MaterialToolbar
+import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -84,6 +85,9 @@ class RouteActivity : AppCompatActivity(), OnMapReadyCallback {
     private var driverMode = false
     private var lastUpdatedLocation: LatLng? = null
 
+    private var lastTimestamp: Timestamp? = null
+    private var currentTimestamp: Timestamp? = null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -110,6 +114,7 @@ class RouteActivity : AppCompatActivity(), OnMapReadyCallback {
 
         continueDeliverButton.setOnClickListener {
             sendToBarCodeReader(barcode)
+            stopLocationUpdates()
         }
     }
 
@@ -354,7 +359,7 @@ class RouteActivity : AppCompatActivity(), OnMapReadyCallback {
         val totalDurationText = "${totalHours} h ${totalMinutes} min"
 
         //Update database with delivery time
-        calculateAndUpdateETA(totalDurationSeconds)
+        checkAndCalculateETA(totalDurationSeconds)
 
         runOnUiThread {
             //Remove previous polyline before creating new one.
@@ -411,7 +416,23 @@ class RouteActivity : AppCompatActivity(), OnMapReadyCallback {
 
         return poly
     }
+    private fun checkAndCalculateETA(totalDurationInSeconds: Int) {
+        currentTimestamp = Timestamp(Date()) // Update current timestamp to now
 
+        // Ensure both timestamps are not null
+        if (lastTimestamp != null && currentTimestamp != null) {
+            // Convert timestamps to milliseconds and calculate the difference
+            val difference = currentTimestamp!!.toDate().time - lastTimestamp!!.toDate().time
+
+            // If more than 5 minutes apart, execute your code
+            if (difference > 5 * 60 * 1000) { // 5 minutes in milliseconds
+                calculateAndUpdateETA(totalDurationInSeconds)
+            }
+        }
+
+        // Update lastTimestamp to currentTimestamp after checking
+        lastTimestamp = currentTimestamp
+    }
     private fun calculateAndUpdateETA(totalDurationInSeconds: Int) {
 
         //Calculate new ETA
