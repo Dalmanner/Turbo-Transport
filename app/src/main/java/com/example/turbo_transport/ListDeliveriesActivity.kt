@@ -1,27 +1,31 @@
 package com.example.turbo_transport
 
+import android.content.ContentValues
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.firestore
+import com.google.firebase.messaging.FirebaseMessaging
 
 class ListDeliveries : AppCompatActivity() {
     lateinit var deliveryRecycleView: RecyclerView
-    lateinit var db : FirebaseFirestore
-    lateinit var auth : FirebaseAuth
+    lateinit var db: FirebaseFirestore
+    lateinit var auth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_listdeliveries)
-        val MapButton= findViewById<ImageButton>(R.id.btnSubmit)
+        val MapButton = findViewById<ImageButton>(R.id.btnSubmit)
 
 
         db = Firebase.firestore

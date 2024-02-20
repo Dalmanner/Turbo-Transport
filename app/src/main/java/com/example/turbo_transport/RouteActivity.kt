@@ -2,9 +2,13 @@ package com.example.turbo_transport
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -14,7 +18,11 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
+import com.example.turbo_transport.BuildConfig.API_KEY
+import com.example.turbo_transport.BuildConfig.SERVER_KEY
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -22,6 +30,8 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.example.turbo_transport.databinding.ActivityRouteBinding
+import com.google.android.gms.cloudmessaging.CloudMessage
+//import com.google.android.gms.common.api.Response
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
@@ -38,20 +48,35 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.ktx.storage
 import com.google.gson.Gson
+import okhttp3.Call
+import okhttp3.Callback
+import okhttp3.Response
+import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.OkHttpClient
 import okhttp3.Request
+import okhttp3.RequestBody
 import okio.IOException
+import java.sql.Timestamp
+import java.text.SimpleDateFormat
+import java.time.Instant
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
+import java.util.Locale
+import java.util.concurrent.TimeUnit
 import java.util.logging.Handler
 
 class RouteActivity : AppCompatActivity(), OnMapReadyCallback {
 
     companion object {
         const val PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 101
+        const val notificationId = 1
     }
 
     private lateinit var db: FirebaseFirestore
     private lateinit var auth: FirebaseAuth
     private lateinit var storage: FirebaseStorage
+    private lateinit var cloudMessage: CloudMessage
 
     private lateinit var topAdressTextView: TextView
     private lateinit var postCodeTextView: TextView
@@ -82,9 +107,7 @@ class RouteActivity : AppCompatActivity(), OnMapReadyCallback {
         db = Firebase.firestore
         auth = Firebase.auth
         storage = Firebase.storage
-
         documentId = intent.getStringExtra("documentId").toString()
-
 
 
         if (documentId != null) {
@@ -243,10 +266,130 @@ class RouteActivity : AppCompatActivity(), OnMapReadyCallback {
         //Run frequent updates when driver mode is selected
         driveMapButton.setOnClickListener {
             startLocationUpdates()
+            sendNotificationToUser()
+        }
+    }
+    private fun sendNotificationToUser() {
+        val client = OkHttpClient()
+        getUserToken { userToken ->
+            Log.d("!!!", "number1$userToken")
+            getDeliveryTime { readableDate ->
+                getSenderName { senderName ->
+                    val json = Gson().toJson(
+                        mapOf(
+                            "to" to userToken,
+                            "notification" to mapOf(
+                                "title" to "TurboTransport",
+                                "body" to "Paket från $senderName levereras idag $readableDate"
+                            )
+                        )
+                    )
+
+                    val body =
+                        RequestBody.create(
+                            "application/json; charset=utf-8".toMediaTypeOrNull(),
+                            json
+                        )
+
+                    val request = Request.Builder()
+                        .url("https://fcm.googleapis.com/fcm/send")
+                        .addHeader("Content-Type", "application/json")
+                        .addHeader("Authorization", "key=${SERVER_KEY}")
+                        .post(body)
+                        .build()
+
+                    client.newCall(request).enqueue(object : Callback {
+                        override fun onFailure(call: Call, e: IOException) {
+                            // Hantera fel här
+                            Log.e("NotificationError", e.message ?: "Unknown error")
+                        }
+
+                        override fun onResponse(call: Call, response: Response) {
+                            if (!response.isSuccessful) {
+                                Log.e(
+                                    "NotificationResponse",
+                                    "Failed to send notification: ${response.body?.string()}"
+                                )
+                            }
+                        }
+                    })
+                }
+            }
+        }
+    }
+    private fun getUserId(callback: (String) -> Unit) {
+        val user = auth.currentUser
+        var userId = ""
+        if (user != null) {
+            db.collection("packages").document(documentId)
+                .get().addOnSuccessListener { document ->
+                    if (document != null) {
+                        val userIdReceiver = document.get("userIdReceiver")
+                        if (userIdReceiver != null) {
+                            userId = userIdReceiver.toString()
+                            callback(userId)
+                        }
+                    } else {
+                        return@addOnSuccessListener
+                    }
+                }
+        }
+    }
+    fun getUserToken(callback: (String) -> Unit) {
+        val user = auth.currentUser
+        var userToken = ""
+        getUserId { userId ->
+            if (user != null) {
+                db.collection("users").document(userId)
+                    .get().addOnSuccessListener { document ->
+                        if (document != null) {
+                            val notificationToken = document.get("notificationToken")
+                            if (notificationToken != null) {
+                                userToken= notificationToken.toString()
+                                callback(userToken)
+                            }
+                        } else {
+                            return@addOnSuccessListener
+                        }
+                    }
+            }
+        }
+
+    }
+        fun getSenderName(callback: (String) -> Unit) {
+            val user = auth.currentUser
+
+            if (user != null) {
+                db.collection("packages").document(documentId)
+                    .get().addOnSuccessListener { document ->
+                        if (document != null) {
+                            val dbSenderName = document.get("senderName")
+                            if (dbSenderName != null) {
+                                val senderName = dbSenderName.toString()
+                                callback(senderName)
+                            }
+                        }
+                    }
+            }
+        }
+    fun getDeliveryTime(callback: (String) -> Unit) {
+        val user = auth.currentUser
+        if (user != null) {
+            db.collection("packages").document(documentId)
+                .get().addOnSuccessListener { document ->
+                    if (document != null) {
+                        val dbExpectedDelieryTime =
+                            document.get("expectedDeliveryTime") as com.google.firebase.Timestamp
+                        val date = dbExpectedDelieryTime.toDate()
+                        val formatter = SimpleDateFormat("dd-MM-yyyy HH:mm:ss", Locale.getDefault())
+                        val readableDate = formatter.format(date)
+                        callback(readableDate)
+                    }
+                }
         }
     }
 
-    //Function to check value of coordinates
+        //Function to check value of coordinates
     private fun checkLatLong(latStr: Double?, longStr: Double?): Boolean {
 
         try {
@@ -395,7 +538,7 @@ class RouteActivity : AppCompatActivity(), OnMapReadyCallback {
                     //Start setting values from Firebase
                     topAdressTextView.text = thisPackage.address
                     postCodeTextView.text = thisPackage.postCodeAddress
-                    travelTimeTextView.text = thisPackage.requestedDeliveryTime
+                   // travelTimeTextView.text = thisPackage.requestedDeliveryTime
                     kmLeftTextView.text = thisPackage.kmLeft
 
                     barcode = thisPackage.kolliId.toString()

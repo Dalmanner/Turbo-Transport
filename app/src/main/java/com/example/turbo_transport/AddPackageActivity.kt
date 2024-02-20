@@ -61,7 +61,7 @@ class AddPackageActivity : AppCompatActivity() {
 
             val packageInfo = Package(
                 userIdReceiver = userIdReceiver,
-                address = address, t p
+                address = address,
                 telephoneNumber = telephoneNumber,
                 deliveryNote = deliveryNote,
                 packageWeight = packageWeight,
