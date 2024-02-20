@@ -1,15 +1,20 @@
 package com.example.turbo_transport
 
+import android.content.ContentValues.TAG
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.firestore
+import com.google.firebase.messaging.FirebaseMessaging
 
 class ListReceiverPackage : AppCompatActivity() {
     lateinit var receiverRecylerView: RecyclerView
@@ -25,6 +30,7 @@ class ListReceiverPackage : AppCompatActivity() {
         receiverRecylerView = findViewById(R.id.receiverRecyclerView)
         receiverRecylerView.layoutManager = LinearLayoutManager(this)
         loadPackageDb()
+        setTokenDb()
     }
     override fun onBackPressed() {
         super.onBackPressed()
@@ -48,6 +54,27 @@ class ListReceiverPackage : AppCompatActivity() {
                 }
             }
         }
+    }
+    fun setTokenDb() {
+        val user = auth.currentUser
+        FirebaseMessaging.getInstance().token
+            .addOnCompleteListener(OnCompleteListener { task ->
+                if (!task.isSuccessful) {
+                    Log.w(TAG, "getToken failed", task.exception)
+                    return@OnCompleteListener
+                }
+                val token = task.result
+                Log.d("!!!", "this user token:$token")
+
+                // Flytta uppdateringslogiken här inne
+                if (user != null) {
+                    db.collection("users").document(user.uid)
+                        .set(
+                            mapOf("notificationToken" to token),
+                            SetOptions.merge()
+                        )
+                }
+            })
     }
 
 }
