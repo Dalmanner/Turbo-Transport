@@ -59,7 +59,6 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody
 import okio.IOException
-import java.sql.Timestamp
 import java.text.SimpleDateFormat
 import java.time.Instant
 import java.time.ZoneId
