@@ -49,8 +49,8 @@ class AddPackageActivity : AppCompatActivity() {
             val kolliId = etKolliId.text.toString()
             val latitude = etLatitude.text.toString().toDouble()
             val longitude = etLongitude.text.toString().toDouble()
-            val identityCheck = etIdentityCheck.isChecked
-            val leaveAtTheDoor = etLeaveAtTheDoor.isChecked
+            val identityCheck = etIdentityCheck.isChecked.or(false)
+            val leaveAtTheDoor = etLeaveAtTheDoor.isChecked.or(false)
 
             if (senderName.isEmpty() || address.isEmpty() || telephoneNumber.isEmpty() || deliveryNote.isEmpty() || packageWeight.isNaN() || packageHeight.isNaN() || packageLength.isNaN() || packageDepth.isNaN() || requestedDeliveryTime.isEmpty() || expectedDeliveryTime.isEmpty() || kolliId.isEmpty() || latitude.isNaN() || longitude.isNaN() || userIdReceiver.isEmpty()) {
                 Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show()
@@ -69,7 +69,7 @@ class AddPackageActivity : AppCompatActivity() {
                 packageLength = packageLength,
                 packageDepth = packageDepth,
                 requestedDeliveryTime = requestedDeliveryTime,
-                expectedDeliveryTime = expectedDeliveryTime,
+                expectedDeliveryTime = null,
                 leaveAtTheDoor = leaveAtTheDoor,
                 deliveryStatus = true,
                 identityCheck = identityCheck,

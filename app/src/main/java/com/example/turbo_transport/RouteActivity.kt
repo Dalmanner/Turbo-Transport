@@ -11,6 +11,7 @@ import android.graphics.Color
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Looper
 import android.util.Log
 import android.view.View
 import android.widget.Button
@@ -64,6 +65,7 @@ import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.util.Locale
 import java.util.concurrent.TimeUnit
+import java.util.Date
 import java.util.logging.Handler
 
 class RouteActivity : AppCompatActivity(), OnMapReadyCallback {
@@ -100,6 +102,13 @@ class RouteActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private var barcode = ""
 
+    private var start = LatLng(57.1, 18.1)
+    private var end = LatLng(57.0, 18.0)
+    private var currentPolyline: com.google.android.gms.maps.model.Polyline? = null
+    private var driverMode = false
+    private var lastUpdatedLocation: LatLng? = null
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -108,11 +117,6 @@ class RouteActivity : AppCompatActivity(), OnMapReadyCallback {
         auth = Firebase.auth
         storage = Firebase.storage
         documentId = intent.getStringExtra("documentId").toString()
-
-
-        if (documentId != null) {
-            Log.d("!!!", documentId)
-        }
 
         binding = ActivityRouteBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -125,11 +129,7 @@ class RouteActivity : AppCompatActivity(), OnMapReadyCallback {
         mapFragment.getMapAsync(this)
 
         getPackageInformation(documentId)
-        mapProgressBar = findViewById(R.id.mapProgressBar)
-        mapProgressBar.visibility = View.VISIBLE
-
         showMenu()
-
 
         continueDeliverButton.setOnClickListener {
             sendToBarCodeReader(barcode)
@@ -142,7 +142,8 @@ class RouteActivity : AppCompatActivity(), OnMapReadyCallback {
 
         //When map is ready, get package
         getPackage(documentId, mMap)
-        android.os.Handler().postDelayed({
+
+        android.os.Handler(Looper.getMainLooper()).postDelayed({
             mapProgressBar.visibility = View.GONE
         }, 1000)
     }
@@ -151,8 +152,8 @@ class RouteActivity : AppCompatActivity(), OnMapReadyCallback {
     @SuppressLint("MissingPermission")
     private fun startLocationUpdates() {
         val locationRequest = LocationRequest.create().apply {
-            interval = 10000
-            fastestInterval = 5000
+            interval = 5000
+            fastestInterval = 3000
             priority = LocationRequest.PRIORITY_HIGH_ACCURACY
         }
 
@@ -163,6 +164,10 @@ class RouteActivity : AppCompatActivity(), OnMapReadyCallback {
                     //Update location
                     val currentLatLng = LatLng(location.latitude, location.longitude)
                     mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 18f))
+
+                    //Get new times
+                    fetchDirections(currentLatLng, end, mMap)
+
                 }
             }
         }
@@ -208,7 +213,9 @@ class RouteActivity : AppCompatActivity(), OnMapReadyCallback {
                 if (thisPackage != null) {
                     if (checkLatLong(thisPackage.latitude, thisPackage.longitude)) {
                         //If coordinates are OK, go ahead and create map with markers and route
-                        setCameraAndMap(thisPackage, mMap)
+                        if (!driverMode){
+                            setCameraAndMap(thisPackage, mMap)
+                        }
                     }
                 } else {
 
@@ -229,7 +236,10 @@ class RouteActivity : AppCompatActivity(), OnMapReadyCallback {
     private fun setMarkersAndRoute(startLatLng: LatLng, endLatLng: LatLng) {
         mMap.addMarker(MarkerOptions().position(startLatLng).title("Start"))
         endLatLng?.let { MarkerOptions().position(it).title("End") }
-            ?.let { mMap.addMarker(it) }
+            ?.let {
+                mMap.addMarker(it)
+                end = endLatLng
+            }
         mMap.moveCamera(CameraUpdateFactory.newLatLng(startLatLng))
 
         val cameraUpdate = CameraUpdateFactory.newLatLngZoom(startLatLng, 10f)
@@ -411,11 +421,7 @@ class RouteActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     //Get the directions
-    private fun fetchDirections(
-        startLatLng: LatLng,
-        endLatLng: LatLng,
-        googleMap: GoogleMap
-    ) {
+    private fun fetchDirections(startLatLng: LatLng, endLatLng: LatLng, googleMap: GoogleMap) {
         val apiKey = BuildConfig.API_KEY
         val client = OkHttpClient()
         val request = Request.Builder()
@@ -425,37 +431,91 @@ class RouteActivity : AppCompatActivity(), OnMapReadyCallback {
         client.newCall(request).enqueue(object : okhttp3.Callback {
             override fun onFailure(call: okhttp3.Call, e: IOException) {
                 e.printStackTrace()
+                runOnUiThread {
+                    Toast.makeText(
+                        applicationContext,
+                        "Error fetching directions",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
             }
 
             override fun onResponse(call: okhttp3.Call, response: okhttp3.Response) {
                 response.use {
-                    if (!it.isSuccessful) throw IOException("Unexpected code $it")
+                    if (!it.isSuccessful) {
+                        runOnUiThread {
+                            Toast.makeText(
+                                applicationContext,
+                                "Failed to fetch directions",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                        return
+                    }
 
                     val responseData = it.body?.string()
                     val gson = Gson()
-                    val directionsResult =
-                        gson.fromJson(responseData, DirectionsResult::class.java)
+                    val directionsResult = gson.fromJson(responseData, DirectionsResult::class.java)
 
                     if (directionsResult.routes.isNotEmpty() && directionsResult.routes[0].legs.isNotEmpty()) {
-                        val steps = directionsResult.routes[0].legs[0].steps
 
-                        //Update map on main thread
-                        runOnUiThread {
-                            val polylineOptions = PolylineOptions().width(10f)
-                                .color(Color.BLUE) //Custom design of route
-                            steps.forEach { step ->
-                                val decodedPath =
-                                    decodePolyline(step.polyline.points) //decode each line to latlng
-                                polylineOptions.addAll(decodedPath)
-                            }
-                            googleMap.addPolyline(polylineOptions)
-                        }
+                        handleDirectionResults(directionsResult, googleMap)
+
                     } else {
-                        //If results are empty, handle that...
+                        runOnUiThread {
+                            Toast.makeText(
+                                applicationContext,
+                                "No routes found",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
                     }
                 }
             }
         })
+    }
+
+    private fun handleDirectionResults(directionsResult: DirectionsResult, googleMap: GoogleMap) {
+
+        var totalDistanceMeters = 0 //dist
+        var totalDurationSeconds = 0 //time
+        val route =
+            directionsResult.routes[0] //First route
+        for (leg in route.legs) {
+            totalDistanceMeters += leg.distance.value
+            totalDurationSeconds += leg.duration.value
+        }
+
+        //Convert distance and time to string
+        val totalDistanceKm =
+            totalDistanceMeters / 1000.0 //Convert to km
+        val totalDistanceText = String.format("%.2f km", totalDistanceKm)
+
+        val totalHours = totalDurationSeconds / 3600
+        val totalMinutes = (totalDurationSeconds % 3600) / 60
+        val totalDurationText = "${totalHours} h ${totalMinutes} min"
+
+        //Update database with delivery time
+        calculateAndUpdateETA(totalDurationSeconds)
+
+        runOnUiThread {
+            //Remove previous polyline before creating new one.
+            currentPolyline?.remove()
+
+            val polylineOptions = PolylineOptions().width(10f).color(Color.BLUE)
+            val steps =
+                directionsResult.routes[0].legs[0].steps
+            steps.forEach { step ->
+                val decodedPath = decodePolyline(step.polyline.points)
+                polylineOptions.addAll(decodedPath)
+            }
+            //Save new polyline
+            currentPolyline = googleMap.addPolyline(polylineOptions)
+
+            //Update views
+            travelTimeTextView.text = totalDurationText
+            kmLeftTextView.text = totalDistanceText
+        }
     }
 
     fun decodePolyline(encoded: String): List<LatLng> {
@@ -492,6 +552,31 @@ class RouteActivity : AppCompatActivity(), OnMapReadyCallback {
         }
 
         return poly
+    }
+
+    private fun calculateAndUpdateETA(totalDurationInSeconds: Int) {
+
+        //Calculate new ETA
+        val currentTime = System.currentTimeMillis()
+        val etaMillis = currentTime + totalDurationInSeconds * 1000 //Convert to milliseconds
+        val newETA = com.google.firebase.Timestamp(Date(etaMillis))
+
+        updateFirestoreTimestamp(newETA)
+    }
+
+    private fun updateFirestoreTimestamp(newETA: com.google.firebase.Timestamp) {
+
+        val collectionPath = "packages"
+
+        //Update database with new ETA
+        db.collection(collectionPath).document(documentId)
+            .update("expectedDeliveryTime", newETA)
+            .addOnSuccessListener {
+                Log.d("!!!", "DocumentSnapshot successfully updated!")
+            }
+            .addOnFailureListener { e ->
+                Log.w("!!!", "Error updating document", e)
+            }
     }
 
     private fun checkPermissions(): Boolean {
@@ -537,9 +622,18 @@ class RouteActivity : AppCompatActivity(), OnMapReadyCallback {
                 if (thisPackage != null) {
                     //Start setting values from Firebase
                     topAdressTextView.text = thisPackage.address
-                    postCodeTextView.text = thisPackage.postCodeAddress
+                   // postCodeTextView.text = thisPackage.postCodeAddress
                    // travelTimeTextView.text = thisPackage.requestedDeliveryTime
                     kmLeftTextView.text = thisPackage.kmLeft
+                    
+                    val timestamp = thisPackage.expectedDeliveryTime
+                    val date = timestamp?.toDate() //Conert to date
+                    val format = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
+                    val dateString = format.format(date)
+                    postCodeTextView.text = dateString
+
+//                    postCodeTextView.text = thisPackage.expectedDeliveryTime.toString()
+
 
                     barcode = thisPackage.kolliId.toString()
                 }
@@ -580,6 +674,9 @@ class RouteActivity : AppCompatActivity(), OnMapReadyCallback {
         postCodeTextView = findViewById(R.id.postCodeTextView)
         travelTimeTextView = findViewById(R.id.travelTimeTextView)
         kmLeftTextView = findViewById(R.id.kmLeftTextView)
+
+        mapProgressBar = findViewById(R.id.mapProgressBar)
+        mapProgressBar.visibility = View.VISIBLE
 
     }
 }

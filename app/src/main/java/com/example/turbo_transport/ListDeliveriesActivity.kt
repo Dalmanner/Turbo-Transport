@@ -63,6 +63,7 @@ class ListDeliveries : AppCompatActivity() {
                 return@addSnapshotListener
             }
             if (snapshot != null && !snapshot.isEmpty) {
+                Log.d("!!!", "Got snapshot: ${snapshot.documents}")
                 val packageList = snapshot.documents.map { document ->
                     document.toObject(Package::class.java)
                 }

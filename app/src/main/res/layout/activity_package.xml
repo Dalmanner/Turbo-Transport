@@ -27,6 +27,15 @@
             app:titleCentered="false" />
 
     </com.google.android.material.appbar.AppBarLayout>
+    <com.google.android.material.progressindicator.LinearProgressIndicator
+        android:id="@+id/packageProgressBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/appBarLayout"
+        android:visibility="gone"/>
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/card"
@@ -35,7 +44,7 @@
         android:layout_margin="8dp"
         android:background="#BBDEFB"
         android:layout_marginTop="651dp"
-        app:layout_constraintTop_toBottomOf="@+id/appBarLayout"
+        app:layout_constraintTop_toBottomOf="@+id/packageProgressBar"
         tools:layout_editor_absoluteX="8dp">
 
         <LinearLayout
@@ -56,7 +65,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#BFE3F2FD"
+                android:background="@color/blue_10"
                 android:orientation="vertical"
                 android:padding="16dp">
 

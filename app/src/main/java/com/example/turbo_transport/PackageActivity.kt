@@ -3,10 +3,14 @@ package com.example.turbo_transport
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
+import android.view.View
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.ProgressBar
 import android.widget.TextView
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.appbar.MaterialToolbar
@@ -18,6 +22,8 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.ktx.storage
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 class PackageActivity : AppCompatActivity() {
 
@@ -88,11 +94,16 @@ class PackageActivity : AppCompatActivity() {
         }
     }
     private fun sendToRoute(documentId: String){
-
+        val progressBar = findViewById<ProgressBar>(R.id.packageProgressBar)
+        progressBar.visibility = View.VISIBLE
         //Send to route activity
         val intent = Intent(this, RouteActivity::class.java)
         intent.putExtra("documentId", documentId)
         startActivity(intent)
+        Handler(Looper.getMainLooper()).postDelayed({
+            progressBar.visibility = View.GONE
+        }, 2000)
+
     }
     private fun getPackage(documentId: String) {
         db.collection("packages").document(documentId).addSnapshotListener { snapshot, e ->
@@ -108,7 +119,7 @@ class PackageActivity : AppCompatActivity() {
 
                     //Start setting values from Firebase
                     textViewAddress.text = thisPackage.address
-                    textViewName.text = thisPackage.nameOfReceiver
+                    textViewName.text = thisPackage.userIdReceiver
                     textViewPhonenumber.text = thisPackage.telephoneNumber
                     textViewDeliveryInstructions.text = thisPackage.deliveryNote
                     textViewPackageInfoWeight.text = thisPackage.packageWeight.toString() + " kg"
@@ -122,7 +133,12 @@ class PackageActivity : AppCompatActivity() {
                     }
 
                     textViewKolliId.text = thisPackage.kolliId
-                    textViewETA.text = thisPackage.expectedDeliveryTime
+
+                    val timestamp = thisPackage.expectedDeliveryTime
+                    val date = timestamp?.toDate() // Konvertera till Date
+                    val format = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
+                    val dateString = format.format(date)
+                    textViewETA.text = dateString
 
                 }
             } else {

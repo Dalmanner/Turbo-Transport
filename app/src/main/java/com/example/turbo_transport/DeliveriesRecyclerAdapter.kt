@@ -7,6 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 class DeliveriesRecyclerAdapter(val context: Context, var lists: List<Package>) : RecyclerView.Adapter<DeliveriesRecyclerAdapter.ViewHolder>()  {
     
@@ -40,7 +42,13 @@ class DeliveriesRecyclerAdapter(val context: Context, var lists: List<Package>) 
         var deliveryList = lists[position]
         holder.itemView.tag = deliveryList.documentId
         holder.addressTextView.text = deliveryList.address
-        holder.etaTimeTextView.text=deliveryList.expectedDeliveryTime
+
+        val timestamp = deliveryList.expectedDeliveryTime
+        val date = timestamp?.toDate() // Konvertera till Date
+        val format = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
+        val dateString = format.format(date)
+
+        holder.etaTimeTextView.text= dateString
         holder.itemPosistion = position
         holder.itemView.setOnClickListener {
 
