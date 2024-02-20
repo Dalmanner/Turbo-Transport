@@ -18,10 +18,11 @@ import com.google.firebase.firestore.firestore
 import com.google.firebase.messaging.FirebaseMessaging
 
 class ListDeliveries : AppCompatActivity() {
-    lateinit var deliveryRecycleView: RecyclerView
-    lateinit var db: FirebaseFirestore
-    lateinit var auth: FirebaseAuth
-
+  
+    private lateinit var deliveryRecycleView: RecyclerView
+    private lateinit var db : FirebaseFirestore
+    private lateinit var auth : FirebaseAuth
+  
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_listdeliveries)
@@ -51,13 +52,13 @@ class ListDeliveries : AppCompatActivity() {
         val intent = Intent(this,MainActivity::class.java)
         startActivity(intent)
     }
-    fun showLocation() {
+    private fun showLocation() {
         val intent = Intent(this,MapsActivity::class.java)
         startActivity(intent)
     }
 
-    fun loadPackageDb(){
-        val packagesRef = db.collection("packages")
+    private fun loadPackageDb(){
+        val packagesRef = db.collection("packages").whereEqualTo("isDelivered", false)
         packagesRef.addSnapshotListener { snapshot, e ->
             if (e != null) {
                 return@addSnapshotListener
