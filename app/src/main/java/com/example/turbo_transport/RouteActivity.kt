@@ -292,6 +292,7 @@ class RouteActivity : AppCompatActivity(), OnMapReadyCallback {
         driveMapButton.setOnClickListener {
             startLocationUpdates()
             sendNotificationToUser()
+            driverMode = true
         }
     }
     private fun sendNotificationToUser() {
@@ -570,12 +571,10 @@ class RouteActivity : AppCompatActivity(), OnMapReadyCallback {
     }
     private fun checkAndCalculateETA(totalDurationInSeconds: Int) {
         currentTimestamp = Timestamp(Date()) // Update current timestamp to now
-
         // Ensure both timestamps are not null
         if (lastTimestamp != null && currentTimestamp != null) {
             // Convert timestamps to milliseconds and calculate the difference
             val difference = currentTimestamp!!.toDate().time - lastTimestamp!!.toDate().time
-
             // If more than 5 minutes apart, execute your code
             if (difference > 1 * 60 * 1000) { // 1 minutes in milliseconds
                 calculateAndUpdateETA(totalDurationInSeconds)
