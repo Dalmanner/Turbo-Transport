@@ -9,7 +9,6 @@ class Package (
 
 var documentId : String? = null,
     var userIdReceiver: String? = null,
-    var userIdDriver: String? = null,
     var nameOfReceiver : String? = null,
     var address: String? = null,
     var postCodeAddress: String? = null,
