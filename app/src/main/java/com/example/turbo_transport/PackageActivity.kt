@@ -1,5 +1,6 @@
 package com.example.turbo_transport
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -49,6 +50,7 @@ class PackageActivity : AppCompatActivity() {
     private lateinit var headlineETA: TextView
     private lateinit var textViewETA: TextView
     private lateinit var button: Button
+    //private lateinit var textViewPostCodeAddress: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -105,6 +107,7 @@ class PackageActivity : AppCompatActivity() {
         }, 2000)
 
     }
+    @SuppressLint("SetTextI18n")
     private fun getPackage(documentId: String) {
         db.collection("packages").document(documentId).addSnapshotListener { snapshot, e ->
             if (e != null) {
@@ -118,8 +121,9 @@ class PackageActivity : AppCompatActivity() {
                 if (thisPackage != null) {
 
                     //Start setting values from Firebase
+                    //textViewPostCodeAddress.text = thisPackage.postCodeAddress
                     textViewAddress.text = thisPackage.address
-                    textViewName.text = thisPackage.userIdReceiver
+                    textViewName.text = thisPackage.nameOfReceiver
                     textViewPhonenumber.text = thisPackage.telephoneNumber
                     textViewDeliveryInstructions.text = thisPackage.deliveryNote
                     textViewPackageInfoWeight.text = thisPackage.packageWeight.toString() + " kg"

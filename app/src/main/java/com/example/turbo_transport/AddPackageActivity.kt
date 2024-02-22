@@ -1,11 +1,11 @@
 package com.example.turbo_transport
 
 import android.os.Bundle
-import android.widget.EditText
+import android.widget.CheckBox
 import android.widget.ImageButton
-import android.widget.RadioButton
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FirebaseFirestore
 
@@ -15,27 +15,30 @@ class AddPackageActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_package)
 
-        val etSenderName: EditText = findViewById(R.id.etSenderName2)
-        val etAddress: EditText = findViewById(R.id.etAddress)
-        val etTelephoneNumber: EditText = findViewById(R.id.etPhoneNumber)
-        val etDeliveryNote: EditText = findViewById(R.id.etDeliveryNote)
-        val etPackageWeight: EditText = findViewById(R.id.etPackageWeight)
-        val etPackageHeight: EditText = findViewById(R.id.etPackageHeight)
-        val etPackageLength: EditText = findViewById(R.id.etPackageLength)
-        val etPackageDepth: EditText = findViewById(R.id.etPackageDepth)
-        val etRequestedDeliveryTime: EditText = findViewById(R.id.etRequestedDeliveryTime)
-        val etExpectedDeliveryTime: EditText = findViewById(R.id.etExpectedDeliveryTime)
-        val etKolliId: EditText = findViewById(R.id.etKolliId)
-        val etLatitude: EditText = findViewById(R.id.etLatitude)
-        val etLongitude: EditText = findViewById(R.id.etLongitude)
-        val etUserIdReceiver: EditText = findViewById(R.id.etUserIdReceiver)
-        val etIdentityCheck: RadioButton = findViewById(R.id.etIdentityCheck)
-        val etLeaveAtTheDoor: RadioButton = findViewById(R.id.etLeaveAtTheDoor)
+        val etNameOfReceiver: TextInputEditText = findViewById(R.id.etNameOfReceiver)
+        val etPostCodeAddress: TextInputEditText = findViewById(R.id.etPostCodeAddress)
+        val etAddress: TextInputEditText = findViewById(R.id.etAddress)
+        val etSenderName: TextInputEditText = findViewById(R.id.etSenderName2)
+        val etTelephoneNumber: TextInputEditText = findViewById(R.id.etPhoneNumber)
+        val etDeliveryNote: TextInputEditText = findViewById(R.id.etDeliveryNote)
+        val etPackageWeight: TextInputEditText = findViewById(R.id.etPackageWeight)
+        val etPackageHeight: TextInputEditText = findViewById(R.id.etPackageHeight)
+        val etPackageLength: TextInputEditText = findViewById(R.id.etPackageLength)
+        val etPackageDepth: TextInputEditText = findViewById(R.id.etPackageDepth)
+        val etRequestedDeliveryTime: TextInputEditText = findViewById(R.id.etRequestedDeliveryTime)
+        val etKolliId: TextInputEditText = findViewById(R.id.etKolliId)
+        val etLatitude: TextInputEditText = findViewById(R.id.etLatitude)
+        val etLongitude: TextInputEditText = findViewById(R.id.etLongitude)
+        //val etUserIdReceiver: EditText = findViewById(R.id.etUserIdReceiver)
+        val etIdentityCheck: CheckBox = findViewById(R.id.etIdentityCheck)
+        val etLeaveAtTheDoor: CheckBox = findViewById(R.id.etLeaveAtTheDoor)
 
         val btnSubmit: ImageButton = findViewById(R.id.btnSubmit)
 
         btnSubmit.setOnClickListener {
-            val userIdReceiver = etUserIdReceiver.text.toString()
+            val nameOfReceiver = etNameOfReceiver.text.toString()
+            //val userIdReceiver = etUserIdReceiver.text.toString()
+            val postCodeAddress = etPostCodeAddress.text.toString()
             val address = etAddress.text.toString()
             val senderName = etSenderName.text.toString()
             val telephoneNumber = etTelephoneNumber.text.toString()
@@ -45,22 +48,22 @@ class AddPackageActivity : AppCompatActivity() {
             val packageLength = etPackageLength.text.toString().toDouble()
             val packageDepth = etPackageDepth.text.toString().toDouble()
             val requestedDeliveryTime = etRequestedDeliveryTime.text.toString()
-            val expectedDeliveryTime = etExpectedDeliveryTime.text.toString()
-            val kolliId = etKolliId.text.toString()
+            val kolliId = (Math.random() * 1000000000000).toLong().toString()
             val latitude = etLatitude.text.toString().toDouble()
             val longitude = etLongitude.text.toString().toDouble()
             val identityCheck = etIdentityCheck.isChecked.or(false)
             val leaveAtTheDoor = etLeaveAtTheDoor.isChecked.or(false)
 
-            if (senderName.isEmpty() || address.isEmpty() || telephoneNumber.isEmpty() || deliveryNote.isEmpty() || packageWeight.isNaN() || packageHeight.isNaN() || packageLength.isNaN() || packageDepth.isNaN() || requestedDeliveryTime.isEmpty() || expectedDeliveryTime.isEmpty() || kolliId.isEmpty() || latitude.isNaN() || longitude.isNaN() || userIdReceiver.isEmpty()) {
-                Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show()
+            if (nameOfReceiver.isEmpty() || senderName.isEmpty() || address.isEmpty() || postCodeAddress.isEmpty() || telephoneNumber.isEmpty() || deliveryNote.isEmpty() || packageWeight.isNaN() || packageHeight.isNaN() || packageLength.isNaN() || packageDepth.isNaN() || requestedDeliveryTime.isEmpty() || kolliId.isEmpty() || latitude.isNaN() || longitude.isNaN()) {
+                Toast.makeText(this, "Please fill in all required fields", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             } else {
                 Toast.makeText(this, "Package added", Toast.LENGTH_SHORT).show()
             }
 
             val packageInfo = Package(
-                userIdReceiver = userIdReceiver,
+                nameOfReceiver = nameOfReceiver,
+                //userIdReceiver = userIdReceiver,
                 address = address,
                 telephoneNumber = telephoneNumber,
                 deliveryNote = deliveryNote,
@@ -69,9 +72,7 @@ class AddPackageActivity : AppCompatActivity() {
                 packageLength = packageLength,
                 packageDepth = packageDepth,
                 requestedDeliveryTime = requestedDeliveryTime,
-                expectedDeliveryTime = null,
                 leaveAtTheDoor = leaveAtTheDoor,
-                deliveryStatus = true,
                 identityCheck = identityCheck,
                 kolliId = kolliId,
                 latitude = latitude,

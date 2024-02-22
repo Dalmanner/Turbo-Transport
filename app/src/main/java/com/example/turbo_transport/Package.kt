@@ -8,7 +8,7 @@ class Package (
     @DocumentId
 
 var documentId : String? = null,
-    var userIdReceiver: String? = null,
+    //var userIdReceiver: String? = null,
     var nameOfReceiver : String? = null,
     var address: String? = null,
     var postCodeAddress: String? = null,

@@ -58,7 +58,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:fontFamily="@font/roboto"
-                android:text="Active Delivery"
+                android:text="Active Deliveries"
                 android:textColor="#000000"
                 android:textSize="22sp" />
 

@@ -62,6 +62,10 @@
                 android:scaleType="centerCrop"
                 app:srcCompat="@drawable/boxes" />
 
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -70,6 +74,7 @@
                 android:padding="16dp">
 
                 <!-- Title, secondary and supporting text -->
+
                 <TextView
                     android:id="@+id/textViewAddress"
                     android:layout_width="wrap_content"
@@ -77,6 +82,15 @@
                     android:layout_marginTop="8dp"
                     android:text="Östgatan 4"
                     android:textAppearance="?attr/textAppearanceTitleLarge" />
+
+                <TextView
+                    android:id="@+id/textViewPostCodeAddress"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="111 11, Stockholm"
+                    android:textAppearance="?attr/textAppearanceBodyMedium"
+                    android:textColor="?android:attr/textColorSecondary" />
 
                 <TextView
                     android:id="@+id/textViewName"
