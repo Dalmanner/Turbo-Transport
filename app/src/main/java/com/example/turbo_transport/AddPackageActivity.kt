@@ -1,6 +1,7 @@
 package com.example.turbo_transport
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.CheckBox
 import android.widget.ImageButton
 import android.widget.Toast
@@ -56,6 +57,9 @@ class AddPackageActivity : AppCompatActivity() {
 
             if (nameOfReceiver.isEmpty() || senderName.isEmpty() || address.isEmpty() || postCodeAddress.isEmpty() || telephoneNumber.isEmpty() || deliveryNote.isEmpty() || packageWeight.isNaN() || packageHeight.isNaN() || packageLength.isNaN() || packageDepth.isNaN() || requestedDeliveryTime.isEmpty() || kolliId.isEmpty() || latitude.isNaN() || longitude.isNaN()) {
                 Toast.makeText(this, "Please fill in all required fields", Toast.LENGTH_SHORT).show()
+                //add log message:
+                Log.d("AddPackageActivity", "Please fill in all required fields")
+
                 return@setOnClickListener
             } else {
                 Toast.makeText(this, "Package added", Toast.LENGTH_SHORT).show()
@@ -65,6 +69,7 @@ class AddPackageActivity : AppCompatActivity() {
                 nameOfReceiver = nameOfReceiver,
                 //userIdReceiver = userIdReceiver,
                 address = address,
+                postCodeAddress = postCodeAddress,
                 telephoneNumber = telephoneNumber,
                 deliveryNote = deliveryNote,
                 packageWeight = packageWeight,

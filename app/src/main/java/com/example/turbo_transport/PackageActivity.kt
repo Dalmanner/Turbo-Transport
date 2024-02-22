@@ -10,6 +10,7 @@ import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.ScrollView
 import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.TextView
@@ -36,6 +37,9 @@ class PackageActivity : AppCompatActivity() {
     private lateinit var topAppBar: MaterialToolbar
     private lateinit var imageView: ImageView
     private lateinit var textViewAddress: TextView
+    private lateinit var postCodeAddress: TextView
+    private lateinit var packageScrollView: LinearLayout
+    private lateinit var textViewCityName: TextView
     private lateinit var textViewName: TextView
     private lateinit var textViewPhonenumber: TextView
     private lateinit var headlineDeliveryInstructions: TextView
@@ -120,8 +124,9 @@ class PackageActivity : AppCompatActivity() {
 
                 if (thisPackage != null) {
 
-                    //Start setting values from Firebase
-                    //textViewPostCodeAddress.text = thisPackage.postCodeAddress
+                    //Start setting values from Firebase to our activity_package.xml views
+                    textViewCityName.text = thisPackage.cityName
+                    postCodeAddress.text = thisPackage.postCodeAddress
                     textViewAddress.text = thisPackage.address
                     textViewName.text = thisPackage.nameOfReceiver
                     textViewPhonenumber.text = thisPackage.telephoneNumber
@@ -152,10 +157,12 @@ class PackageActivity : AppCompatActivity() {
     }
 
     private fun initializeViews() {
+        postCodeAddress = findViewById(R.id.textViewPostCodeAddress)
         appBarLayout = findViewById(R.id.appBarLayout)
         topAppBar = findViewById(R.id.topAppBar)
         imageView = findViewById(R.id.imageView)
         textViewAddress = findViewById(R.id.textViewAddress)
+        textViewCityName = findViewById(R.id.textViewCityName)
         textViewName = findViewById(R.id.textViewName)
         textViewPhonenumber = findViewById(R.id.textViewPhonenumber)
         headlineDeliveryInstructions = findViewById(R.id.headlineDeliveryInstructions)

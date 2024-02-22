@@ -16,7 +16,8 @@ class DeliveriesRecyclerAdapter(val context: Context, var lists: List<Package>) 
 
     inner class ViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView) {
         var addressTextView = itemView.findViewById<TextView>(R.id.addressTextView)
-        //var postCodeAddressTextView = itemView.findViewById<TextView>(R.id.etPostCodeAddress)
+        var cityName = itemView.findViewById<TextView>(R.id.cityName)
+        var postCodeAddress = itemView.findViewById<TextView>(R.id.postCodeAddress)
         var etaTimeTextView2 = itemView.findViewById<TextView>(R.id.etaTimeTextView)
         var userNameReceiverTextView = itemView.findViewById<TextView>(R.id.userNameReceiverTextView)
         var etaTimeTextView = itemView.findViewById<TextView>(R.id.etaTimeTextView)
@@ -45,13 +46,15 @@ class DeliveriesRecyclerAdapter(val context: Context, var lists: List<Package>) 
         var deliveryList = lists[position]
         holder.itemView.tag = deliveryList.documentId
         holder.addressTextView.text = deliveryList.address
+        holder.postCodeAddress.text = deliveryList.postCodeAddress
+        holder.cityName.text = deliveryList.cityName
 
         val timestamp = deliveryList.expectedDeliveryTime
         val date = timestamp?.toDate() // Konvertera till Date
         val format = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
         val dateString = format.format(date)
 
-        //holder.postCodeAddressTextView.text = deliveryList.postCodeAddress
+
         holder.userNameReceiverTextView.text = deliveryList.nameOfReceiver
         holder.etaTimeTextView2.text= deliveryList.requestedDeliveryTime.toString()
         holder.etaTimeTextView.text= dateString
