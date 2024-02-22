@@ -6,9 +6,15 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.viewpager2.adapter.FragmentStateAdapter
+import androidx.viewpager2.widget.ViewPager2
 import com.google.android.gms.tasks.OnCompleteListener
+import com.google.android.material.navigation.NavigationBarView
+import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayoutMediator
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
@@ -17,35 +23,30 @@ import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.firestore
 import com.google.firebase.messaging.FirebaseMessaging
 
+
 class ListDeliveries : AppCompatActivity() {
-  
-    private lateinit var deliveryRecycleView: RecyclerView
-    private lateinit var db : FirebaseFirestore
+
+    private lateinit var viewPager: ViewPager2
+    private lateinit var tabLayout: TabLayout
     private lateinit var auth : FirebaseAuth
-  
+    private lateinit var db : FirebaseFirestore
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_listdeliveries)
-        val MapButton = findViewById<ImageButton>(R.id.btnSubmit)
-
 
         db = Firebase.firestore
         auth = Firebase.auth
 
-        deliveryRecycleView = findViewById(R.id.deliveriesRecycleView)
-        deliveryRecycleView.layoutManager = LinearLayoutManager(this)
-        loadPackageDb()
+        viewPager = findViewById(R.id.view_pager)
+        tabLayout = findViewById(R.id.tabs)
 
-        MapButton.setOnClickListener {
-            showLocation()
-        }
+        setupViewPager()
+        setupTabLayout()
+        bottomMenu()
 
-        val addButton = findViewById<ImageButton>(R.id.addPackageBtn)
-        addButton.setOnClickListener {
-            val intent = Intent(this, AddPackageActivity::class.java)
-            startActivity(intent)
-        }
     }
+
     override fun onBackPressed() {
         super.onBackPressed()
         auth.signOut()
@@ -56,19 +57,68 @@ class ListDeliveries : AppCompatActivity() {
         val intent = Intent(this,MapsActivity::class.java)
         startActivity(intent)
     }
+    private fun setupViewPager() {
+        val adapter = TabsPagerAdapter(this)
+        viewPager.adapter = adapter
+    }
 
-    private fun loadPackageDb(){
-        val packagesRef = db.collection("packages").whereEqualTo("isDelivered", false)
-        packagesRef.addSnapshotListener { snapshot, e ->
-            if (e != null) {
-                return@addSnapshotListener
+    private fun setupTabLayout() {
+        TabLayoutMediator(tabLayout, viewPager) { tab, position ->
+            tab.text = when (position) {
+                0 -> "Active"
+                1 -> "Done"
+                2 -> "Failed Delivery"
+                else -> throw IllegalStateException("Unexpected position $position")
             }
-            if (snapshot != null && !snapshot.isEmpty) {
-                Log.d("!!!", "Got snapshot: ${snapshot.documents}")
-                val packageList = snapshot.documents.map { document ->
-                    document.toObject(Package::class.java)
+        }.attach()
+    }
+
+    inner class TabsPagerAdapter(activity: AppCompatActivity) : FragmentStateAdapter(activity) {
+        override fun getItemCount(): Int = 3
+
+        override fun createFragment(position: Int): Fragment {
+            return when (position) {
+                0 -> DeliveriesFragment()
+                1 -> DoneDeliveriesFragment()
+                2 -> FailedDeliveriesFragment()
+                else -> throw IllegalStateException("Unexpected position $position")
+            }
+        }
+    }
+
+    private fun bottomMenu(){
+        val bottomNavigation = findViewById<NavigationBarView>(R.id.bottom_navigation)
+        bottomNavigation.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.item_1 -> {
+
+                    true
                 }
-                deliveryRecycleView.adapter = DeliveriesRecyclerAdapter(this@ListDeliveries, packageList.filterNotNull())
+
+                R.id.item_2 -> {
+                    showLocation()
+                    true
+                }
+
+                R.id.item_3 -> {
+
+                    true
+                }
+                else -> false
+            }
+        }
+
+        bottomNavigation.setOnItemReselectedListener { item ->
+            when (item.itemId) {
+                R.id.item_1 -> {
+
+                }
+                R.id.item_2 -> {
+
+                }
+                R.id.item_3 -> {
+
+                }
             }
         }
     }
