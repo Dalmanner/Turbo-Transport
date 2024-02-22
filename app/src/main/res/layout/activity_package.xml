@@ -165,6 +165,29 @@
 
 
                     <TextView
+                        android:id="@+id/headlineKolliId2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="Leave At The Door"
+                        android:textAppearance="?attr/textAppearanceTitleMedium" />
+
+                    <TextView
+                        android:id="@+id/textViewLeaveAtTheDoor"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="Yes"
+                        android:textAppearance="?attr/textAppearanceBodyMedium"
+                        android:textColor="?android:attr/textColorSecondary" />
+
+                    <com.google.android.material.divider.MaterialDivider
+                        android:id="@+id/materialDivider"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp" />
+
+                    <TextView
                         android:id="@+id/headlinePackageInfo"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

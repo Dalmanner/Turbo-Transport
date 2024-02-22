@@ -33,6 +33,7 @@ class AddPackageActivity : AppCompatActivity() {
         //val etUserIdReceiver: EditText = findViewById(R.id.etUserIdReceiver)
         val etIdentityCheck: CheckBox = findViewById(R.id.etIdentityCheck)
         val etLeaveAtTheDoor: CheckBox = findViewById(R.id.etLeaveAtTheDoor)
+        val etCityName: TextInputEditText = findViewById(R.id.etCityName)
 
         val btnSubmit: ImageButton = findViewById(R.id.btnSubmit)
 
@@ -54,8 +55,9 @@ class AddPackageActivity : AppCompatActivity() {
             val longitude = etLongitude.text.toString().toDouble()
             val identityCheck = etIdentityCheck.isChecked.or(false)
             val leaveAtTheDoor = etLeaveAtTheDoor.isChecked.or(false)
+            val cityName = etCityName.text.toString()
 
-            if (nameOfReceiver.isEmpty() || senderName.isEmpty() || address.isEmpty() || postCodeAddress.isEmpty() || telephoneNumber.isEmpty() || deliveryNote.isEmpty() || packageWeight.isNaN() || packageHeight.isNaN() || packageLength.isNaN() || packageDepth.isNaN() || requestedDeliveryTime.isEmpty() || kolliId.isEmpty() || latitude.isNaN() || longitude.isNaN()) {
+            if (nameOfReceiver.isEmpty() || cityName.isEmpty() || senderName.isEmpty() || address.isEmpty() || postCodeAddress.isEmpty() || telephoneNumber.isEmpty() || deliveryNote.isEmpty() || packageWeight.isNaN() || packageHeight.isNaN() || packageLength.isNaN() || packageDepth.isNaN() || requestedDeliveryTime.isEmpty() || kolliId.isEmpty() || latitude.isNaN() || longitude.isNaN()) {
                 Toast.makeText(this, "Please fill in all required fields", Toast.LENGTH_SHORT).show()
                 //add log message:
                 Log.d("AddPackageActivity", "Please fill in all required fields")
@@ -68,6 +70,7 @@ class AddPackageActivity : AppCompatActivity() {
             val packageInfo = Package(
                 nameOfReceiver = nameOfReceiver,
                 //userIdReceiver = userIdReceiver,
+                cityName = cityName,
                 address = address,
                 postCodeAddress = postCodeAddress,
                 telephoneNumber = telephoneNumber,

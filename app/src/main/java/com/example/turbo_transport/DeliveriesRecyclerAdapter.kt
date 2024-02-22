@@ -18,7 +18,7 @@ class DeliveriesRecyclerAdapter(val context: Context, var lists: List<Package>) 
         var addressTextView = itemView.findViewById<TextView>(R.id.addressTextView)
         var cityName = itemView.findViewById<TextView>(R.id.cityName)
         var postCodeAddress = itemView.findViewById<TextView>(R.id.postCodeAddress)
-        var etaTimeTextView2 = itemView.findViewById<TextView>(R.id.etaTimeTextView)
+        var etaTimeTextView2 = itemView.findViewById<TextView>(R.id.etaTimeTextView2)
         var userNameReceiverTextView = itemView.findViewById<TextView>(R.id.userNameReceiverTextView)
         var etaTimeTextView = itemView.findViewById<TextView>(R.id.etaTimeTextView)
         var itemPosistion = 0
@@ -56,7 +56,7 @@ class DeliveriesRecyclerAdapter(val context: Context, var lists: List<Package>) 
 
 
         holder.userNameReceiverTextView.text = deliveryList.nameOfReceiver
-        holder.etaTimeTextView2.text= deliveryList.requestedDeliveryTime.toString()
+        holder.etaTimeTextView2.text= deliveryList.requestedDeliveryTime
         holder.etaTimeTextView.text= dateString
         holder.itemPosistion = position
         holder.itemView.setOnClickListener {

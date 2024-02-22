@@ -29,16 +29,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/topAppBar" />
 
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/etPhoneNumber"
-        android:layout_width="120dp"
-        android:layout_height="50dp"
-        android:layout_marginEnd="20dp"
-        android:ems="10"
-        android:hint="Phone Number"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etPackageLength" />
-
 
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/etKolliId"
@@ -100,6 +90,36 @@
         app:layout_constraintTop_toBottomOf="@+id/etPackageWeight" />
 
     <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/etCityName"
+        android:layout_width="120dp"
+        android:layout_height="50dp"
+        android:layout_marginEnd="20dp"
+        android:ems="10"
+        android:hint="City"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etNameOfReceiver" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/etDeliveryNote"
+        android:layout_width="120dp"
+        android:layout_height="50dp"
+        android:layout_marginEnd="20dp"
+        android:ems="10"
+        android:hint="Delivery Note"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etCityName" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/etPackageDepth"
+        android:layout_width="120dp"
+        android:layout_height="50dp"
+        android:layout_marginEnd="20dp"
+        android:ems="10"
+        android:hint="Package Depth"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etDeliveryNote" />
+
+    <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/etSenderName2"
         android:layout_width="120dp"
         android:layout_height="50dp"
@@ -120,16 +140,6 @@
         app:layout_constraintTop_toBottomOf="@+id/etPhoneNumber" />
 
     <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/etDeliveryNote"
-        android:layout_width="120dp"
-        android:layout_height="50dp"
-        android:layout_marginEnd="20dp"
-        android:ems="10"
-        android:hint="Delivery Note"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etNameOfReceiver" />
-
-    <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/etPackageLength"
         android:layout_width="120dp"
         android:layout_height="50dp"
@@ -140,14 +150,14 @@
         app:layout_constraintTop_toBottomOf="@+id/etPackageDepth" />
 
     <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/etPackageDepth"
+        android:id="@+id/etPhoneNumber"
         android:layout_width="120dp"
         android:layout_height="50dp"
         android:layout_marginEnd="20dp"
         android:ems="10"
-        android:hint="Package Depth"
+        android:hint="Phone Number"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etDeliveryNote" />
+        app:layout_constraintTop_toBottomOf="@+id/etPackageLength" />
 
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/etPostCodeAddress"
@@ -162,7 +172,7 @@
         android:id="@+id/etLeaveAtTheDoor"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="70dp"
+        android:layout_marginTop="20dp"
         android:layout_marginEnd="20dp"
         android:text="Leave At The Door"
         app:layout_constraintEnd_toEndOf="parent"

@@ -2,6 +2,7 @@ package com.example.turbo_transport
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
@@ -38,7 +39,7 @@ class PackageActivity : AppCompatActivity() {
     private lateinit var imageView: ImageView
     private lateinit var textViewAddress: TextView
     private lateinit var postCodeAddress: TextView
-    private lateinit var packageScrollView: LinearLayout
+    private lateinit var textViewLeaveAtTheDoor: TextView
     private lateinit var textViewCityName: TextView
     private lateinit var textViewName: TextView
     private lateinit var textViewPhonenumber: TextView
@@ -125,6 +126,14 @@ class PackageActivity : AppCompatActivity() {
                 if (thisPackage != null) {
 
                     //Start setting values from Firebase to our activity_package.xml views
+                    //textViewLeaveAtTheDoor.text = thisPackage.leaveAtTheDoor.toString(if (thisPackage.leaveAtTheDoor == true) "Yes" else "No"):
+                    if (thisPackage.leaveAtTheDoor == true){
+                        // textViewLeaveAtTheDoor.text = with green color text: "Yes":
+                        textViewLeaveAtTheDoor.text = "Yes"
+                    }
+                    else {
+                        textViewLeaveAtTheDoor.text = "No"
+                    }
                     textViewCityName.text = thisPackage.cityName
                     postCodeAddress.text = thisPackage.postCodeAddress
                     textViewAddress.text = thisPackage.address
@@ -157,6 +166,7 @@ class PackageActivity : AppCompatActivity() {
     }
 
     private fun initializeViews() {
+        textViewLeaveAtTheDoor = findViewById(R.id.textViewLeaveAtTheDoor)
         postCodeAddress = findViewById(R.id.textViewPostCodeAddress)
         appBarLayout = findViewById(R.id.appBarLayout)
         topAppBar = findViewById(R.id.topAppBar)
