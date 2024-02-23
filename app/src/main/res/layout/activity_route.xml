@@ -72,7 +72,7 @@
 
 
             <TextView
-                android:id="@+id/kmLeftTextView"
+                android:id="@+id/mapKmLeftTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="48dp"
                 android:layout_marginStart="32dp"
@@ -82,11 +82,11 @@
                 android:textSize="30sp"
                 app:layout_constraintBottom_toTopOf="@+id/driveMapButton"
                 app:layout_constraintStart_toEndOf="@+id/travelTimeTextView"
-                app:layout_constraintTop_toBottomOf="@+id/mapsPostCodeTextView"
+                app:layout_constraintTop_toBottomOf="@+id/mapPostCodeTextView"
                 tools:text="8.5km" />
 
             <TextView
-                android:id="@+id/mapsTopAdressTextView"
+                android:id="@+id/mapAdressTextView"
                 android:layout_width="355dp"
                 android:layout_height="34dp"
                 android:layout_marginStart="16dp"
@@ -99,7 +99,7 @@
                 tools:text="Öst Gatan 4" />
 
             <TextView
-                android:id="@+id/mapsPostCodeTextView"
+                android:id="@+id/mapPostCodeTextView"
                 android:layout_width="358dp"
                 android:layout_height="25dp"
                 android:layout_marginStart="16dp"
@@ -109,7 +109,7 @@
                 android:textSize="20sp"
                 android:textStyle="italic"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/mapsTopAdressTextView"
+                app:layout_constraintTop_toBottomOf="@+id/mapAdressTextView"
                 tools:text="506 37 Norrmalm" />
 
             <TextView
@@ -123,7 +123,7 @@
                 android:tooltipText="25 min"
                 app:layout_constraintBottom_toTopOf="@+id/driveMapButton"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/mapsPostCodeTextView"
+                app:layout_constraintTop_toBottomOf="@+id/mapPostCodeTextView"
                 app:layout_constraintVertical_bias="0.615"
                 tools:text="25 min" />
 
@@ -139,7 +139,7 @@
                 android:textSize="20sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/kmLeftTextView" />
+                app:layout_constraintTop_toBottomOf="@+id/mapKmLeftTextView" />
 
             <Button
                 android:id="@+id/continueButton"
@@ -150,11 +150,11 @@
                 android:text="Continue Delivery"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/notDeliveredButton"
+                app:layout_constraintStart_toEndOf="@+id/mapZoomInBtn"
                 app:layout_constraintTop_toBottomOf="@+id/driveMapButton" />
 
             <Button
-                android:id="@+id/notDeliveredButton"
+                android:id="@+id/mapZoomInBtn"
                 style="@style/redButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
