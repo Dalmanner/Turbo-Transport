@@ -21,7 +21,8 @@ class CustomerDeliveryActivity : AppCompatActivity() {
     private lateinit var signatureButton: Button
     private lateinit var leaveAtTheDoorButton: Button
     private lateinit var documentId: String
-    private var isDelivered = false
+    //private var isDelivered = false
+    private var leaveAtTheDoor = false
 
     private lateinit var db: FirebaseFirestore
 
@@ -34,13 +35,15 @@ class CustomerDeliveryActivity : AppCompatActivity() {
         initializeViews()
         showMenu()
 
+
         documentId = intent.getStringExtra("documentId").toString()
+        getPackage(documentId)
 
         signatureButton.setOnClickListener {
             sendToSignatureActivity()
         }
         leaveAtTheDoorButton.setOnClickListener {
-            if (isDelivered) {
+            if (leaveAtTheDoor) {
                 updateFirestoreDocument()
             }
             else {
@@ -82,7 +85,7 @@ class CustomerDeliveryActivity : AppCompatActivity() {
         val collectionPath = "packages"
         //Update database with link to signature
         db.collection(collectionPath).document(documentId)
-            .update("isDelivered", true)
+            .update("banankaka", true)
             .addOnSuccessListener {
 
                 //Send to deliveredpackage activity for further actions
@@ -110,8 +113,8 @@ class CustomerDeliveryActivity : AppCompatActivity() {
 
                 if (thisPackage != null) {
 
-                    if (thisPackage.isDelivered == true){
-                        isDelivered = true
+                    if (thisPackage.leaveAtTheDoor == true){
+                       leaveAtTheDoor = true
                     }
                 }
             } else {

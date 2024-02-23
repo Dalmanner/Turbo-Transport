@@ -119,7 +119,12 @@ class PackageActivity : AppCompatActivity() {
         db.collection("packages").document(documentId).get().addOnSuccessListener { documentSnapshot ->
             if (documentSnapshot.exists()) {
                 val thisPackage = documentSnapshot.toObject(Package::class.java)
+               // db.collection("packages").document(documentId).get().addOnSuccessListener { documentSnapshot ->
+                    val isDelivered = documentSnapshot.getBoolean("isDelivered")
+                   Log.d("PackageDeliveryCheck", "isDelivered: $isDelivered")
+                //}
                 thisPackage?.let {
+                    Log.d("!!!","isdeliv ${thisPackage.banankaka}")
                     //Start setting values from Firebase
                     textViewCityName.text = thisPackage.cityName
                     postCodeAddress.text = thisPackage.postCodeAddress
@@ -148,7 +153,8 @@ class PackageActivity : AppCompatActivity() {
 
                     textViewKolliId.text = it.kolliId
 
-                    if (it.isDelivered == true){
+
+                    if (thisPackage.banankaka == true){
                         button.visibility = View.GONE
                         textViewETA.text = "Package was delivered at xx:xx"
                     }
