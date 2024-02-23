@@ -105,47 +105,49 @@ class PackageActivity : AppCompatActivity() {
         }, 2000)
 
     }
+
     private fun getPackage(documentId: String) {
-        db.collection("packages").document(documentId).addSnapshotListener { snapshot, e ->
-            if (e != null) {
-                Log.w("!!!", "Listen failed.", e)
-                return@addSnapshotListener
-            }
-
-            if (snapshot != null && snapshot.exists()) {
-                val thisPackage = snapshot.toObject(Package::class.java)
-
-                if (thisPackage != null) {
-
+        db.collection("packages").document(documentId).get().addOnSuccessListener { documentSnapshot ->
+            if (documentSnapshot.exists()) {
+                val thisPackage = documentSnapshot.toObject(Package::class.java)
+                thisPackage?.let {
                     //Start setting values from Firebase
-                    textViewAddress.text = thisPackage.address
-                    textViewName.text = thisPackage.nameOfReceiver
-                    textViewPhonenumber.text = thisPackage.telephoneNumber
-                    textViewDeliveryInstructions.text = thisPackage.deliveryNote
-                    textViewPackageInfoWeight.text = thisPackage.packageWeight.toString() + " kg"
-                    textViewPackageInfoDimensions.text = "${thisPackage.packageHeight} cm x ${thisPackage.packageLength} cm x ${thisPackage.packageDepth} cm"
+                    textViewAddress.text = it.address
+                    textViewName.text = it.nameOfReceiver
+                    textViewPhonenumber.text = it.telephoneNumber
+                    textViewDeliveryInstructions.text = it.deliveryNote
+                    textViewPackageInfoWeight.text = it.packageWeight.toString() + " kg"
+                    textViewPackageInfoDimensions.text = "${it.packageHeight} cm x ${it.packageLength} cm x ${it.packageDepth} cm"
 
-                    if (thisPackage.identityCheck == true){
+                    if (it.identityCheck == true){
                         textViewSign.text = "Yes"
                     }
                     else {
                         textViewSign.text = "No"
                     }
 
-                    textViewKolliId.text = thisPackage.kolliId
+                    textViewKolliId.text = it.kolliId
 
-                    val timestamp = thisPackage.expectedDeliveryTime
-                    val date = timestamp?.toDate() // Konvertera till Date
-                    val format = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
-                    val dateString = format.format(date)
-                    textViewETA.text = dateString
-
+                    if (it.isDelivered == true){
+                        button.visibility = View.GONE
+                        textViewETA.text = "Package was delivered at xx:xx"
+                    }
+                    else {
+                        val timestamp = it.expectedDeliveryTime
+                        val date = timestamp?.toDate() //Convert to date
+                        val format = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
+                        val dateString = format.format(date)
+                        textViewETA.text = dateString
+                    }
                 }
             } else {
-                Log.d("!!!", "Current data: null")
+                Log.d("!!!", "Document does not exist")
             }
+        }.addOnFailureListener { exception ->
+            Log.w("!!!", "Error getting documents: ", exception)
         }
     }
+
 
     private fun initializeViews() {
         appBarLayout = findViewById(R.id.appBarLayout)
