@@ -1,6 +1,8 @@
 package com.example.turbo_transport
 
+import android.annotation.SuppressLint
 import android.content.Intent
+import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
@@ -9,6 +11,7 @@ import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.ScrollView
 import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.TextView
@@ -35,6 +38,9 @@ class PackageActivity : AppCompatActivity() {
     private lateinit var topAppBar: MaterialToolbar
     private lateinit var imageView: ImageView
     private lateinit var textViewAddress: TextView
+    private lateinit var postCodeAddress: TextView
+    private lateinit var textViewLeaveAtTheDoor: TextView
+    private lateinit var textViewCityName: TextView
     private lateinit var textViewName: TextView
     private lateinit var textViewPhonenumber: TextView
     private lateinit var headlineDeliveryInstructions: TextView
@@ -49,6 +55,7 @@ class PackageActivity : AppCompatActivity() {
     private lateinit var headlineETA: TextView
     private lateinit var textViewETA: TextView
     private lateinit var button: Button
+    //private lateinit var textViewPostCodeAddress: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -106,20 +113,33 @@ class PackageActivity : AppCompatActivity() {
 
     }
 
+
+
     private fun getPackage(documentId: String) {
         db.collection("packages").document(documentId).get().addOnSuccessListener { documentSnapshot ->
             if (documentSnapshot.exists()) {
                 val thisPackage = documentSnapshot.toObject(Package::class.java)
                 thisPackage?.let {
                     //Start setting values from Firebase
+                    textViewCityName.text = thisPackage.cityName
+                    postCodeAddress.text = thisPackage.postCodeAddress
                     textViewAddress.text = it.address
                     textViewName.text = it.nameOfReceiver
                     textViewPhonenumber.text = it.telephoneNumber
                     textViewDeliveryInstructions.text = it.deliveryNote
                     textViewPackageInfoWeight.text = it.packageWeight.toString() + " kg"
                     textViewPackageInfoDimensions.text = "${it.packageHeight} cm x ${it.packageLength} cm x ${it.packageDepth} cm"
-
+                     
+                    if (thisPackage.leaveAtTheDoor == true){
+                        
+                        textViewLeaveAtTheDoor.text = "Yes"
+                    }
+                    else {
+                        textViewLeaveAtTheDoor.text = "No"
+                    }
+                    
                     if (it.identityCheck == true){
+
                         textViewSign.text = "Yes"
                     }
                     else {
@@ -150,10 +170,13 @@ class PackageActivity : AppCompatActivity() {
 
 
     private fun initializeViews() {
+        textViewLeaveAtTheDoor = findViewById(R.id.textViewLeaveAtTheDoor)
+        postCodeAddress = findViewById(R.id.textViewPostCodeAddress)
         appBarLayout = findViewById(R.id.appBarLayout)
         topAppBar = findViewById(R.id.topAppBar)
         imageView = findViewById(R.id.imageView)
         textViewAddress = findViewById(R.id.textViewAddress)
+        textViewCityName = findViewById(R.id.textViewCityName)
         textViewName = findViewById(R.id.textViewName)
         textViewPhonenumber = findViewById(R.id.textViewPhonenumber)
         headlineDeliveryInstructions = findViewById(R.id.headlineDeliveryInstructions)

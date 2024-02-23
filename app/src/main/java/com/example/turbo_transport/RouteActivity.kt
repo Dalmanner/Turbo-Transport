@@ -68,6 +68,7 @@ import java.util.concurrent.TimeUnit
 import java.util.Date
 import java.util.logging.Handler
 
+
 class RouteActivity : AppCompatActivity(), OnMapReadyCallback {
 
     companion object {
@@ -711,8 +712,8 @@ class RouteActivity : AppCompatActivity(), OnMapReadyCallback {
         notDeliveredButton = findViewById(R.id.notDeliveredButton)
         continueDeliverButton = findViewById(R.id.continueButton)
         driveMapButton = findViewById(R.id.driveMapButton)
-        topAdressTextView = findViewById(R.id.topAdressTextView)
-        postCodeTextView = findViewById(R.id.postCodeTextView)
+        topAdressTextView = findViewById(R.id.mapsTopAdressTextView)
+        postCodeTextView = findViewById(R.id.mapsPostCodeTextView)
         travelTimeTextView = findViewById(R.id.travelTimeTextView)
         kmLeftTextView = findViewById(R.id.kmLeftTextView)
 

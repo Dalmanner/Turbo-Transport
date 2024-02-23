@@ -62,7 +62,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
      */
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
-
         // Add a marker to each package location and move the camera
         fetchAllPackages()
     }
@@ -81,7 +80,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                 for (location in locationResult.locations) {
                     //Update location
                     val currentLatLng = LatLng(location.latitude, location.longitude)
-                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 18f))
+                            //move the camera to view all markers
+                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 12f))
                 }
             }
         }
@@ -94,6 +94,27 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             )
         }
     }
+
+    //add buttons for zoom and to jump between markers
+    /*private fun addButtons() {
+        val zoomInButton = findViewById<Button>(R.id.zoomInButton)
+        val zoomOutButton = findViewById<Button>(R.id.zoomOutButton)
+        val nextButton = findViewById<Button>(R.id.nextButton)
+        val previousButton = findViewById<Button>(R.id.previousButton)
+
+        zoomInButton.setOnClickListener {
+            mMap.animateCamera(CameraUpdateFactory.zoomIn())
+        }
+        zoomOutButton.setOnClickListener {
+            mMap.animateCamera(CameraUpdateFactory.zoomOut())
+        }
+        nextButton.setOnClickListener {
+            //Move to next marker
+        }
+        previousButton.setOnClickListener {
+            //Move to previous marker
+        }
+    }*/
 
     private fun fetchAllPackages() {
         db.collection("packages").get().addOnSuccessListener { result ->

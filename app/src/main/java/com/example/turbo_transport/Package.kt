@@ -8,11 +8,11 @@ class Package (
     @DocumentId
 
 var documentId : String? = null,
-    var userIdReceiver: String? = null,
-    var userIdDriver: String? = null,
+    //var userIdReceiver: String? = null,
     var nameOfReceiver : String? = null,
     var address: String? = null,
     var postCodeAddress: String? = null,
+    var cityName: String? = null,
     var kmLeft: String? = null,
     var telephoneNumber: String? = null,
     var deliveryNote: String? = null,

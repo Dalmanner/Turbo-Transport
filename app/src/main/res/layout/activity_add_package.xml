@@ -7,18 +7,18 @@
     android:layout_height="match_parent"
     android:visibility="visible">
 
-    <EditText
-        android:id="@+id/etUserIdReceiver"
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/etNameOfReceiver"
         android:layout_width="120dp"
         android:layout_height="50dp"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="20dp"
         android:ems="10"
-        android:hint="Receiver"
+        android:hint="Receiver Name"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/topAppBar" />
 
-    <EditText
+    <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/etAddress"
         android:layout_width="120dp"
         android:layout_height="50dp"
@@ -29,17 +29,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/topAppBar" />
 
-    <EditText
-        android:id="@+id/etPhoneNumber"
-        android:layout_width="120dp"
-        android:layout_height="50dp"
-        android:layout_marginEnd="20dp"
-        android:ems="10"
-        android:hint="Phone Number"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etPackageLength" />
 
-    <EditText
+    <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/etKolliId"
         android:layout_width="120dp"
         android:layout_height="50dp"
@@ -47,95 +38,68 @@
         android:ems="10"
         android:hint="Kolli ID"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etAddress" />
+        app:layout_constraintTop_toBottomOf="@+id/etPostCodeAddress" />
 
-    <EditText
-        android:id="@+id/etRequestedDeliveryTime"
-        android:layout_width="120dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="12dp"
-        android:ems="10"
-        android:hint="Requested ETA"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etExpectedDeliveryTime" />
-
-    <EditText
-        android:id="@+id/etExpectedDeliveryTime"
-        android:layout_width="120dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="8dp"
-        android:ems="10"
-        android:hint="ETA"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etLatitude" />
-
-    <EditText
-        android:id="@+id/etPackageHeight"
-        android:layout_width="120dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="8dp"
-        android:ems="10"
-        android:hint="Package Height"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etPackageWeight" />
-
-    <EditText
-        android:id="@+id/etPackageType"
-        android:layout_width="120dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="4dp"
-        android:ems="10"
-        android:hint="Package Type"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etPackageHeight" />
-
-    <EditText
-        android:id="@+id/etLatitude"
-        android:layout_width="120dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="8dp"
-        android:ems="10"
-        android:hint="Latitude"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etPackageType" />
-
-    <EditText
+    <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/etPackageWeight"
         android:layout_width="120dp"
         android:layout_height="50dp"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="4dp"
         android:ems="10"
         android:hint="Package Weight"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/etKolliId" />
 
-    <EditText
-        android:id="@+id/etSenderName2"
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/etRequestedDeliveryTime"
+        android:layout_width="120dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="20dp"
+        android:hint="Delivery Time"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etLatitude" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/etPackageType"
+        android:layout_width="120dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="20dp"
+        android:ems="10"
+        android:hint="Package Type"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etPackageHeight" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/etLatitude"
+        android:layout_width="120dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="20dp"
+        android:ems="10"
+        android:hint="Latitude"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etPackageType" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/etPackageHeight"
+        android:layout_width="120dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="20dp"
+        android:ems="10"
+        android:hint="Package Height"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etPackageWeight" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/etCityName"
         android:layout_width="120dp"
         android:layout_height="50dp"
         android:layout_marginEnd="20dp"
         android:ems="10"
-        android:hint="Sender Name"
+        android:hint="City"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etLongitude" />
+        app:layout_constraintTop_toBottomOf="@+id/etNameOfReceiver" />
 
-    <EditText
-        android:id="@+id/etLongitude"
-        android:layout_width="120dp"
-        android:layout_height="50dp"
-        android:layout_marginEnd="20dp"
-        android:ems="10"
-        android:hint="Longitude"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etPhoneNumber" />
-
-    <EditText
+    <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/etDeliveryNote"
         android:layout_width="120dp"
         android:layout_height="50dp"
@@ -143,19 +107,9 @@
         android:ems="10"
         android:hint="Delivery Note"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etUserIdReceiver" />
+        app:layout_constraintTop_toBottomOf="@+id/etCityName" />
 
-    <EditText
-        android:id="@+id/etPackageLength"
-        android:layout_width="120dp"
-        android:layout_height="50dp"
-        android:layout_marginEnd="20dp"
-        android:ems="10"
-        android:hint="Package Length"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etPackageDepth" />
-
-    <EditText
+    <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/etPackageDepth"
         android:layout_width="120dp"
         android:layout_height="50dp"
@@ -165,27 +119,74 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/etDeliveryNote" />
 
-    <RadioButton
-        android:id="@+id/etIdentityCheck"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="92dp"
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/etSenderName2"
+        android:layout_width="120dp"
+        android:layout_height="50dp"
         android:layout_marginEnd="20dp"
-        android:layout_marginBottom="50dp"
-        android:text="ID Check"
-        app:layout_constraintBottom_toTopOf="@+id/bottomAppBar"
-        app:layout_constraintEnd_toStartOf="@+id/etLeaveAtTheDoor"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:ems="10"
+        android:hint="Sender Name"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etLongitude" />
 
-    <RadioButton
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/etLongitude"
+        android:layout_width="120dp"
+        android:layout_height="50dp"
+        android:layout_marginEnd="20dp"
+        android:ems="10"
+        android:hint="Longitude"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etPhoneNumber" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/etPackageLength"
+        android:layout_width="120dp"
+        android:layout_height="50dp"
+        android:layout_marginEnd="20dp"
+        android:ems="10"
+        android:hint="Package Length"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etPackageDepth" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/etPhoneNumber"
+        android:layout_width="120dp"
+        android:layout_height="50dp"
+        android:layout_marginEnd="20dp"
+        android:ems="10"
+        android:hint="Phone Number"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etPackageLength" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/etPostCodeAddress"
+        android:layout_width="120dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="20dp"
+        android:hint="Post Code"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etAddress" />
+
+    <CheckBox
         android:id="@+id/etLeaveAtTheDoor"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="40dp"
-        android:layout_marginBottom="50dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
         android:text="Leave At The Door"
-        app:layout_constraintBottom_toTopOf="@+id/bottomAppBar"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etSenderName2" />
+
+    <CheckBox
+        android:id="@+id/etIdentityCheck"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:text="Identity Check"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etRequestedDeliveryTime" />
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/topAppBar"
@@ -235,7 +236,7 @@
         app:backgroundTint="@color/blue_500"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent" />
 
     <ImageButton
@@ -254,22 +255,22 @@
 
     <ImageButton
         android:id="@+id/btnSubmit"
-        android:layout_width="95dp"
-        android:layout_height="60dp"
+        android:layout_width="86dp"
+        android:layout_height="69dp"
         android:layout_gravity="center"
-        android:layout_marginBottom="4dp"
         android:backgroundTint="@color/blue_500"
         app:layout_constraintBottom_toBottomOf="@+id/bottomAppBar"
         app:layout_constraintEnd_toEndOf="@+id/bottomAppBar"
-        app:layout_constraintHorizontal_bias="0.49"
+        app:layout_constraintHorizontal_bias="0.479"
         app:layout_constraintStart_toStartOf="@+id/bottomAppBar"
-        app:srcCompat="@android:drawable/ic_menu_send" />
+        app:layout_constraintTop_toTopOf="@+id/bottomAppBar"
+        app:layout_constraintVertical_bias="1.0"
+        app:srcCompat="@drawable/add_package_icon" />
 
     <ImageButton
         android:id="@+id/imageButton3"
         android:layout_width="70dp"
         android:layout_height="50dp"
-        android:layout_marginBottom="4dp"
         android:backgroundTint="@color/blue_500"
         app:layout_anchor="@id/bottomAppBar"
         app:layout_anchorGravity="center"
@@ -277,6 +278,7 @@
         app:layout_constraintEnd_toEndOf="@+id/bottomAppBar"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/bottomAppBar"
         app:srcCompat="@drawable/segment_1text" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

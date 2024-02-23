@@ -82,11 +82,11 @@
                 android:textSize="30sp"
                 app:layout_constraintBottom_toTopOf="@+id/driveMapButton"
                 app:layout_constraintStart_toEndOf="@+id/travelTimeTextView"
-                app:layout_constraintTop_toBottomOf="@+id/postCodeTextView"
+                app:layout_constraintTop_toBottomOf="@+id/mapsPostCodeTextView"
                 tools:text="8.5km" />
 
             <TextView
-                android:id="@+id/topAdressTextView"
+                android:id="@+id/mapsTopAdressTextView"
                 android:layout_width="355dp"
                 android:layout_height="34dp"
                 android:layout_marginStart="16dp"
@@ -99,7 +99,7 @@
                 tools:text="Öst Gatan 4" />
 
             <TextView
-                android:id="@+id/postCodeTextView"
+                android:id="@+id/mapsPostCodeTextView"
                 android:layout_width="358dp"
                 android:layout_height="25dp"
                 android:layout_marginStart="16dp"
@@ -109,7 +109,7 @@
                 android:textSize="20sp"
                 android:textStyle="italic"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/topAdressTextView"
+                app:layout_constraintTop_toBottomOf="@+id/mapsTopAdressTextView"
                 tools:text="506 37 Norrmalm" />
 
             <TextView
@@ -123,7 +123,7 @@
                 android:tooltipText="25 min"
                 app:layout_constraintBottom_toTopOf="@+id/driveMapButton"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/postCodeTextView"
+                app:layout_constraintTop_toBottomOf="@+id/mapsPostCodeTextView"
                 app:layout_constraintVertical_bias="0.615"
                 tools:text="25 min" />
 
