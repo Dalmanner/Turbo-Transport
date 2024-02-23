@@ -12,30 +12,7 @@ import java.util.Locale
 
 
 class DeliveriesRecyclerAdapter(val context: Context, var lists: List<Package>, val deliveryType: DeliveryType) : RecyclerView.Adapter<DeliveriesRecyclerAdapter.ViewHolder>() {
-    
-    var layoutInflater = LayoutInflater.from(context)
-
-    inner class ViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView) {
-        var addressTextView = itemView.findViewById<TextView>(R.id.addressTextView)
-        var cityName = itemView.findViewById<TextView>(R.id.cityName)
-        var postCodeAddress = itemView.findViewById<TextView>(R.id.postCodeAddress)
-        var etaTimeTextView2 = itemView.findViewById<TextView>(R.id.etaTimeTextView2)
-        var userNameReceiverTextView = itemView.findViewById<TextView>(R.id.userNameReceiverTextView)
-        var etaTimeTextView = itemView.findViewById<TextView>(R.id.etaTimeTextView)
-        var itemPosistion = 0
-
-////       init {
-////            itemView.setOnClickListener {
-////                val intent = Intent(context,PackageActivity::class.java)
-////                intent.putExtra(ITEM_POSISTION_KEY,itemPosistion)
-////                context.startActivity(intent)
-////            }
-//
-//        }
-
-
-
-
+//  class DeliveriesRecyclerAdapter(val context: Context, var lists: List<Package>, val deliveryType: ViewHolder.DeliveryType) : RecyclerView.Adapter<DeliveriesRecyclerAdapter.ViewHolder>() {  ...
     enum class DeliveryType {
         ACTIVE, DONE, FAILED
     }
@@ -70,54 +47,62 @@ class DeliveriesRecyclerAdapter(val context: Context, var lists: List<Package>, 
         val dateString = format.format(date)
 
 
-
         //If different setups in layout we can choose a when condition.
         //Right now it is just the same for each type.
         when (deliveryType) {
             DeliveryType.ACTIVE -> {
 
-        holder.etaTimeTextView.text= dateString
-        holder.itemPosistion = position       
-        holder.userNameReceiverTextView.text = deliveryList.nameOfReceiver
-        holder.etaTimeTextView2.text= deliveryList.requestedDeliveryTime
-                holder.itemView.setOnClickListener {
+            holder.etaTimeTextView.text= dateString
+            holder.itemPosistion = position
+            holder.cityName.text = deliveryList.cityName
+            holder.addressTextView.text = deliveryList.address
+            holder.userNameReceiverTextView.text = deliveryList.nameOfReceiver
+            holder.postCodeAddress.text = deliveryList.postCodeAddress
+            holder.etaTimeTextView2.text= deliveryList.requestedDeliveryTime
+                    holder.itemView.setOnClickListener {
 
 
-                    val documentId = it.tag as String
-                    val intent = Intent(context,PackageActivity::class.java)
-                    intent.putExtra("documentId",documentId)
-                    context.startActivity(intent)
+                        val documentId = it.tag as String
+                        val intent = Intent(context,PackageActivity::class.java)
+                        intent.putExtra("documentId",documentId)
+                        context.startActivity(intent)
+                    }
+                }
+                DeliveryType.DONE -> {
+
+                    holder.etaTimeTextView.text= dateString
+                    holder.itemPosistion = position
+                    holder.cityName.text = deliveryList.cityName
+                    holder.addressTextView.text = deliveryList.address
+                    holder.postCodeAddress.text = deliveryList.postCodeAddress
+                    holder.userNameReceiverTextView.text = deliveryList.nameOfReceiver
+                    holder.etaTimeTextView2.text= deliveryList.requestedDeliveryTime
+                    holder.itemView.setOnClickListener {
+
+                        val documentId = it.tag as String
+                        val intent = Intent(context,PackageActivity::class.java)
+                        intent.putExtra("documentId",documentId)
+                        context.startActivity(intent)
+                    }
+                }
+                DeliveryType.FAILED -> {
+
+                    holder.etaTimeTextView.text= dateString
+                    holder.itemPosistion = position
+                    holder.cityName.text = deliveryList.cityName
+                    holder.addressTextView.text = deliveryList.address
+                    holder.postCodeAddress.text = deliveryList.postCodeAddress
+                    holder.userNameReceiverTextView.text = deliveryList.nameOfReceiver
+                    holder.etaTimeTextView2.text= deliveryList.requestedDeliveryTime
+                    holder.itemView.setOnClickListener {
+
+                        val documentId = it.tag as String
+                        val intent = Intent(context,PackageActivity::class.java)
+                        intent.putExtra("documentId",documentId)
+                        context.startActivity(intent)
+                    }
                 }
             }
-            DeliveryType.DONE -> {
-
-                holder.etaTimeTextView.text= dateString
-                holder.itemPosistion = position
-                holder.userNameReceiverTextView.text = deliveryList.nameOfReceiver
-                holder.etaTimeTextView2.text= deliveryList.requestedDeliveryTime
-                holder.itemView.setOnClickListener {
-
-                    val documentId = it.tag as String
-                    val intent = Intent(context,PackageActivity::class.java)
-                    intent.putExtra("documentId",documentId)
-                    context.startActivity(intent)
-                }
-            }
-            DeliveryType.FAILED -> {
-
-                holder.etaTimeTextView.text= dateString
-                holder.itemPosistion = position
-                holder.userNameReceiverTextView.text = deliveryList.nameOfReceiver
-                holder.etaTimeTextView2.text= deliveryList.requestedDeliveryTime
-                holder.itemView.setOnClickListener {
-
-                    val documentId = it.tag as String
-                    val intent = Intent(context,PackageActivity::class.java)
-                    intent.putExtra("documentId",documentId)
-                    context.startActivity(intent)
-                }
-            }
-        }
     }
 
     override fun getItemCount(): Int {
@@ -127,7 +112,10 @@ class DeliveriesRecyclerAdapter(val context: Context, var lists: List<Package>, 
     inner class ViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView) {
         var addressTextView = itemView.findViewById<TextView>(R.id.addressTextView)
         var etaTimeTextView = itemView.findViewById<TextView>(R.id.etaTimeTextView)
+        var cityName = itemView.findViewById<TextView>(R.id.cityName)
+        var postCodeAddress = itemView.findViewById<TextView>(R.id.postCodeAddress)
+        var etaTimeTextView2 = itemView.findViewById<TextView>(R.id.etaTimeTextView2)
+        var userNameReceiverTextView = itemView.findViewById<TextView>(R.id.userNameReceiverTextView)
         var itemPosistion = 0
-
     }
 }

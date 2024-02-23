@@ -21,7 +21,6 @@ import com.google.firebase.auth.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.firestore
-import com.google.firebase.messaging.FirebaseMessaging
 
 
 class ListDeliveries : AppCompatActivity() {
@@ -101,7 +100,9 @@ class ListDeliveries : AppCompatActivity() {
                 }
 
                 R.id.item_3 -> {
-
+                    //start addPackageActivity:
+                    val intent = Intent(this, AddPackageActivity::class.java)
+                    startActivity(intent)
                     true
                 }
                 else -> false
@@ -115,10 +116,15 @@ class ListDeliveries : AppCompatActivity() {
                 }
                 R.id.item_2 -> {
 
-                }
-                R.id.item_3 -> {
 
                 }
+                R.id.item_3 -> {
+                    //start addPackageActivity:
+                    val intent = Intent(this, AddPackageActivity::class.java)
+                    startActivity(intent)
+                    true
+                }
+
             }
         }
     }
