@@ -107,6 +107,7 @@
                 android:fontFamily="@font/roboto"
                 android:textColor="@color/black"
                 android:textSize="20sp"
+                android:textStyle="italic"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/mapsTopAdressTextView"
                 tools:text="506 37 Norrmalm" />

@@ -5,6 +5,7 @@ import android.graphics.ImageFormat
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.util.Log
+import android.widget.Button
 import android.widget.Toast
 import androidx.annotation.OptIn
 import androidx.appcompat.app.AppCompatActivity
@@ -26,19 +27,26 @@ class BarCodeReaderActivity : AppCompatActivity() {
     private var barcodeProcessed = false
     private lateinit var appBarLayout: AppBarLayout
     private lateinit var topAppBar: MaterialToolbar
+    private lateinit var continueWithOutBarCodeButton: Button
+    private lateinit var documentId: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_bar_code_reader)
 
         initializeViews()
-
+        showMenu()
         cameraExecutor = Executors.newSingleThreadExecutor()
 
         //Get the barcodevalue from last activity
         barcodeValue = intent.getStringExtra("barcodeValue").toString()
+        documentId = intent.getStringExtra("documentId").toString()
 
         startCamera()
+
+        continueWithOutBarCodeButton.setOnClickListener {
+            continueWithOutScanning()
+        }
     }
 
     @OptIn(ExperimentalGetImage::class)
@@ -116,6 +124,7 @@ class BarCodeReaderActivity : AppCompatActivity() {
                                     CustomerDeliveryActivity::class.java
                                 ).apply {
                                     putExtra("barcodeValue", rawValue)
+                                    putExtra("documentId", documentId)
                                 }
                                 startActivity(intent)
 
@@ -146,6 +155,7 @@ class BarCodeReaderActivity : AppCompatActivity() {
         super.onDestroy()
         cameraExecutor.shutdown()
     }
+
 
     private fun showMenu(){
         topAppBar.setNavigationOnClickListener {
@@ -183,9 +193,28 @@ class BarCodeReaderActivity : AppCompatActivity() {
         }
         mediaPlayer.start() //Play sound
     }
+    private fun continueWithOutScanning(){
+        //Send to customerdelivery activity for further actions
+        val intent = Intent(
+            this,
+            CustomerDeliveryActivity::class.java
+        ).apply {
+            putExtra("barcodeValue", barcodeValue)
+            putExtra("documentId", documentId)
+        }
+        startActivity(intent)
+
+        //Lets toast to make sure driver is aware of this
+        Toast.makeText(
+            this,
+            "You are continuing without scanning - make sure the barcode is: $barcodeValue",
+            Toast.LENGTH_LONG
+        ).show()
+    }
     private fun initializeViews() {
         viewFinder = findViewById(R.id.viewFinder)
         appBarLayout = findViewById(R.id.appBarLayout)
         topAppBar = findViewById(R.id.topAppBar)
+        continueWithOutBarCodeButton = findViewById(R.id.continueWithOutBarCodeButton)
     }
 }

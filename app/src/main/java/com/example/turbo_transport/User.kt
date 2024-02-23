@@ -14,6 +14,7 @@ import com.google.firebase.firestore.ServerTimestamp
     var userPhoneNumber : String? = null,
     var approveNotifications : Boolean? = null,
     var vehicleId : String? = null,
+    var notificationToken: String? = null,
     @ServerTimestamp
     var lastEdited: Timestamp? = null,
     @ServerTimestamp
