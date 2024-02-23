@@ -15,6 +15,8 @@ import android.widget.ScrollView
 import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.core.content.ContentProviderCompat.requireContext
+import com.bumptech.glide.Glide
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.card.MaterialCardView
@@ -113,7 +115,16 @@ class PackageActivity : AppCompatActivity() {
 
     }
 
-
+    private fun getSignatureImage(documentId: String, callback: (String) -> Unit) {
+        db.collection("packages").document(documentId).get()
+            .addOnSuccessListener { document ->
+                val signatureLink = document.getString("signatureLink") ?: "Package"
+                callback(signatureLink)
+            }
+            .addOnFailureListener { exception ->
+                Log.d("!!!", "GET failed with ", exception)
+            }
+    }
 
     private fun getPackage(documentId: String) {
         db.collection("packages").document(documentId).get().addOnSuccessListener { documentSnapshot ->
@@ -157,6 +168,14 @@ class PackageActivity : AppCompatActivity() {
                     if (thisPackage.banankaka == true){
                         button.visibility = View.GONE
                         textViewETA.text = "Package was delivered at xx:xx"
+
+                        if (thisPackage.signatureLink != null) {
+                            Glide.with(this).load(thisPackage.signatureLink).centerCrop()
+                                .into(imageView)
+                        } else {
+                            imageView.setImageResource(R.drawable.boxes)
+                        }
+
                     }
                     else {
                         val timestamp = it.expectedDeliveryTime
