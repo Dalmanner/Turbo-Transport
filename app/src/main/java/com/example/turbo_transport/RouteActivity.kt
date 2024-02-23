@@ -292,7 +292,6 @@ class RouteActivity : AppCompatActivity(), OnMapReadyCallback {
         //Run frequent updates when driver mode is selected
         driveMapButton.setOnClickListener {
             startLocationUpdates()
-            sendNotificationToUser()
             driverMode = true
         }
     }
@@ -587,6 +586,7 @@ class RouteActivity : AppCompatActivity(), OnMapReadyCallback {
             calculateAndUpdateETA(totalDurationInSeconds)
             lastTimestamp = currentTimestamp
             firstRun = false
+            sendNotificationToUser()
         }
     }
     private fun calculateAndUpdateETA(totalDurationInSeconds: Int) {

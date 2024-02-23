@@ -2,6 +2,7 @@ package com.example.turbo_transport
 
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -40,7 +41,6 @@ class DeliveriesRecyclerAdapter(val context: Context, var lists: List<Package>, 
         holder.addressTextView.text = deliveryList.address
         holder.postCodeAddress.text = deliveryList.postCodeAddress
         holder.cityName.text = deliveryList.cityName
-
         val timestamp = deliveryList.expectedDeliveryTime
         val date = timestamp?.toDate() // Konvertera till Date
         val format = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
