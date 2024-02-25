@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.material.appbar.MaterialToolbar
+import com.google.android.material.navigation.NavigationBarView
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
@@ -22,6 +23,9 @@ class ListReceiverPackage : AppCompatActivity() {
     lateinit var db : FirebaseFirestore
     lateinit var auth : FirebaseAuth
     private lateinit var topAppBar: MaterialToolbar
+    private lateinit var bottomBar: NavigationBarView
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_list_receiver_package)
@@ -35,6 +39,7 @@ class ListReceiverPackage : AppCompatActivity() {
         loadPackageDb()
         setTokenDb()
         topBar()
+        bottomMenu()
     }
     override fun onBackPressed() {
         super.onBackPressed()
@@ -79,6 +84,46 @@ class ListReceiverPackage : AppCompatActivity() {
             }
         }
     }
+    private fun bottomMenu(){
+
+        bottomBar.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.item_1 -> {
+
+                    true
+                }
+
+                R.id.item_2 -> {
+
+                    true
+                }
+
+                R.id.item_3 -> {
+
+                    true
+                }
+                else -> false
+            }
+        }
+
+       bottomBar.setOnItemReselectedListener { item ->
+            when (item.itemId) {
+                R.id.item_1 -> {
+
+                }
+                R.id.item_2 -> {
+
+
+                }
+                R.id.item_3 -> {
+
+                    true
+                }
+
+            }
+        }
+    }
+
     fun setTokenDb() {
         val user = auth.currentUser
         FirebaseMessaging.getInstance().token
@@ -103,6 +148,9 @@ class ListReceiverPackage : AppCompatActivity() {
     private fun initializeViews() {
 
         topAppBar = findViewById(R.id.topAppBar1)
+        bottomBar = findViewById(R.id.bottom_navigation1)
+
+
 
     }
 
