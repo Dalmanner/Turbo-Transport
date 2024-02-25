@@ -167,7 +167,11 @@ class PackageActivity : AppCompatActivity() {
 
                     if (thisPackage.banankaka == true){
                         button.visibility = View.GONE
-                        textViewETA.text = "Package was delivered at xx:xx"
+                        val timestamp = it.expectedDeliveryTime
+                        val date = timestamp?.toDate() //Convert to date
+                        val format = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
+                        val dateString = format.format(date)
+                        textViewETA.text = "Package was delivered at $dateString"
 
                         if (thisPackage.signatureLink != null) {
                             Glide.with(this).load(thisPackage.signatureLink).centerCrop()
