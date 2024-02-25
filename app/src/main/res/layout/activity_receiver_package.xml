@@ -75,8 +75,10 @@
             android:id="@+id/deliveryA"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto_medium"
             android:text="Delivery Adress"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/adressA"
@@ -92,8 +94,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:text="Recipients name and adress "
-            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-            android:textColor="?android:attr/textColorSecondary" />
+            android:textAppearance="?attr/textAppearanceTitleMedium"
+            android:textColor="@color/black" />
 
         <TextView
             android:id="@+id/nameA"
@@ -120,6 +122,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:fontFamily="@font/roboto_medium"
             android:text="Sender"
             android:textAppearance="?attr/textAppearanceTitleMedium" />
 
@@ -143,6 +146,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:fontFamily="@font/roboto_medium"
             android:text="Weights and Measures"
             android:textAppearance="?attr/textAppearanceTitleMedium" />
 
