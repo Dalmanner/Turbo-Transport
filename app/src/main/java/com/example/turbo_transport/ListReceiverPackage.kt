@@ -8,6 +8,7 @@ import android.util.Log
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.gms.tasks.OnCompleteListener
+import com.google.android.material.appbar.MaterialToolbar
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
@@ -20,17 +21,20 @@ class ListReceiverPackage : AppCompatActivity() {
     lateinit var receiverRecylerView: RecyclerView
     lateinit var db : FirebaseFirestore
     lateinit var auth : FirebaseAuth
+    private lateinit var topAppBar: MaterialToolbar
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_list_receiver_package)
 
         db = Firebase.firestore
         auth = Firebase.auth
+        initializeViews()
 
         receiverRecylerView = findViewById(R.id.receiverRecyclerView)
         receiverRecylerView.layoutManager = LinearLayoutManager(this)
         loadPackageDb()
         setTokenDb()
+        topBar()
     }
     override fun onBackPressed() {
         super.onBackPressed()
@@ -55,6 +59,26 @@ class ListReceiverPackage : AppCompatActivity() {
             }
         }
     }
+    private fun topBar(){
+        topAppBar.setNavigationOnClickListener {
+            auth.signOut()
+            val intent = Intent(this,MainActivity::class.java)
+            startActivity(intent)
+        }
+        topAppBar.setOnMenuItemClickListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.user -> {
+                    // Handle edit text press
+                    true
+                }
+                R.id.help -> {
+                    // Handle favorite icon press
+                    true
+                }
+                else -> false
+            }
+        }
+    }
     fun setTokenDb() {
         val user = auth.currentUser
         FirebaseMessaging.getInstance().token
@@ -75,6 +99,11 @@ class ListReceiverPackage : AppCompatActivity() {
                         )
                 }
             })
+    }
+    private fun initializeViews() {
+
+        topAppBar = findViewById(R.id.topAppBar1)
+
     }
 
 }
