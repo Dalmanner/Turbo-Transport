@@ -42,9 +42,10 @@
     <ScrollView
         android:id="@+id/scrollView2"
         android:layout_width="0dp"
-        android:layout_height="126dp"
+        android:layout_height="0dp"
 
-        android:backgroundTint="@color/blue_10"
+        android:background="@color/blue_500"
+        android:backgroundTint="@color/blue_500"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.428"

@@ -190,7 +190,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
             ?.let { mMap.addMarker(it) }
         mMap.moveCamera(CameraUpdateFactory.newLatLng(startLatLng))
 
-        val cameraUpdate = CameraUpdateFactory.newLatLngZoom(startLatLng, 10.5f)
+        val cameraUpdate = CameraUpdateFactory.newLatLngZoom(startLatLng, 11.5f)
         mMap.moveCamera(cameraUpdate)
         fetchDirections(startLatLng, endLatLng, mMap)
     }
