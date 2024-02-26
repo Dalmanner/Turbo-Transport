@@ -1,5 +1,6 @@
 package com.example.turbo_transport
 
+import android.content.ContentValues
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -9,8 +10,10 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.messaging.FirebaseMessaging
 
 class DeliveriesFragment : Fragment() {
 
@@ -42,6 +45,19 @@ class DeliveriesFragment : Fragment() {
             if (snapshot != null && !snapshot.isEmpty) {
                 val packageList = snapshot.documents.mapNotNull { it.toObject(Package::class.java) }
                 deliveryRecyclerView.adapter = DeliveriesRecyclerAdapter(requireContext(), packageList, DeliveriesRecyclerAdapter.DeliveryType.ACTIVE)
+                if (snapshot != null && !snapshot.isEmpty) {
+                    for (document in snapshot.documents) {
+                        val documentId = document.id
+                        println("Document ID: $documentId")
+                        db.collection("packages").document(documentId)
+                            .set(
+                                mapOf("transit" to false),
+                                SetOptions.merge()
+                            )
+                    }
+                }
+
+
             }
         }
     }

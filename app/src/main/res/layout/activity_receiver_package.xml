@@ -64,7 +64,7 @@
 
       <LinearLayout
           android:layout_width="match_parent"
-          android:layout_height="wrap_content"
+          android:layout_height="512dp"
           android:background="@color/blue_10"
           android:orientation="vertical"
           android:padding="16dp">
@@ -211,6 +211,25 @@
             android:text="70702051105049876"
             android:textAppearance="?attr/textAppearanceBodyMedium"
             android:textColor="?android:attr/textColorSecondary" />
+
+        <com.google.android.material.divider.MaterialDivider
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp" />
+
+        <TextView
+            android:id="@+id/textView221"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto_medium"
+            android:text="Package Status"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/packageStatusTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="På väg" />
 
 
       </LinearLayout>
