@@ -1,5 +1,6 @@
 package com.example.turbo_transport
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -48,7 +49,7 @@ class ReceiverPackageActivity : AppCompatActivity() {
         if (documentId != null) {
             getPackage(documentId)
         }
-
+        topBar()
     }
 
     private fun getPackage(documentId: String) {
@@ -84,6 +85,24 @@ class ReceiverPackageActivity : AppCompatActivity() {
                 } else {
                     Log.d("!!!", "Current data: null")
                 }
+            }
+        }
+    }
+    private fun topBar(){
+        topBarrA.setNavigationOnClickListener {
+          finish()
+        }
+        topBarrA.setOnMenuItemClickListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.user -> {
+                    // Handle edit text press
+                    true
+                }
+                R.id.help -> {
+                    // Handle favorite icon press
+                    true
+                }
+                else -> false
             }
         }
     }

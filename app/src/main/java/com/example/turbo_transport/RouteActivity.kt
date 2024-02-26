@@ -126,6 +126,10 @@ class RouteActivity : AppCompatActivity(), OnMapReadyCallback {
             sendToBarCodeReader(barcode)
             stopLocationUpdates()
         }
+        notDeliveredButton.setOnClickListener {
+            stopLocationUpdates()
+            sendToEnd()
+        }
     }
 
     @SuppressLint("MissingPermission")
@@ -278,7 +282,6 @@ class RouteActivity : AppCompatActivity(), OnMapReadyCallback {
         //Run frequent updates when driver mode is selected
         driveMapButton.setOnClickListener {
             startLocationUpdates()
-            sendNotificationToUser()
             driverMode = true
         }
     }
@@ -573,6 +576,7 @@ class RouteActivity : AppCompatActivity(), OnMapReadyCallback {
             calculateAndUpdateETA(totalDurationInSeconds)
             lastTimestamp = currentTimestamp
             firstRun = false
+            sendNotificationToUser()
         }
     }
     private fun calculateAndUpdateETA(totalDurationInSeconds: Int) {
@@ -627,6 +631,13 @@ class RouteActivity : AppCompatActivity(), OnMapReadyCallback {
 
         val intent = Intent(this, BarCodeReaderActivity::class.java)
         intent.putExtra("barcodeValue", packageBarcode)
+        intent.putExtra("documentId", documentId)
+        startActivity(intent)
+    }
+    private fun sendToEnd() {
+
+        val intent = Intent(this, PackageDeliveredActivity::class.java)
+        intent.putExtra("failedDelivery", true)
         intent.putExtra("documentId", documentId)
         startActivity(intent)
     }

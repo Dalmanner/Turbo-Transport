@@ -18,35 +18,14 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:minHeight="?attr/actionBarSize"
-            android:background="@color/blue_500">
+            android:background="@color/blue_500"
+            app:menu="@menu/top_app_bar_package"
+            app:title="Deliveries"
+            app:titleCentered="true"
+            >
 
-            <ImageButton
-                android:id="@+id/imageButton6"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="start"
-                android:layout_marginStart="16dp"
-                android:backgroundTint="@color/blue_500"
-                app:srcCompat="@drawable/menu_24px" />
 
-            <TextView
-                android:id="@+id/textView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="Active Deliveries"
-                android:textColor="#000000"
-                android:textSize="22sp"
-                android:fontFamily="@font/roboto" />
 
-            <ImageButton
-                android:id="@+id/imageButton2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:layout_marginEnd="16dp"
-                android:backgroundTint="#1E88E5"
-                app:srcCompat="@drawable/icon" />
         </com.google.android.material.appbar.MaterialToolbar>
 
         <com.google.android.material.tabs.TabLayout
@@ -88,34 +67,6 @@
         app:backgroundTint="@color/blue_500"
         app:menu="@menu/bottom_navigation_menu" />
 
-    <ImageButton
-        android:id="@+id/imageButton3"
-        android:layout_width="70dp"
-        android:layout_height="50dp"
-        android:backgroundTint="@color/blue_500"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/btnSubmit"
-        app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/segment_1text" />
 
-    <ImageButton
-        android:id="@+id/btnSubmit"
-        android:layout_width="70dp"
-        android:layout_height="50dp"
-        android:backgroundTint="@color/blue_500"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/addPackageBtn"
-        app:layout_constraintStart_toEndOf="@id/imageButton3"
-        app:srcCompat="@drawable/segment_2" />
-
-    <ImageButton
-        android:id="@+id/addPackageBtn"
-        android:layout_width="70dp"
-        android:layout_height="50dp"
-        android:backgroundTint="@color/blue_500"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/btnSubmit"
-        app:srcCompat="@drawable/segment_3" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

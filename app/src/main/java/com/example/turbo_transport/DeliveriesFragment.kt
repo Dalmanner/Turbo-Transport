@@ -33,7 +33,7 @@ class DeliveriesFragment : Fragment() {
     }
 
     private fun loadPackageDb() {
-        val packagesRef = db.collection("packages").whereEqualTo("isDelivered", false)
+        val packagesRef = db.collection("packages").whereEqualTo("banankaka", false)
         packagesRef.addSnapshotListener { snapshot, e ->
             if (e != null) {
                 Log.e("DeliveriesFragment", "Listen failed.", e)

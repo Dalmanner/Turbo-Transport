@@ -41,9 +41,6 @@ class DeliveriesRecyclerAdapter(val context: Context, var lists: List<Package>, 
         holder.addressTextView.text = deliveryList.address
         holder.postCodeAddress.text = deliveryList.postCodeAddress
         holder.cityName.text = deliveryList.cityName
-        //return Log the size of the list
-        Log.d("DeliveriesRecyclerAdapter", "getItemCount: ${lists.size}")
-
         val timestamp = deliveryList.expectedDeliveryTime
         val date = timestamp?.toDate() // Konvertera till Date
         val format = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
