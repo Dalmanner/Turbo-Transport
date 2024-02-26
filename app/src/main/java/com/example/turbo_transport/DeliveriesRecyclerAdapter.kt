@@ -46,21 +46,26 @@ class DeliveriesRecyclerAdapter(val context: Context, var lists: List<Package>, 
         val format = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
         val dateString = format.format(date)
 
-
         //If different setups in layout we can choose a when condition.
         //Right now it is just the same for each type.
         when (deliveryType) {
             DeliveryType.ACTIVE -> {
 
             holder.etaTimeTextView.text= dateString
-            holder.itemPosistion = position
+            holder.itemPosition = position
             holder.cityName.text = deliveryList.cityName
             holder.addressTextView.text = deliveryList.address
             holder.userNameReceiverTextView.text = deliveryList.nameOfReceiver
             holder.postCodeAddress.text = deliveryList.postCodeAddress
             holder.etaTimeTextView2.text= deliveryList.requestedDeliveryTime
+            holder.leaveAtTheDoor.text = deliveryList.leaveAtTheDoor.toString()
+                if (deliveryList.leaveAtTheDoor == true){
+                    holder.leaveAtTheDoor.text = " LATD "
+                }
+                else {
+                    holder.leaveAtTheDoor.text = ""
+                }
                     holder.itemView.setOnClickListener {
-
 
                         val documentId = it.tag as String
                         val intent = Intent(context,PackageActivity::class.java)
@@ -71,7 +76,7 @@ class DeliveriesRecyclerAdapter(val context: Context, var lists: List<Package>, 
                 DeliveryType.DONE -> {
 
                     holder.etaTimeTextView.text= dateString
-                    holder.itemPosistion = position
+                    holder.itemPosition = position
                     holder.cityName.text = deliveryList.cityName
                     holder.addressTextView.text = deliveryList.address
                     holder.postCodeAddress.text = deliveryList.postCodeAddress
@@ -88,7 +93,7 @@ class DeliveriesRecyclerAdapter(val context: Context, var lists: List<Package>, 
                 DeliveryType.FAILED -> {
 
                     holder.etaTimeTextView.text= dateString
-                    holder.itemPosistion = position
+                    holder.itemPosition = position
                     holder.cityName.text = deliveryList.cityName
                     holder.addressTextView.text = deliveryList.address
                     holder.postCodeAddress.text = deliveryList.postCodeAddress
@@ -96,10 +101,13 @@ class DeliveriesRecyclerAdapter(val context: Context, var lists: List<Package>, 
                     holder.etaTimeTextView2.text= deliveryList.requestedDeliveryTime
                     holder.itemView.setOnClickListener {
 
-                        val documentId = it.tag as String
+                        val kolliId = it.tag as String
                         val intent = Intent(context,PackageActivity::class.java)
-                        intent.putExtra("documentId",documentId)
+                        intent.putExtra("packageId",kolliId)
                         context.startActivity(intent)
+                        lists.forEach {
+                            Log.d("DeliveriesRecyclerAdapter", "onBindViewHolder: ${it.kolliId}")
+                        }
                     }
                 }
             }
@@ -116,6 +124,7 @@ class DeliveriesRecyclerAdapter(val context: Context, var lists: List<Package>, 
         var postCodeAddress = itemView.findViewById<TextView>(R.id.postCodeAddress)
         var etaTimeTextView2 = itemView.findViewById<TextView>(R.id.etaTimeTextView2)
         var userNameReceiverTextView = itemView.findViewById<TextView>(R.id.userNameReceiverTextView)
-        var itemPosistion = 0
+        var leaveAtTheDoor = itemView.findViewById<TextView>(R.id.latdTimeTextView)
+        var itemPosition = 0
     }
 }

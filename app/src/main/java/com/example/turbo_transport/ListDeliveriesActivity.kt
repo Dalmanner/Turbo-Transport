@@ -115,7 +115,8 @@ class ListDeliveries : AppCompatActivity() {
 
                 }
                 R.id.item_2 -> {
-
+                    showLocation()
+                    true
 
                 }
                 R.id.item_3 -> {
