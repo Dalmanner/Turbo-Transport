@@ -129,7 +129,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
             binding.mapAdressTextView.text = deliveryList?.address ?: "N/A"
             binding.mapPostCodeTextView.text = deliveryList?.postCodeAddress ?: "N/A"
             binding.mapCityNameTextView.text = deliveryList?.cityName ?: "N/A"
-            binding.mapKolliIdTextView.text = deliveryList?.kolliId
+            binding.mapKolliIdTextView.text = deliveryList?.kolliId ?: "N/A"
+            binding.mapLATDTextView.text = deliveryList?.leaveAtTheDoor.toString()
 
         }.addOnFailureListener { exception ->
             Log.e("MapsActivity", "Error fetching package details: ", exception)
@@ -139,11 +140,11 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
     // Other existing methods
 
     //add buttons for zoom and to jump between markers
-    private fun addButtons() {
+    //private fun addButtons() {
         //val zoomInButton = findViewById<ImageButton>(R.id.mapZoomInBtn)
         //val zoomOutButton = findViewById<Button>(R.id.zoomOutButton)
-        val nextButton = findViewById<Button>(R.id.mapNextButton)
-        val previousButton = findViewById<Button>(R.id.mapPreviousButton)
+        //val nextButton = findViewById<Button>(R.id.mapNextButton)
+        //val previousButton = findViewById<Button>(R.id.mapPreviousButton)
 
 
         //zoomInButton.setOnClickListener {
@@ -152,13 +153,14 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
         //zoomOutButton.setOnClickListener {
         //    mMap.animateCamera(CameraUpdateFactory.zoomOut())
         //}
-        nextButton.setOnClickListener {
-            //Move to next marker
-        }
-        previousButton.setOnClickListener {
+        //nextButton.setOnClickListener {
+            //Move to next marker val cameraUpdate = CameraUpdateFactory.newLatLngZoom(startLatLng, 09.5f)
+            //        mMap.moveCamera(cameraUpdate)
+        //}
+        //previousButton.setOnClickListener {
             //Move to previous marker
-        }
-    }
+        //}
+    //}
 
     private fun fetchAllPackages() {
         db.collection("packages").get().addOnSuccessListener { result ->
@@ -188,7 +190,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
             ?.let { mMap.addMarker(it) }
         mMap.moveCamera(CameraUpdateFactory.newLatLng(startLatLng))
 
-        val cameraUpdate = CameraUpdateFactory.newLatLngZoom(startLatLng, 09.5f)
+        val cameraUpdate = CameraUpdateFactory.newLatLngZoom(startLatLng, 10.5f)
         mMap.moveCamera(cameraUpdate)
         fetchDirections(startLatLng, endLatLng, mMap)
     }
@@ -230,7 +232,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
         val apiKey = BuildConfig.API_KEY
         val client = OkHttpClient()
         val request = Request.Builder()
-            .url("https://maps.googleapis.com/maps/api/directions/json?origin=${startLatLng.latitude},${startLatLng.longitude}&destination=${endLatLng.latitude},${endLatLng.longitude}&mode=driving&key=$apiKey")
+
+        .url("https://maps.googleapis.com/maps/api/directions/json?origin=${startLatLng.latitude},${startLatLng.longitude}&destination=${endLatLng.latitude},${endLatLng.longitude}&mode=driving&key=$apiKey")
             .build()
 
         client.newCall(request).enqueue(object : okhttp3.Callback {
