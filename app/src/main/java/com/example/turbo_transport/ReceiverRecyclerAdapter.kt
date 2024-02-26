@@ -32,10 +32,12 @@ class ReceiverRecyclerAdapter(val context: Context, var lists: List<Package>) : 
         var receiverDeliveryList = lists[position]
         holder.itemView.tag = receiverDeliveryList.documentId
         holder.senderTextView.text = receiverDeliveryList.senderName
-        if (receiverDeliveryList.deliveryStatus == true) {
-            holder.deliveryStatusTextView.text = "Påväg"
+        if (receiverDeliveryList.transit == true) {
+            holder.deliveryStatusTextView.text = "In Transit"
+        } else if (receiverDeliveryList.banankaka == false) {
+            holder.deliveryStatusTextView.text = "Out for Delivery"
         } else {
-            holder.deliveryStatusTextView.text = "Levererad"
+            holder.deliveryStatusTextView.text = "Delivered"
         }
         holder.itemPosistion = position
         holder.itemView.setOnClickListener {

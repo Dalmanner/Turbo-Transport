@@ -31,6 +31,7 @@ class ReceiverPackageActivity : AppCompatActivity() {
     private lateinit var textViewSignA: TextView
     private lateinit var trackingN: TextView
     private lateinit var trackingNumber: TextView
+    private lateinit var packageDeliveryStatus : TextView
     private lateinit var db:FirebaseFirestore
 
 
@@ -70,17 +71,20 @@ class ReceiverPackageActivity : AppCompatActivity() {
                     packageInfoWeight.text = thisPackage.packageWeight.toString() + " kg"
                     packageInfoDimensions.text = "${thisPackage.packageHeight} cm x ${thisPackage.packageLength} cm x ${thisPackage.packageDepth} cm"
                     if (thisPackage.identityCheck == true){
-                        SignA.text = "Yes"
+                        textViewSignA.text = "Yes"
                     }
                     else {
-                        SignA.text = "No"
+                        textViewSignA.text = "No"
                     }
                     trackingNumber.text = thisPackage.kolliId
 
-
-
-
-
+                    if (thisPackage.transit == true) {
+                        packageDeliveryStatus.text = "In Transit"
+                    } else if (thisPackage.banankaka == false) {
+                        packageDeliveryStatus.text = "Out for Delivery"
+                    } else {
+                        packageDeliveryStatus.text = "Delivered"
+                    }
                 } else {
                     Log.d("!!!", "Current data: null")
                 }
@@ -105,5 +109,6 @@ class ReceiverPackageActivity : AppCompatActivity() {
         textViewSignA = findViewById(R.id.textViewSignA)
         trackingN = findViewById(R.id.trackingN)
         trackingNumber = findViewById(R.id.trackingNumber)
+        packageDeliveryStatus = findViewById(R.id.packageStatusTextView)
     }
 }
