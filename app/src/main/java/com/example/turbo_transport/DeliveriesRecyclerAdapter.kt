@@ -55,7 +55,7 @@ class DeliveriesRecyclerAdapter(val context: Context, var lists: List<Package>, 
             DeliveryType.ACTIVE -> {
 
             holder.etaTimeTextView.text= dateString
-            holder.itemPosistion = position
+            holder.itemPosition = position
             holder.cityName.text = deliveryList.cityName
             holder.addressTextView.text = deliveryList.address
             holder.userNameReceiverTextView.text = deliveryList.nameOfReceiver
@@ -70,7 +70,6 @@ class DeliveriesRecyclerAdapter(val context: Context, var lists: List<Package>, 
                 }
                     holder.itemView.setOnClickListener {
 
-
                         val documentId = it.tag as String
                         val intent = Intent(context,PackageActivity::class.java)
                         intent.putExtra("documentId",documentId)
@@ -80,7 +79,7 @@ class DeliveriesRecyclerAdapter(val context: Context, var lists: List<Package>, 
                 DeliveryType.DONE -> {
 
                     holder.etaTimeTextView.text= dateString
-                    holder.itemPosistion = position
+                    holder.itemPosition = position
                     holder.cityName.text = deliveryList.cityName
                     holder.addressTextView.text = deliveryList.address
                     holder.postCodeAddress.text = deliveryList.postCodeAddress
@@ -97,7 +96,7 @@ class DeliveriesRecyclerAdapter(val context: Context, var lists: List<Package>, 
                 DeliveryType.FAILED -> {
 
                     holder.etaTimeTextView.text= dateString
-                    holder.itemPosistion = position
+                    holder.itemPosition = position
                     holder.cityName.text = deliveryList.cityName
                     holder.addressTextView.text = deliveryList.address
                     holder.postCodeAddress.text = deliveryList.postCodeAddress
@@ -129,6 +128,6 @@ class DeliveriesRecyclerAdapter(val context: Context, var lists: List<Package>, 
         var etaTimeTextView2 = itemView.findViewById<TextView>(R.id.etaTimeTextView2)
         var userNameReceiverTextView = itemView.findViewById<TextView>(R.id.userNameReceiverTextView)
         var leaveAtTheDoor = itemView.findViewById<TextView>(R.id.latdTimeTextView)
-        var itemPosistion = 0
+        var itemPosition = 0
     }
 }
