@@ -82,6 +82,13 @@ class DeliveriesRecyclerAdapter(val context: Context, var lists: List<Package>, 
                     holder.postCodeAddress.text = deliveryList.postCodeAddress
                     holder.userNameReceiverTextView.text = deliveryList.nameOfReceiver
                     holder.etaTimeTextView2.text= deliveryList.requestedDeliveryTime
+                    holder.leaveAtTheDoor.text = deliveryList.leaveAtTheDoor.toString()
+                    if (deliveryList.leaveAtTheDoor == true){
+                        holder.leaveAtTheDoor.text = " LATD "
+                    }
+                    else {
+                        holder.leaveAtTheDoor.text = ""
+                    }
                     holder.itemView.setOnClickListener {
 
                         val documentId = it.tag as String
@@ -99,11 +106,18 @@ class DeliveriesRecyclerAdapter(val context: Context, var lists: List<Package>, 
                     holder.postCodeAddress.text = deliveryList.postCodeAddress
                     holder.userNameReceiverTextView.text = deliveryList.nameOfReceiver
                     holder.etaTimeTextView2.text= deliveryList.requestedDeliveryTime
+                    holder.leaveAtTheDoor.text = deliveryList.leaveAtTheDoor.toString()
+                    if (deliveryList.leaveAtTheDoor == true){
+                        holder.leaveAtTheDoor.text = " LATD "
+                    }
+                    else {
+                        holder.leaveAtTheDoor.text = ""
+                    }
                     holder.itemView.setOnClickListener {
 
-                        val kolliId = it.tag as String
+                        val documentId = it.tag as String
                         val intent = Intent(context,PackageActivity::class.java)
-                        intent.putExtra("packageId",kolliId)
+                        intent.putExtra("documentId",documentId)
                         context.startActivity(intent)
                         lists.forEach {
                             Log.d("DeliveriesRecyclerAdapter", "onBindViewHolder: ${it.kolliId}")
