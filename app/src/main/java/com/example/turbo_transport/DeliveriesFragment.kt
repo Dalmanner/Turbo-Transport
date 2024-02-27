@@ -55,6 +55,17 @@ class DeliveriesFragment : Fragment() {
         override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
             // Handle swipe if needed
         }
+
+        override fun onSelectedChanged(viewHolder: RecyclerView.ViewHolder?, actionState: Int) {
+            super.onSelectedChanged(viewHolder, actionState)
+            // Handle the start of the drag (actionState == ItemTouchHelper.ACTION_STATE_DRAG)
+        }
+
+        override fun clearView(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder) {
+            super.clearView(recyclerView, viewHolder)
+            // This is called when the drag is completed.
+            adapter.notifyDataSetChanged() // Refresh the entire list to update displayed numbers.
+        }
     }
 
 
