@@ -93,7 +93,7 @@ class ReceiverPackageActivity : AppCompatActivity() {
                     } else if (thisPackage.banankaka == false) {
                         packageDeliveryStatus.text = "Out for Delivery"
                     } else {
-                        packageDeliveryStatus.text = "Delivered"
+                        packageDeliveryStatus.text = "Delivered at ${SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault()).format(thisPackage.lastEdited?.toDate())}"
                     }
                 } else {
                     Log.d("!!!", "Current data: null")
