@@ -41,7 +41,8 @@ class DoneDeliveriesFragment : Fragment() {
             }
             if (snapshot != null && !snapshot.isEmpty) {
                 val packageList = snapshot.documents.mapNotNull { it.toObject(Package::class.java) }
-                deliveryRecyclerView.adapter = DeliveriesRecyclerAdapter(requireContext(), packageList, DeliveriesRecyclerAdapter.DeliveryType.DONE)
+                deliveryRecyclerView.adapter = DeliveriesRecyclerAdapter(requireContext(),
+                    packageList.toMutableList(), DeliveriesRecyclerAdapter.DeliveryType.DONE)
             }
         }
     }
