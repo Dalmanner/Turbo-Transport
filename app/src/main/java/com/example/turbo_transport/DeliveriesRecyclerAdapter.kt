@@ -12,7 +12,7 @@ import java.text.SimpleDateFormat
 import java.util.Locale
 
 
-class DeliveriesRecyclerAdapter(val context: Context, var lists: List<Package>, val deliveryType: DeliveryType) : RecyclerView.Adapter<DeliveriesRecyclerAdapter.ViewHolder>() {
+class DeliveriesRecyclerAdapter(val context: Context, var lists: MutableList<Package>, val deliveryType: DeliveryType) : RecyclerView.Adapter<DeliveriesRecyclerAdapter.ViewHolder>() {
 //  class DeliveriesRecyclerAdapter(val context: Context, var lists: List<Package>, val deliveryType: ViewHolder.DeliveryType) : RecyclerView.Adapter<DeliveriesRecyclerAdapter.ViewHolder>() {  ...
     enum class DeliveryType {
         ACTIVE, DONE, FAILED
@@ -35,6 +35,19 @@ class DeliveriesRecyclerAdapter(val context: Context, var lists: List<Package>, 
         return ViewHolder(itemView)
     }
 
+    fun moveItem(fromPosition: Int, toPosition: Int) {
+        if (fromPosition < toPosition) {
+            for (i in fromPosition until toPosition) {
+                lists.add(i + 1, lists.removeAt(i))
+            }
+        } else {
+            for (i in fromPosition downTo toPosition + 1) {
+                lists.add(i - 1, lists.removeAt(i))
+            }
+        }
+        notifyItemMoved(fromPosition, toPosition)
+    }
+
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         var deliveryList = lists[position]
         holder.itemView.tag = deliveryList.documentId
@@ -51,6 +64,7 @@ class DeliveriesRecyclerAdapter(val context: Context, var lists: List<Package>, 
         when (deliveryType) {
             DeliveryType.ACTIVE -> {
 
+            holder.numberTextView.text = (position + 1).toString()
             holder.etaTimeTextView.text= dateString
             holder.itemPosition = position
             holder.cityName.text = deliveryList.cityName
@@ -139,6 +153,7 @@ class DeliveriesRecyclerAdapter(val context: Context, var lists: List<Package>, 
         var etaTimeTextView2 = itemView.findViewById<TextView>(R.id.etaTimeTextView2)
         var userNameReceiverTextView = itemView.findViewById<TextView>(R.id.userNameReceiverTextView)
         var leaveAtTheDoor = itemView.findViewById<TextView>(R.id.latdTimeTextView)
+        var numberTextView = itemView.findViewById<TextView>(R.id.numberTextView)
         var itemPosition = 0
     }
 }
