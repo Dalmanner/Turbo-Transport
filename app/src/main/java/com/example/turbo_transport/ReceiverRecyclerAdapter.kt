@@ -10,14 +10,10 @@ import androidx.recyclerview.widget.RecyclerView
 
 class ReceiverRecyclerAdapter(val context: Context, var lists: List<Package>, val deliveryType : DeliveryType) : RecyclerView.Adapter<ReceiverRecyclerAdapter.ViewHolder>()  {
 
-
-
     enum class DeliveryType {
         ACTIVE, DONE
     }
     var layoutInflater = LayoutInflater.from(context)
-
-
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -46,19 +42,6 @@ class ReceiverRecyclerAdapter(val context: Context, var lists: List<Package>, va
             holder.deliveryStatusTextView.text = "Delivered"
         }
         holder.itemPosistion = position
-
-
-        /*
-        holder.itemView.setOnClickListener {
-
-            val documentId = it.tag as String
-            val intent = Intent(context,ReceiverPackageActivity::class.java)
-            intent.putExtra("documentId",documentId)
-            context.startActivity(intent)
-        }
-
-         */
-
 
         when (deliveryType) {
             DeliveryType.ACTIVE -> {
@@ -114,7 +97,5 @@ class ReceiverRecyclerAdapter(val context: Context, var lists: List<Package>, va
         var senderTextView = itemView.findViewById<TextView>(R.id.senderTextView)
         var deliveryStatusTextView = itemView.findViewById<TextView>(R.id.deliveryStatusTimeTextView)
         var itemPosistion = 0
-
-
     }
 }

@@ -42,12 +42,7 @@ class ListReceiverPackage : AppCompatActivity() {
         db = Firebase.firestore
         auth = Firebase.auth
         initializeViews()
-/*
-        receiverRecylerView = findViewById(R.id.receiverRecyclerView)
-        receiverRecylerView.layoutManager = LinearLayoutManager(this)
 
- */
-        //loadPackageDb()
         setupViewPager()
         setupTabLayout()
         setTokenDb()
@@ -85,26 +80,6 @@ class ListReceiverPackage : AppCompatActivity() {
         }
     }
 
-    /*
-    fun loadPackageDb(){
-        val user = auth.currentUser
-        val packagesRef = db.collection("packages")
-        if (user != null) {
-            packagesRef.whereEqualTo("userIdReceiver", user.uid).addSnapshotListener { snapshot, e ->
-                if (e != null) {
-                    return@addSnapshotListener
-                }
-                if (snapshot != null && !snapshot.isEmpty) {
-                    val packageList = snapshot.documents.map { document ->
-                        document.toObject(Package::class.java)
-                    }
-                    receiverRecylerView.adapter = ReceiverRecyclerAdapter(this@ListReceiverPackage, packageList.filterNotNull())
-                }
-            }
-        }
-    }
-
-     */
     private fun topBar(){
         topAppBar.setNavigationOnClickListener {
             auth.signOut()
@@ -187,11 +162,8 @@ class ListReceiverPackage : AppCompatActivity() {
             })
     }
     private fun initializeViews() {
-
         topAppBar = findViewById(R.id.topAppBar1)
         bottomBar = findViewById(R.id.bottom_navigation1)
-
-
 
     }
 
