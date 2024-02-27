@@ -39,7 +39,7 @@ class ReceiverRecyclerAdapter(val context: Context, var lists: List<Package>, va
         } else if (receiverDeliveryList.banankaka == false) {
             holder.deliveryStatusTextView.text = "Out for Delivery"
         } else {
-            holder.deliveryStatusTextView.text = "Delivered"
+            holder.deliveryStatusTextView.text = "Delivered" //TODO: add timestamp?
         }
         holder.itemPosistion = position
 

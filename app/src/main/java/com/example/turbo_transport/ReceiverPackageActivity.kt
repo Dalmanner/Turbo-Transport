@@ -29,6 +29,7 @@ class ReceiverPackageActivity : AppCompatActivity() {
     private lateinit var packageInfoWeight: TextView
     private lateinit var packageInfoDimensions: TextView
     private lateinit var SignA: TextView
+    private lateinit var textViewLATD: TextView
     private lateinit var textViewSignA: TextView
     private lateinit var trackingN: TextView
     private lateinit var trackingNumber: TextView
@@ -69,6 +70,14 @@ class ReceiverPackageActivity : AppCompatActivity() {
                     nameA.text = thisPackage.nameOfReceiver
                     phonenumberA.text = thisPackage.telephoneNumber
                     senderNameA.text = thisPackage.senderName
+                    //textViewLATD = findViewById(R.id.textViewLATD)
+                    if (thisPackage.leaveAtTheDoor == true){
+                        textViewLATD.text = "Yes"
+                    }
+                    else {
+                        textViewLATD.text = "No"
+                    }
+
                     packageInfoWeight.text = thisPackage.packageWeight.toString() + " kg"
                     packageInfoDimensions.text = "${thisPackage.packageHeight} cm x ${thisPackage.packageLength} cm x ${thisPackage.packageDepth} cm"
                     if (thisPackage.identityCheck == true){
@@ -84,7 +93,7 @@ class ReceiverPackageActivity : AppCompatActivity() {
                     } else if (thisPackage.banankaka == false) {
                         packageDeliveryStatus.text = "Out for Delivery"
                     } else {
-                        packageDeliveryStatus.text = "Delivered"
+                        packageDeliveryStatus.text = "Delivered at ${SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault()).format(thisPackage.lastEdited?.toDate())}"
                     }
                 } else {
                     Log.d("!!!", "Current data: null")
@@ -129,5 +138,6 @@ class ReceiverPackageActivity : AppCompatActivity() {
         trackingN = findViewById(R.id.trackingN)
         trackingNumber = findViewById(R.id.trackingNumber)
         packageDeliveryStatus = findViewById(R.id.packageStatusTextView)
+        textViewLATD = findViewById(R.id.textViewLATD)
     }
 }
