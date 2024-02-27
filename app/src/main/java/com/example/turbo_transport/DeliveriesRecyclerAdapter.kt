@@ -1,5 +1,6 @@
 package com.example.turbo_transport
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.util.Log
@@ -33,19 +34,6 @@ class DeliveriesRecyclerAdapter(val context: Context, var lists: MutableList<Pac
         }
         val itemView = layoutInflater.inflate(layout, parent, false)
         return ViewHolder(itemView)
-    }
-
-    fun moveItem(fromPosition: Int, toPosition: Int) {
-        if (fromPosition < toPosition) {
-            for (i in fromPosition until toPosition) {
-                lists.add(i + 1, lists.removeAt(i))
-            }
-        } else {
-            for (i in fromPosition downTo toPosition + 1) {
-                lists.add(i - 1, lists.removeAt(i))
-            }
-        }
-        notifyItemMoved(fromPosition, toPosition)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -143,6 +131,21 @@ class DeliveriesRecyclerAdapter(val context: Context, var lists: MutableList<Pac
 
     override fun getItemCount(): Int {
         return lists.size
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun moveItem(fromPosition: Int, toPosition: Int) {
+        if (fromPosition < toPosition) {
+            for (i in fromPosition until toPosition) {
+                lists.add(i + 1, lists.removeAt(i))
+            }
+        } else {
+            for (i in fromPosition downTo toPosition + 1) {
+                lists.add(i - 1, lists.removeAt(i))
+            }
+        }
+        notifyItemMoved(fromPosition, toPosition)
+
     }
 
     inner class ViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView) {
