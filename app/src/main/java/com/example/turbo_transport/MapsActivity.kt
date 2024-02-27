@@ -176,7 +176,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
                     if (marker != null) {
                         marker.tag = document.id
                     }  // Set the package ID as the marker's tag
-
                 }
             }
             // Optionally, adjust the camera to show all markers or a specific region
