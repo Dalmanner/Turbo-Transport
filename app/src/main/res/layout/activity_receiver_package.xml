@@ -39,13 +39,15 @@
 
   <com.google.android.material.card.MaterialCardView
       android:id="@+id/card"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_margin="8dp"
-      android:background="#BBDEFB"
+      android:layout_width="0dp"
+      android:layout_height="0dp"
+      android:layout_margin="0dp"
       android:layout_marginTop="651dp"
-      app:layout_constraintTop_toBottomOf="@+id/packageProgressBar"
-      tools:layout_editor_absoluteX="8dp">
+      android:background="#BBDEFB"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@+id/packageProgressBar">
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -60,217 +62,217 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0">
 
-          <LinearLayout
-              android:id="@+id/linearLayout"
+      <LinearLayout
+          android:id="@+id/linearLayout"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:orientation="vertical">
+
+        <!-- Media -->
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:contentDescription="Boxes"
+            android:scaleType="centerCrop"
+            app:srcCompat="@drawable/boxes" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="512dp"
+            android:background="@color/blue_10"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+          <!-- Title, secondary and supporting text -->
+
+          <TextView
+              android:id="@+id/deliveryA"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              android:orientation="vertical">
+              android:fontFamily="@font/roboto_medium"
+              android:text="Delivery Adress"
+              android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+              android:textSize="16sp" />
 
-            <!-- Media -->
-            <ImageView
-                android:id="@+id/imageView"
-                android:layout_width="match_parent"
-                android:layout_height="150dp"
-                android:contentDescription="Boxes"
-                android:scaleType="centerCrop"
-                app:srcCompat="@drawable/boxes" />
+          <TextView
+              android:id="@+id/adressA"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_marginTop="8dp"
+              android:text="Östgatan 4"
+              android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="512dp"
-                android:background="@color/blue_10"
-                android:orientation="vertical"
-                android:padding="16dp">
+          <TextView
+              android:id="@+id/nameAndAdress"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_marginTop="16dp"
+              android:text="Recipients name and adress "
+              android:textAppearance="?attr/textAppearanceTitleMedium"
+              android:textColor="@color/black" />
 
-              <!-- Title, secondary and supporting text -->
+          <TextView
+              android:id="@+id/nameA"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:text="Erik Grön" />
 
-              <TextView
-                  android:id="@+id/deliveryA"
-                  android:layout_width="match_parent"
-                  android:layout_height="wrap_content"
-                  android:fontFamily="@font/roboto_medium"
-                  android:text="Delivery Adress"
-                  android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-                  android:textSize="16sp" />
+          <TextView
+              android:id="@+id/phonenumberA"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="070 255 56 74"
+              android:textAppearance="?attr/textAppearanceBodyMedium"
+              android:textColor="?android:attr/textColorSecondary" />
 
-              <TextView
-                  android:id="@+id/adressA"
-                  android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:layout_marginTop="8dp"
-                  android:text="Östgatan 4"
-                  android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+          <com.google.android.material.divider.MaterialDivider
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
 
-              <TextView
-                  android:id="@+id/nameAndAdress"
-                  android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:layout_marginTop="16dp"
-                  android:text="Recipients name and adress "
-                  android:textAppearance="?attr/textAppearanceTitleMedium"
-                  android:textColor="@color/black" />
+              android:layout_marginTop="8dp" />
 
-              <TextView
-                  android:id="@+id/nameA"
-                  android:layout_width="match_parent"
-                  android:layout_height="wrap_content"
-                  android:text="Erik Grön" />
+          <TextView
+              android:id="@+id/senderA"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_marginTop="8dp"
+              android:fontFamily="@font/roboto_medium"
+              android:text="Sender"
+              android:textAppearance="?attr/textAppearanceTitleMedium" />
 
-              <TextView
-                  android:id="@+id/phonenumberA"
-                  android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:text="070 255 56 74"
-                  android:textAppearance="?attr/textAppearanceBodyMedium"
-                  android:textColor="?android:attr/textColorSecondary" />
+          <TextView
+              android:id="@+id/senderNameA"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_marginTop="16dp"
+              android:text="Elgiganten"
+              android:textAppearance="?attr/textAppearanceBodyMedium"
+              android:textColor="?android:attr/textColorSecondary" />
 
-              <com.google.android.material.divider.MaterialDivider
-                  android:layout_width="match_parent"
-                  android:layout_height="wrap_content"
-
-                  android:layout_marginTop="8dp" />
-
-              <TextView
-                  android:id="@+id/senderA"
-                  android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:layout_marginTop="8dp"
-                  android:fontFamily="@font/roboto_medium"
-                  android:text="Sender"
-                  android:textAppearance="?attr/textAppearanceTitleMedium" />
-
-              <TextView
-                  android:id="@+id/senderNameA"
-                  android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:layout_marginTop="16dp"
-                  android:text="Elgiganten"
-                  android:textAppearance="?attr/textAppearanceBodyMedium"
-                  android:textColor="?android:attr/textColorSecondary" />
-
-              <com.google.android.material.divider.MaterialDivider
-                  android:layout_width="match_parent"
-                  android:layout_height="wrap_content"
-                  android:layout_marginTop="8dp" />
+          <com.google.android.material.divider.MaterialDivider
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_marginTop="8dp" />
 
 
-              <TextView
-                  android:id="@+id/packageInfoA"
-                  android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:layout_marginTop="8dp"
-                  android:fontFamily="@font/roboto_medium"
-                  android:text="Weights and Measures"
-                  android:textAppearance="?attr/textAppearanceTitleMedium" />
+          <TextView
+              android:id="@+id/packageInfoA"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_marginTop="8dp"
+              android:fontFamily="@font/roboto_medium"
+              android:text="Weights and Measures"
+              android:textAppearance="?attr/textAppearanceTitleMedium" />
 
-              <TextView
-                  android:id="@+id/packageInfoWeight"
-                  android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:layout_marginTop="8dp"
-                  android:text="13kg"
-                  android:textAppearance="?attr/textAppearanceBodyMedium"
-                  android:textColor="?android:attr/textColorSecondary" />
+          <TextView
+              android:id="@+id/packageInfoWeight"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_marginTop="8dp"
+              android:text="13kg"
+              android:textAppearance="?attr/textAppearanceBodyMedium"
+              android:textColor="?android:attr/textColorSecondary" />
 
-              <TextView
-                  android:id="@+id/packageInfoDimensions"
-                  android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:text="80.79 cm x 23.41 cm x 42.73 cm"
-                  android:textAppearance="?attr/textAppearanceBodyMedium"
-                  android:textColor="?android:attr/textColorSecondary" />
+          <TextView
+              android:id="@+id/packageInfoDimensions"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="80.79 cm x 23.41 cm x 42.73 cm"
+              android:textAppearance="?attr/textAppearanceBodyMedium"
+              android:textColor="?android:attr/textColorSecondary" />
 
-              <com.google.android.material.divider.MaterialDivider
-                  android:layout_width="match_parent"
-                  android:layout_height="wrap_content"
-                  android:layout_marginTop="8dp" />
-
-
-              <TextView
-                  android:id="@+id/SignA"
-                  android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:layout_marginTop="8dp"
-                  android:text="Signature Required"
-                  android:textAppearance="?attr/textAppearanceTitleMedium" />
-
-              <TextView
-                  android:id="@+id/textViewSignA"
-                  android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:layout_marginTop="8dp"
-                  android:text="Yes"
-                  android:textAppearance="?attr/textAppearanceBodyMedium"
-                  android:textColor="?android:attr/textColorSecondary" />
-
-              <com.google.android.material.divider.MaterialDivider
-                  android:layout_width="match_parent"
-                  android:layout_height="wrap_content"
-                  android:layout_marginTop="8dp" />
-
-              <TextView
-                  android:id="@+id/latdTextView"
-                  android:layout_width="match_parent"
-                  android:layout_height="wrap_content"
-                  android:layout_marginTop="8dp"
-                  android:text="Leave At The Door"
-                  android:textAppearance="?attr/textAppearanceTitleMedium" />
-
-              <TextView
-                  android:id="@+id/textViewLATD"
-                  android:layout_width="match_parent"
-                  android:layout_height="wrap_content"
-                  android:layout_marginTop="8dp"
-                  android:text="Yes"
-                  android:textAppearance="?attr/textAppearanceBodyMedium"
-                  android:textColor="?android:attr/textColorSecondary" />
-
-              <com.google.android.material.divider.MaterialDivider
-                  android:id="@+id/materialDivider2"
-                  android:layout_width="match_parent"
-                  android:layout_height="wrap_content"
-                  android:layout_marginTop="8dp" />
-
-              <TextView
-                  android:id="@+id/trackingN"
-                  android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:layout_marginTop="8dp"
-                  android:text="Tracking number"
-                  android:textAppearance="?attr/textAppearanceTitleMedium" />
-
-              <TextView
-                  android:id="@+id/trackingNumber"
-                  android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:layout_marginTop="8dp"
-                  android:text="70702051105049876"
-                  android:textAppearance="?attr/textAppearanceBodyMedium"
-                  android:textColor="?android:attr/textColorSecondary" />
-
-              <com.google.android.material.divider.MaterialDivider
-                  android:layout_width="match_parent"
-                  android:layout_height="wrap_content"
-                  android:layout_marginTop="8dp" />
-
-              <TextView
-                  android:id="@+id/textView221"
-                  android:layout_width="match_parent"
-                  android:layout_height="wrap_content"
-                  android:fontFamily="@font/roboto_medium"
-                  android:text="Package Status"
-                  android:textSize="16sp" />
-
-              <TextView
-                  android:id="@+id/packageStatusTextView"
-                  android:layout_width="match_parent"
-                  android:layout_height="wrap_content"
-                  android:text="På väg" />
+          <com.google.android.material.divider.MaterialDivider
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_marginTop="8dp" />
 
 
-            </LinearLayout>
+          <TextView
+              android:id="@+id/SignA"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_marginTop="8dp"
+              android:text="Signature Required"
+              android:textAppearance="?attr/textAppearanceTitleMedium" />
 
-          </LinearLayout>
+          <TextView
+              android:id="@+id/textViewSignA"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_marginTop="8dp"
+              android:text="Yes"
+              android:textAppearance="?attr/textAppearanceBodyMedium"
+              android:textColor="?android:attr/textColorSecondary" />
+
+          <com.google.android.material.divider.MaterialDivider
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_marginTop="8dp" />
+
+          <TextView
+              android:id="@+id/latdTextView"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_marginTop="8dp"
+              android:text="Leave At The Door"
+              android:textAppearance="?attr/textAppearanceTitleMedium" />
+
+          <TextView
+              android:id="@+id/textViewLATD"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_marginTop="8dp"
+              android:text="Yes"
+              android:textAppearance="?attr/textAppearanceBodyMedium"
+              android:textColor="?android:attr/textColorSecondary" />
+
+          <com.google.android.material.divider.MaterialDivider
+              android:id="@+id/materialDivider2"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_marginTop="8dp" />
+
+          <TextView
+              android:id="@+id/trackingN"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_marginTop="8dp"
+              android:text="Tracking number"
+              android:textAppearance="?attr/textAppearanceTitleMedium" />
+
+          <TextView
+              android:id="@+id/trackingNumber"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_marginTop="8dp"
+              android:text="70702051105049876"
+              android:textAppearance="?attr/textAppearanceBodyMedium"
+              android:textColor="?android:attr/textColorSecondary" />
+
+          <com.google.android.material.divider.MaterialDivider
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_marginTop="8dp" />
+
+          <TextView
+              android:id="@+id/textView221"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:fontFamily="@font/roboto_medium"
+              android:text="Package Status"
+              android:textSize="16sp" />
+
+          <TextView
+              android:id="@+id/packageStatusTextView"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:text="På väg" />
+
+
+        </LinearLayout>
+
+      </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>
 
