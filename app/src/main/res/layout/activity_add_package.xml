@@ -7,186 +7,183 @@
     android:layout_height="match_parent"
     android:visibility="visible">
 
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/etNameOfReceiver"
-        android:layout_width="120dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="20dp"
-        android:ems="10"
-        android:hint="Receiver Name"
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="8dp"
+        android:scrollbars="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/bottom_navigation"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/topAppBar" />
-
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/etAddress"
-        android:layout_width="120dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="10dp"
-        android:ems="10"
-        android:hint="Address"
+        app:layout_constraintHorizontal_bias="0.606"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/topAppBar" />
+        app:layout_constraintTop_toBottomOf="@+id/topAppBar">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/etKolliId"
-        android:layout_width="120dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="20dp"
-        android:ems="10"
-        android:hint="Kolli ID"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etPostCodeAddress" />
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etNameOfReceiver"
+                android:layout_width="200dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:ems="10"
+                android:hint="Receiver Name" />
 
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/etPackageWeight"
-        android:layout_width="120dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="20dp"
-        android:ems="10"
-        android:hint="Package Weight"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etKolliId" />
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etAddress"
+                android:layout_width="200dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:ems="10"
+                android:hint="Address"
+                android:nextFocusDown="@id/etKolliId" />
 
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/etRequestedDeliveryTime"
-        android:layout_width="120dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="20dp"
-        android:hint="Delivery Time"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etLatitude" />
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etPostCodeAddress"
+                android:layout_width="200dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:hint="Post Code" />
 
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/etPackageType"
-        android:layout_width="120dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="20dp"
-        android:ems="10"
-        android:hint="Package Type"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etPackageHeight" />
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etCityName"
+                android:layout_width="200dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:ems="10"
+                android:hint="City" />
 
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/etLatitude"
-        android:layout_width="120dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="20dp"
-        android:ems="10"
-        android:hint="Latitude"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etPackageType" />
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etPhoneNumber"
+                android:layout_width="200dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:ems="10"
+                android:hint="Phone Number" />
 
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/etPackageHeight"
-        android:layout_width="120dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="20dp"
-        android:ems="10"
-        android:hint="Package Height"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etPackageWeight" />
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etLatitude"
+                android:layout_width="200dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:ems="10"
+                android:hint="Latitude" />
 
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/etCityName"
-        android:layout_width="120dp"
-        android:layout_height="50dp"
-        android:layout_marginEnd="20dp"
-        android:ems="10"
-        android:hint="City"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etNameOfReceiver" />
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etLongitude"
+                android:layout_width="200dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:ems="10"
+                android:hint="Longitude" />
 
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/etDeliveryNote"
-        android:layout_width="120dp"
-        android:layout_height="50dp"
-        android:layout_marginEnd="20dp"
-        android:ems="10"
-        android:hint="Delivery Note"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etCityName" />
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etSenderName2"
+                android:layout_width="200dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:ems="10"
+                android:hint="Sender Name" />
 
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/etPackageDepth"
-        android:layout_width="120dp"
-        android:layout_height="50dp"
-        android:layout_marginEnd="20dp"
-        android:ems="10"
-        android:hint="Package Depth"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etDeliveryNote" />
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etRequestedDeliveryTime"
+                android:layout_width="200dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:hint="Delivery Time" />
 
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/etSenderName2"
-        android:layout_width="120dp"
-        android:layout_height="50dp"
-        android:layout_marginEnd="20dp"
-        android:ems="10"
-        android:hint="Sender Name"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etLongitude" />
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etPackageType"
+                android:layout_width="200dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:ems="10"
+                android:hint="Package Type" />
 
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/etLongitude"
-        android:layout_width="120dp"
-        android:layout_height="50dp"
-        android:layout_marginEnd="20dp"
-        android:ems="10"
-        android:hint="Longitude"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etPhoneNumber" />
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etPackageHeight"
+                android:layout_width="200dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:ems="10"
+                android:hint="Package Height" />
 
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/etPackageLength"
-        android:layout_width="120dp"
-        android:layout_height="50dp"
-        android:layout_marginEnd="20dp"
-        android:ems="10"
-        android:hint="Package Length"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etPackageDepth" />
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etPackageDepth"
+                android:layout_width="200dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:ems="10"
+                android:hint="Package Depth" />
 
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/etPhoneNumber"
-        android:layout_width="120dp"
-        android:layout_height="50dp"
-        android:layout_marginEnd="20dp"
-        android:ems="10"
-        android:hint="Phone Number"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etPackageLength" />
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etPackageLength"
+                android:layout_width="200dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:ems="10"
+                android:hint="Package Length" />
 
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/etPostCodeAddress"
-        android:layout_width="120dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="20dp"
-        android:hint="Post Code"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etAddress" />
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etPackageWeight"
+                android:layout_width="200dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:ems="10"
+                android:hint="Package Weight" />
 
-    <CheckBox
-        android:id="@+id/etLeaveAtTheDoor"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="20dp"
-        android:text="Leave At The Door"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etSenderName2" />
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etDeliveryNote"
+                android:layout_width="200dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:ems="10"
+                android:hint="Delivery Note" />
 
-    <CheckBox
-        android:id="@+id/etIdentityCheck"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp"
-        android:text="Identity Check"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etRequestedDeliveryTime" />
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etKolliId"
+                android:layout_width="200dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:ems="10"
+                android:hint="Kolli ID* (auto if empty)" />
+
+            <CheckBox
+                android:id="@+id/etLeaveAtTheDoor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Leave At The Door" />
+
+            <CheckBox
+                android:id="@+id/etIdentityCheck"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:text="Identity Check" />
+
+            <Button
+                android:id="@+id/btnSubmit"
+                android:layout_width="68dp"
+                android:layout_height="67dp"
+                android:layout_gravity="bottom|center"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/add_box"
+                android:backgroundTint="#F40707"
+                android:backgroundTintMode="add"
+                android:text="  "
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                app:iconTint="@color/green_500"
+                app:iconTintMode="add" />
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/topAppBar"
@@ -231,21 +228,11 @@
         android:id="@+id/bottom_navigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:backgroundTint="@color/blue_500"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:backgroundTint="@color/blue_500"
         app:menu="@menu/bottom_navigation_menu" />
 
-
-    <Button
-        android:id="@+id/btnSubmit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
-        android:text="Add"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etLeaveAtTheDoor" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

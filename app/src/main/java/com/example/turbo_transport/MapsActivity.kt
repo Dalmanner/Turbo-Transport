@@ -106,20 +106,15 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
             fusedLocationClient.requestLocationUpdates(
                 locationRequest,
                 locationCallback,
-                null /* Looper */
+                null
             )
         }
     }
 
     override fun onMarkerClick(marker: Marker): Boolean {
-        // Assuming the marker's tag has been set to the package ID
+
         val packageId = marker.tag as? String ?: return false
-
-        // Fetch the package information based on packageId
-        // Update the UI below the map to display the package information
         displayPackageInformation(packageId)
-
-        // Return true to indicate that we have handled the event and no further processing is necessary
         return true
     }
 
@@ -140,31 +135,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
         }
     }
 
-    // Other existing methods
-
-    //add buttons for zoom and to jump between markers
-    //private fun addButtons() {
-        //val zoomInButton = findViewById<ImageButton>(R.id.mapZoomInBtn)
-        //val zoomOutButton = findViewById<Button>(R.id.zoomOutButton)
-        //val nextButton = findViewById<Button>(R.id.mapNextButton)
-        //val previousButton = findViewById<Button>(R.id.mapPreviousButton)
-
-
-        //zoomInButton.setOnClickListener {
-        //    mMap.animateCamera(CameraUpdateFactory.zoomIn())
-        //}
-        //zoomOutButton.setOnClickListener {
-        //    mMap.animateCamera(CameraUpdateFactory.zoomOut())
-        //}
-        //nextButton.setOnClickListener {
-            //Move to next marker val cameraUpdate = CameraUpdateFactory.newLatLngZoom(startLatLng, 09.5f)
-            //        mMap.moveCamera(cameraUpdate)
-        //}
-        //previousButton.setOnClickListener {
-            //Move to previous marker
-        //}
-    //}
-
     private fun fetchAllPackages() {
         db.collection("packages").get().addOnSuccessListener { result ->
             for (document in result) {
@@ -178,10 +148,9 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
                     val marker = mMap.addMarker(MarkerOptions().position(location).title("Package ID: ${document.id}"))
                     if (marker != null) {
                         marker.tag = document.id
-                    }  // Set the package ID as the marker's tag
+                    }  //Set the package ID as the package tag
                 }
             }
-            // Optionally, adjust the camera to show all markers or a specific region
         }.addOnFailureListener { exception ->
             Log.d("MapsActivity", "Error fetching packages: ", exception)
         }
