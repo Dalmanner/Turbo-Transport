@@ -8,6 +8,8 @@ import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.Button
+import android.widget.ImageButton
 import androidx.core.content.ContextCompat
 
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -22,6 +24,7 @@ import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
+import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.PolylineOptions
 import com.google.android.material.navigation.NavigationBarView
 import com.google.firebase.Firebase
@@ -32,7 +35,7 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import java.io.IOException
 
-class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
+class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
 
     private lateinit var mMap: GoogleMap
     private lateinit var binding: ActivityMapsBinding
@@ -67,6 +70,9 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         mMap = googleMap
         // Add a marker to each package location and move the camera
         fetchAllPackages()
+        //display the package information in textViews in activity_maps when a marker on the map is clicked:
+        mMap.setOnMarkerClickListener(this)
+
     }
 
     @SuppressLint("MissingPermission")
@@ -85,6 +91,13 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                     val currentLatLng = LatLng(location.latitude, location.longitude)
                             //move the camera to view all markers
                     mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 12f))
+                    val firstPackage = db.collection("packages").document("package1")
+                    firstPackage.get().addOnSuccessListener { document ->
+                        val packageLocation = document.toObject(Package::class.java)
+                        if (packageLocation != null) {
+                            setCameraAndMap(packageLocation, mMap)
+                        }
+                    }
                 }
             }
         }
@@ -98,26 +111,59 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         }
     }
 
-    //add buttons for zoom and to jump between markers
-    /*private fun addButtons() {
-        val zoomInButton = findViewById<Button>(R.id.zoomInButton)
-        val zoomOutButton = findViewById<Button>(R.id.zoomOutButton)
-        val nextButton = findViewById<Button>(R.id.nextButton)
-        val previousButton = findViewById<Button>(R.id.previousButton)
+    override fun onMarkerClick(marker: Marker): Boolean {
+        // Assuming the marker's tag has been set to the package ID
+        val packageId = marker.tag as? String ?: return false
 
-        zoomInButton.setOnClickListener {
-            mMap.animateCamera(CameraUpdateFactory.zoomIn())
+        // Fetch the package information based on packageId
+        // Update the UI below the map to display the package information
+        displayPackageInformation(packageId)
+
+        // Return true to indicate that we have handled the event and no further processing is necessary
+        return true
+    }
+
+    private fun displayPackageInformation(packageId: String) {
+        val packageRef = db.collection("packages").document(packageId)
+        packageRef.get().addOnSuccessListener { document ->
+            val deliveryList = document.toObject(Package::class.java)
+            // No need to inflate the layout again, use the existing 'binding' variable
+            binding.mapUserNameReceiverTextView.text = deliveryList?.nameOfReceiver ?: "N/A"
+            binding.mapAdressTextView.text = deliveryList?.address ?: "N/A"
+            binding.mapPostCodeTextView.text = deliveryList?.postCodeAddress ?: "N/A"
+            binding.mapCityNameTextView.text = deliveryList?.cityName ?: "N/A"
+            binding.mapKolliIdTextView.text = deliveryList?.kolliId ?: "N/A"
+            binding.mapLATDTextView.text = deliveryList?.leaveAtTheDoor.toString()
+
+        }.addOnFailureListener { exception ->
+            Log.e("MapsActivity", "Error fetching package details: ", exception)
         }
-        zoomOutButton.setOnClickListener {
-            mMap.animateCamera(CameraUpdateFactory.zoomOut())
-        }
-        nextButton.setOnClickListener {
-            //Move to next marker
-        }
-        previousButton.setOnClickListener {
+    }
+
+    // Other existing methods
+
+    //add buttons for zoom and to jump between markers
+    //private fun addButtons() {
+        //val zoomInButton = findViewById<ImageButton>(R.id.mapZoomInBtn)
+        //val zoomOutButton = findViewById<Button>(R.id.zoomOutButton)
+        //val nextButton = findViewById<Button>(R.id.mapNextButton)
+        //val previousButton = findViewById<Button>(R.id.mapPreviousButton)
+
+
+        //zoomInButton.setOnClickListener {
+        //    mMap.animateCamera(CameraUpdateFactory.zoomIn())
+        //}
+        //zoomOutButton.setOnClickListener {
+        //    mMap.animateCamera(CameraUpdateFactory.zoomOut())
+        //}
+        //nextButton.setOnClickListener {
+            //Move to next marker val cameraUpdate = CameraUpdateFactory.newLatLngZoom(startLatLng, 09.5f)
+            //        mMap.moveCamera(cameraUpdate)
+        //}
+        //previousButton.setOnClickListener {
             //Move to previous marker
-        }
-    }*/
+        //}
+    //}
 
     private fun fetchAllPackages() {
         db.collection("packages").get().addOnSuccessListener { result ->
@@ -129,6 +175,10 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                     val location = LatLng(lat, lng)
                     mMap.addMarker(MarkerOptions().position(location).title("Package ID: ${document.id}"))
                     setCameraAndMap(packageLocation, mMap)
+                    val marker = mMap.addMarker(MarkerOptions().position(location).title("Package ID: ${document.id}"))
+                    if (marker != null) {
+                        marker.tag = document.id
+                    }  // Set the package ID as the marker's tag
                 }
             }
             // Optionally, adjust the camera to show all markers or a specific region
@@ -142,7 +192,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             ?.let { mMap.addMarker(it) }
         mMap.moveCamera(CameraUpdateFactory.newLatLng(startLatLng))
 
-        val cameraUpdate = CameraUpdateFactory.newLatLngZoom(startLatLng, 09.5f)
+        val cameraUpdate = CameraUpdateFactory.newLatLngZoom(startLatLng, 11.5f)
         mMap.moveCamera(cameraUpdate)
         fetchDirections(startLatLng, endLatLng, mMap)
     }
@@ -184,7 +234,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         val apiKey = BuildConfig.API_KEY
         val client = OkHttpClient()
         val request = Request.Builder()
-            .url("https://maps.googleapis.com/maps/api/directions/json?origin=${startLatLng.latitude},${startLatLng.longitude}&destination=${endLatLng.latitude},${endLatLng.longitude}&mode=driving&key=$apiKey")
+
+        .url("https://maps.googleapis.com/maps/api/directions/json?origin=${startLatLng.latitude},${startLatLng.longitude}&destination=${endLatLng.latitude},${endLatLng.longitude}&mode=driving&key=$apiKey")
             .build()
 
         client.newCall(request).enqueue(object : okhttp3.Callback {

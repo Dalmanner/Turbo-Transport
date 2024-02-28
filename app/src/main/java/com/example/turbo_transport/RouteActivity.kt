@@ -2,13 +2,9 @@ package com.example.turbo_transport
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
-import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Looper
@@ -18,11 +14,7 @@ import android.widget.Button
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
-import androidx.core.app.ActivityCompat
-import androidx.core.app.NotificationCompat
-import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
-import com.example.turbo_transport.BuildConfig.API_KEY
 import com.example.turbo_transport.BuildConfig.SERVER_KEY
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -53,20 +45,14 @@ import com.google.gson.Gson
 import okhttp3.Call
 import okhttp3.Callback
 import okhttp3.Response
-import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody
 import okio.IOException
 import java.text.SimpleDateFormat
-import java.time.Instant
-import java.time.ZoneId
-import java.time.format.DateTimeFormatter
 import java.util.Locale
-import java.util.concurrent.TimeUnit
 import java.util.Date
-import java.util.logging.Handler
 
 
 class RouteActivity : AppCompatActivity(), OnMapReadyCallback {
@@ -139,6 +125,10 @@ class RouteActivity : AppCompatActivity(), OnMapReadyCallback {
         continueDeliverButton.setOnClickListener {
             sendToBarCodeReader(barcode)
             stopLocationUpdates()
+        }
+        notDeliveredButton.setOnClickListener {
+            stopLocationUpdates()
+            sendToEnd()
         }
     }
 
@@ -292,7 +282,6 @@ class RouteActivity : AppCompatActivity(), OnMapReadyCallback {
         //Run frequent updates when driver mode is selected
         driveMapButton.setOnClickListener {
             startLocationUpdates()
-            sendNotificationToUser()
             driverMode = true
         }
     }
@@ -587,6 +576,7 @@ class RouteActivity : AppCompatActivity(), OnMapReadyCallback {
             calculateAndUpdateETA(totalDurationInSeconds)
             lastTimestamp = currentTimestamp
             firstRun = false
+            sendNotificationToUser()
         }
     }
     private fun calculateAndUpdateETA(totalDurationInSeconds: Int) {
@@ -641,6 +631,13 @@ class RouteActivity : AppCompatActivity(), OnMapReadyCallback {
 
         val intent = Intent(this, BarCodeReaderActivity::class.java)
         intent.putExtra("barcodeValue", packageBarcode)
+        intent.putExtra("documentId", documentId)
+        startActivity(intent)
+    }
+    private fun sendToEnd() {
+
+        val intent = Intent(this, PackageDeliveredActivity::class.java)
+        intent.putExtra("failedDelivery", true)
         intent.putExtra("documentId", documentId)
         startActivity(intent)
     }
@@ -709,13 +706,13 @@ class RouteActivity : AppCompatActivity(), OnMapReadyCallback {
     private fun initializeViews() {
         appBarLayout = findViewById(R.id.appBarLayout)
         topAppBar = findViewById(R.id.topAppBar)
-        notDeliveredButton = findViewById(R.id.notDeliveredButton)
+        notDeliveredButton = findViewById(R.id.mapZoomInBtn)
         continueDeliverButton = findViewById(R.id.continueButton)
         driveMapButton = findViewById(R.id.driveMapButton)
-        topAdressTextView = findViewById(R.id.mapsTopAdressTextView)
-        postCodeTextView = findViewById(R.id.mapsPostCodeTextView)
+        topAdressTextView = findViewById(R.id.mapAdressTextView)
+        postCodeTextView = findViewById(R.id.mapPostCodeTextView)
         travelTimeTextView = findViewById(R.id.travelTimeTextView)
-        kmLeftTextView = findViewById(R.id.kmLeftTextView)
+        kmLeftTextView = findViewById(R.id.mapKmLeftTextView)
 
         mapProgressBar = findViewById(R.id.mapProgressBar)
         mapProgressBar.visibility = View.VISIBLE

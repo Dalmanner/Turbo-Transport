@@ -10,7 +10,9 @@
         android:id="@+id/map"
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="0dp"
-        android:layout_height="353dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="140dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/appBarLayout"
@@ -40,12 +42,13 @@
     <ScrollView
         android:id="@+id/scrollView2"
         android:layout_width="0dp"
-        android:layout_height="198dp"
+        android:layout_height="0dp"
 
-        android:backgroundTint="@color/blue_10"
+        android:background="@color/blue_500"
+        android:backgroundTint="@color/blue_500"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.428"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/map"
         tools:ignore="MissingConstraints">
@@ -54,103 +57,86 @@
         <!-- Lägg till dina vyer här, inklusive dina knappar -->
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/mapPackageNumber"
             android:layout_width="match_parent"
             android:layout_height="174dp"
             android:background="@color/blue_10">
 
 
             <TextView
-                android:id="@+id/kmLeftTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="48dp"
-                android:layout_marginStart="32dp"
-                android:layout_marginTop="8dp"
-                android:fontFamily="@font/roboto_medium"
-                android:textColor="@color/black"
-                android:textSize="30sp"
-                app:layout_constraintBottom_toTopOf="@+id/driveMapButton"
-                app:layout_constraintStart_toEndOf="@+id/travelTimeTextView"
-                app:layout_constraintTop_toBottomOf="@+id/mapsPostCodeTextView"
-                tools:text="8.5km" />
-
-            <TextView
-                android:id="@+id/mapsTopAdressTextView"
+                android:id="@+id/mapUserNameReceiverTextView"
                 android:layout_width="355dp"
                 android:layout_height="34dp"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="12dp"
                 android:fontFamily="@font/roboto_medium"
                 android:textColor="@color/black"
                 android:textSize="27sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:text="Öst Gatan 4" />
+                app:layout_constraintTop_toBottomOf="@+id/mapKolliIdTextView"
+                tools:text="userNameReceiver" />
 
             <TextView
-                android:id="@+id/mapsPostCodeTextView"
-                android:layout_width="358dp"
-                android:layout_height="25dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="4dp"
-                android:fontFamily="@font/roboto"
-                android:textColor="@color/black"
-                android:textSize="20sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/mapsTopAdressTextView"
-                tools:text="506 37 Norrmalm" />
-
-            <TextView
-                android:id="@+id/travelTimeTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="43dp"
+                android:id="@+id/mapAdressTextView"
+                android:layout_width="355dp"
+                android:layout_height="34dp"
                 android:layout_marginStart="16dp"
                 android:fontFamily="@font/roboto_medium"
                 android:textColor="@color/black"
-                android:textSize="30sp"
-                android:tooltipText="25 min"
-                app:layout_constraintBottom_toTopOf="@+id/driveMapButton"
+                android:textSize="27sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/mapsPostCodeTextView"
-                app:layout_constraintVertical_bias="0.615"
-                tools:text="25 min" />
+                app:layout_constraintTop_toBottomOf="@+id/mapUserNameReceiverTextView"
+                tools:text="Öst Gatan 4" />
 
-
-            <Button
-                android:id="@+id/driveMapButton"
-                style="@style/blueButton"
-                android:layout_width="168dp"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/roboto"
-                android:text="Drive mode"
-                android:textColor="@color/white"
-                android:textSize="20sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/kmLeftTextView" />
-
-            <Button
-                android:id="@+id/continueButton"
-                style="@style/greenButton"
+            <TextView
+                android:id="@+id/mapKolliIdTextView"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="Continue Delivery"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/notDeliveredButton"
-                app:layout_constraintTop_toBottomOf="@+id/driveMapButton" />
-
-            <Button
-                android:id="@+id/notDeliveredButton"
-                style="@style/redButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="26dp"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="20dp"
-                android:text="Failed Delivered"
-                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginTop="5dp"
+                android:fontFamily="@font/roboto"
+                android:textColor="@color/black"
+                android:textSize="20sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/driveMapButton" />
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="packageId" />
+
+            <TextView
+                android:id="@+id/mapLATDTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="26dp"
+                android:layout_marginBottom="6dp"
+                android:fontFamily="@font/roboto"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toTopOf="@+id/mapUserNameReceiverTextView"
+                app:layout_constraintEnd_toEndOf="@+id/mapUserNameReceiverTextView"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="LATD" />
+
+            <TextView
+                android:id="@+id/mapPostCodeTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="26dp"
+                android:layout_marginStart="16dp"
+                android:fontFamily="@font/roboto"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/mapAdressTextView"
+                tools:text="506 37" />
+
+            <TextView
+                android:id="@+id/mapCityNameTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="26dp"
+                android:layout_marginStart="8dp"
+                android:fontFamily="@font/roboto"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                app:layout_constraintStart_toEndOf="@+id/mapPostCodeTextView"
+                app:layout_constraintTop_toBottomOf="@+id/mapAdressTextView"
+                tools:text="Stockholm" />
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

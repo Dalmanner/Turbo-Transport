@@ -33,7 +33,7 @@ class DoneDeliveriesFragment : Fragment() {
     }
 
     private fun loadPackageDb() {
-        val packagesRef = db.collection("packages").whereEqualTo("isDelivered", true)
+        val packagesRef = db.collection("packages").whereEqualTo("banankaka", true)
         packagesRef.addSnapshotListener { snapshot, e ->
             if (e != null) {
                 Log.e("ActiveDeliveriesFragment", "Listen failed.", e)
@@ -41,7 +41,8 @@ class DoneDeliveriesFragment : Fragment() {
             }
             if (snapshot != null && !snapshot.isEmpty) {
                 val packageList = snapshot.documents.mapNotNull { it.toObject(Package::class.java) }
-                deliveryRecyclerView.adapter = DeliveriesRecyclerAdapter(requireContext(), packageList, DeliveriesRecyclerAdapter.DeliveryType.DONE)
+                deliveryRecyclerView.adapter = DeliveriesRecyclerAdapter(requireContext(),
+                    packageList.toMutableList(), DeliveriesRecyclerAdapter.DeliveryType.DONE)
             }
         }
     }

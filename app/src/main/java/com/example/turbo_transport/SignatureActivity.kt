@@ -79,7 +79,7 @@ class SignatureActivity : AppCompatActivity() {
         val collectionPath = "packages"
         //Update database with link to signature
         db.collection(collectionPath).document(documentId)
-            .update("signatureLink", signatureUrl, "isDelivered", true)
+            .update("signatureLink", signatureUrl, "banankaka", true)
             .addOnSuccessListener {
                 //Send to deliveredpackage activity for further actions
                 val intent = Intent(

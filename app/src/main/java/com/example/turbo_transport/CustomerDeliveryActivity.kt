@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
+import android.widget.TextView
 import android.widget.Toast
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.appbar.MaterialToolbar
@@ -21,7 +22,10 @@ class CustomerDeliveryActivity : AppCompatActivity() {
     private lateinit var signatureButton: Button
     private lateinit var leaveAtTheDoorButton: Button
     private lateinit var documentId: String
-    private var isDelivered = false
+    private lateinit var textViewNameReciver: TextView
+    private lateinit var textViewAddressReciver: TextView
+
+    private var leaveAtTheDoor = false
 
     private lateinit var db: FirebaseFirestore
 
@@ -34,13 +38,15 @@ class CustomerDeliveryActivity : AppCompatActivity() {
         initializeViews()
         showMenu()
 
+
         documentId = intent.getStringExtra("documentId").toString()
+        getPackage(documentId)
 
         signatureButton.setOnClickListener {
             sendToSignatureActivity()
         }
         leaveAtTheDoorButton.setOnClickListener {
-            if (isDelivered) {
+            if (leaveAtTheDoor) {
                 updateFirestoreDocument()
             }
             else {
@@ -82,7 +88,7 @@ class CustomerDeliveryActivity : AppCompatActivity() {
         val collectionPath = "packages"
         //Update database with link to signature
         db.collection(collectionPath).document(documentId)
-            .update("isDelivered", true)
+            .update("banankaka", true)
             .addOnSuccessListener {
 
                 //Send to deliveredpackage activity for further actions
@@ -110,8 +116,11 @@ class CustomerDeliveryActivity : AppCompatActivity() {
 
                 if (thisPackage != null) {
 
-                    if (thisPackage.isDelivered == true){
-                        isDelivered = true
+                    textViewNameReciver.text = thisPackage.nameOfReceiver
+                    textViewAddressReciver.text = thisPackage.address
+
+                    if (thisPackage.leaveAtTheDoor == true){
+                       leaveAtTheDoor = true
                     }
                 }
             } else {
@@ -124,6 +133,8 @@ class CustomerDeliveryActivity : AppCompatActivity() {
         topAppBar = findViewById(R.id.topAppBar)
         signatureButton = findViewById(R.id.signaturebutton)
         leaveAtTheDoorButton = findViewById(R.id.leavatthedoorbutton)
+        textViewAddressReciver = findViewById(R.id.textViewAddressReciever)
+        textViewNameReciver = findViewById(R.id.textViewNameReciver)
 
     }
 }

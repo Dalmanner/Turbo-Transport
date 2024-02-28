@@ -31,7 +31,8 @@ var documentId : String? = null,
     var latitude: Double? = null,
     var longitude: Double? = null,
     var senderName: String? = null,
-    var isDelivered: Boolean? = null,
+    var banankaka: Boolean? = null,
+    var transit: Boolean? = null,
     @ServerTimestamp
     var lastEdited: Timestamp? = null,
     @ServerTimestamp

@@ -1,5 +1,6 @@
 package com.example.turbo_transport
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -28,9 +29,11 @@ class ReceiverPackageActivity : AppCompatActivity() {
     private lateinit var packageInfoWeight: TextView
     private lateinit var packageInfoDimensions: TextView
     private lateinit var SignA: TextView
+    private lateinit var textViewLATD: TextView
     private lateinit var textViewSignA: TextView
     private lateinit var trackingN: TextView
     private lateinit var trackingNumber: TextView
+    private lateinit var packageDeliveryStatus : TextView
     private lateinit var db:FirebaseFirestore
 
 
@@ -48,7 +51,7 @@ class ReceiverPackageActivity : AppCompatActivity() {
         if (documentId != null) {
             getPackage(documentId)
         }
-
+        topBar()
     }
 
     private fun getPackage(documentId: String) {
@@ -67,23 +70,52 @@ class ReceiverPackageActivity : AppCompatActivity() {
                     nameA.text = thisPackage.nameOfReceiver
                     phonenumberA.text = thisPackage.telephoneNumber
                     senderNameA.text = thisPackage.senderName
+                    //textViewLATD = findViewById(R.id.textViewLATD)
+                    if (thisPackage.leaveAtTheDoor == true){
+                        textViewLATD.text = "Yes"
+                    }
+                    else {
+                        textViewLATD.text = "No"
+                    }
+
                     packageInfoWeight.text = thisPackage.packageWeight.toString() + " kg"
                     packageInfoDimensions.text = "${thisPackage.packageHeight} cm x ${thisPackage.packageLength} cm x ${thisPackage.packageDepth} cm"
                     if (thisPackage.identityCheck == true){
-                        SignA.text = "Yes"
+                        textViewSignA.text = "Yes"
                     }
                     else {
-                        SignA.text = "No"
+                        textViewSignA.text = "No"
                     }
                     trackingNumber.text = thisPackage.kolliId
 
-
-
-
-
+                    if (thisPackage.transit == true) {
+                        packageDeliveryStatus.text = "In Transit"
+                    } else if (thisPackage.banankaka == false) {
+                        packageDeliveryStatus.text = "Out for Delivery"
+                    } else {
+                        packageDeliveryStatus.text = "Delivered at ${SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault()).format(thisPackage.lastEdited?.toDate())}"
+                    }
                 } else {
                     Log.d("!!!", "Current data: null")
                 }
+            }
+        }
+    }
+    private fun topBar(){
+        topBarrA.setNavigationOnClickListener {
+          finish()
+        }
+        topBarrA.setOnMenuItemClickListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.user -> {
+                    // Handle edit text press
+                    true
+                }
+                R.id.help -> {
+                    // Handle favorite icon press
+                    true
+                }
+                else -> false
             }
         }
     }
@@ -105,5 +137,7 @@ class ReceiverPackageActivity : AppCompatActivity() {
         textViewSignA = findViewById(R.id.textViewSignA)
         trackingN = findViewById(R.id.trackingN)
         trackingNumber = findViewById(R.id.trackingNumber)
+        packageDeliveryStatus = findViewById(R.id.packageStatusTextView)
+        textViewLATD = findViewById(R.id.textViewLATD)
     }
 }
