@@ -14,7 +14,7 @@ import java.util.Locale
 
 
 class DeliveriesRecyclerAdapter(val context: Context, var lists: MutableList<Package>, val deliveryType: DeliveryType) : RecyclerView.Adapter<DeliveriesRecyclerAdapter.ViewHolder>() {
-//  class DeliveriesRecyclerAdapter(val context: Context, var lists: List<Package>, val deliveryType: ViewHolder.DeliveryType) : RecyclerView.Adapter<DeliveriesRecyclerAdapter.ViewHolder>() {  ...
+
     enum class DeliveryType {
         ACTIVE, DONE, FAILED
     }
@@ -26,7 +26,6 @@ class DeliveriesRecyclerAdapter(val context: Context, var lists: MutableList<Pac
         viewType: Int
     ): DeliveriesRecyclerAdapter.ViewHolder {
 
-        //Set correct layout for right tabs
         val layout = when (deliveryType) {
             DeliveryType.ACTIVE -> R.layout.item_listdeliveries
             DeliveryType.DONE -> R.layout.item_donelistdeliveries
@@ -47,8 +46,6 @@ class DeliveriesRecyclerAdapter(val context: Context, var lists: MutableList<Pac
         val format = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
         val dateString = format.format(date)
 
-        //If different setups in layout we can choose a when condition.
-        //Right now it is just the same for each type.
         when (deliveryType) {
             DeliveryType.ACTIVE -> {
 
@@ -145,7 +142,6 @@ class DeliveriesRecyclerAdapter(val context: Context, var lists: MutableList<Pac
             }
         }
         notifyItemMoved(fromPosition, toPosition)
-
     }
 
     inner class ViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView) {
