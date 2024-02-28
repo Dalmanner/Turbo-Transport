@@ -2,6 +2,7 @@ package com.example.turbo_transport
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
@@ -22,6 +23,7 @@ import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.PolylineOptions
+import com.google.android.material.navigation.NavigationBarView
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.firestore
@@ -43,6 +45,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
         binding = ActivityMapsBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        bottomMenu()
         db = Firebase.firestore
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
@@ -277,6 +280,50 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                 startLocationUpdates()
             } else {
 
+            }
+
+        }
+    }
+
+    private fun bottomMenu() {
+        val bottomNavigation = findViewById<NavigationBarView>(R.id.bottom_navigation)
+        bottomNavigation.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.item_1 -> {
+                    val intent = Intent(this, ListDeliveries::class.java)
+                    startActivity(intent)
+                    true
+                }
+                R.id.item_2 -> {
+                    // Handle item 2 selection
+                    true
+                }
+                R.id.item_3 -> {
+                    val intent = Intent(this, AddPackageActivity::class.java)
+                    startActivity(intent)
+                    true
+                }
+                else -> false
+            }
+        }
+
+        bottomNavigation.setOnItemReselectedListener { item ->
+            when (item.itemId) {
+                R.id.item_1 -> {
+                    val intent = Intent(this, ListDeliveries::class.java)
+                    startActivity(intent)
+                    true
+                }
+                R.id.item_2 -> {
+                    // Handle item 2 reselection
+                    true
+                }
+                R.id.item_3 -> {
+                    val intent = Intent(this, AddPackageActivity::class.java)
+                    startActivity(intent)
+                    true
+                }
+                else -> false
             }
         }
     }

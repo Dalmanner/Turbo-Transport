@@ -227,58 +227,25 @@
 
     </com.google.android.material.appbar.MaterialToolbar>
 
-    <com.google.android.material.bottomappbar.BottomAppBar
-        android:id="@+id/bottomAppBar"
-        style="@style/Widget.Material3.BottomAppBar"
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_navigation"
         android:layout_width="match_parent"
-        android:layout_height="72dp"
-        android:layout_gravity="bottom"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:backgroundTint="@color/blue_500"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:menu="@menu/bottom_navigation_menu" />
 
-    <ImageButton
-        android:id="@+id/addPackageBtn"
-        android:layout_width="70dp"
-        android:layout_height="50dp"
-        android:layout_gravity="end"
-        android:backgroundTint="@color/blue_500"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/btnSubmit"
-        app:layout_constraintVertical_bias="0.078"
-        app:srcCompat="@drawable/segment_3" />
 
-    <ImageButton
+    <Button
         android:id="@+id/btnSubmit"
-        android:layout_width="86dp"
-        android:layout_height="69dp"
-        android:layout_gravity="center"
-        android:backgroundTint="@color/blue_500"
-        app:layout_constraintBottom_toBottomOf="@+id/bottomAppBar"
-        app:layout_constraintEnd_toEndOf="@+id/bottomAppBar"
-        app:layout_constraintHorizontal_bias="0.479"
-        app:layout_constraintStart_toStartOf="@+id/bottomAppBar"
-        app:layout_constraintTop_toTopOf="@+id/bottomAppBar"
-        app:layout_constraintVertical_bias="1.0"
-        app:srcCompat="@drawable/add_package_icon" />
-
-    <ImageButton
-        android:id="@+id/imageButton3"
-        android:layout_width="70dp"
-        android:layout_height="50dp"
-        android:backgroundTint="@color/blue_500"
-        app:layout_anchor="@id/bottomAppBar"
-        app:layout_anchorGravity="center"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/bottomAppBar"
-        app:layout_constraintHorizontal_bias="0.0"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:text="Add"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/bottomAppBar"
-        app:srcCompat="@drawable/segment_1text" />
+        app:layout_constraintTop_toBottomOf="@+id/etLeaveAtTheDoor" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
