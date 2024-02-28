@@ -1,20 +1,26 @@
 package com.example.turbo_transport
 
+import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.widget.Button
 import android.widget.CheckBox
 import android.widget.ImageButton
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.navigation.NavigationBarView
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FirebaseFirestore
 
 class AddPackageActivity : AppCompatActivity() {
 
+    @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_package)
+        bottomMenu()
 
         val etNameOfReceiver: TextInputEditText = findViewById(R.id.etNameOfReceiver)
         val etPostCodeAddress: TextInputEditText = findViewById(R.id.etPostCodeAddress)
@@ -35,7 +41,8 @@ class AddPackageActivity : AppCompatActivity() {
         val etLeaveAtTheDoor: CheckBox = findViewById(R.id.etLeaveAtTheDoor)
         val etCityName: TextInputEditText = findViewById(R.id.etCityName)
 
-        val btnSubmit: ImageButton = findViewById(R.id.btnSubmit)
+        val btnSubmit: Button = findViewById(R.id.btnSubmit)
+
 
         btnSubmit.setOnClickListener {
             val nameOfReceiver = etNameOfReceiver.text.toString()
@@ -98,6 +105,56 @@ class AddPackageActivity : AppCompatActivity() {
                 .addOnFailureListener { e ->
                     Toast.makeText(this, "Error adding package: ${e.message}", Toast.LENGTH_SHORT).show()
                 }
+
+        }
+
+    }
+    private fun showLocation() {
+        val intent = Intent(this,MapsActivity::class.java)
+        startActivity(intent)
+    }
+
+
+private fun bottomMenu(){
+    val bottomNavigation = findViewById<NavigationBarView>(R.id.bottom_navigation)
+    bottomNavigation.setOnItemSelectedListener { item ->
+        when (item.itemId) {
+            R.id.item_1 -> {
+                val intent = Intent(this, ListDeliveries::class.java)
+                startActivity(intent)
+                true
+            }
+
+            R.id.item_2 -> {
+                showLocation()
+                true
+            }
+
+            R.id.item_3 -> {
+
+                true
+            }
+            else -> false
         }
     }
+
+    bottomNavigation.setOnItemReselectedListener { item ->
+        when (item.itemId) {
+            R.id.item_1 -> {
+                val intent = Intent(this, ListDeliveries::class.java)
+                startActivity(intent)
+                true
+            }
+            R.id.item_2 -> {
+                showLocation()
+                true
+
+            }
+            R.id.item_3 -> {
+                true
+            }
+
+        }
+    }
+}
 }

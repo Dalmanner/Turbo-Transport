@@ -83,7 +83,6 @@ class ListDeliveries : AppCompatActivity() {
         bottomNavigation.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.item_1 -> {
-
                     true
                 }
 
@@ -105,7 +104,7 @@ class ListDeliveries : AppCompatActivity() {
         bottomNavigation.setOnItemReselectedListener { item ->
             when (item.itemId) {
                 R.id.item_1 -> {
-
+                    true
                 }
                 R.id.item_2 -> {
                     showLocation()
@@ -113,7 +112,6 @@ class ListDeliveries : AppCompatActivity() {
 
                 }
                 R.id.item_3 -> {
-                    //start addPackageActivity:
                     val intent = Intent(this, AddPackageActivity::class.java)
                     startActivity(intent)
                     true

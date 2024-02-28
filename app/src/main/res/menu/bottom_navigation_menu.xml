@@ -5,15 +5,15 @@
         android:id="@+id/item_1"
         android:enabled="true"
         android:icon="@drawable/menu_24px"
-        android:title="List"/>
+        android:title="Active Deliveries" />
     <item
         android:id="@+id/item_2"
         android:enabled="true"
-        android:icon="@drawable/baseline_help_24"
-        android:title="Map"/>
+        android:icon="@drawable/baseline_map_24"
+        android:title="Map" />
     <item
         android:id="@+id/item_3"
         android:enabled="true"
-        android:icon="@drawable/baseline_help_24"
-        android:title="Settings"/>
+        android:icon="@drawable/add_box3"
+        android:title="Add package" />
 </menu>
