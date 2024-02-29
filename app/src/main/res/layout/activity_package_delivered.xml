@@ -4,6 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    android:backgroundTint="#FFFFFF"
     tools:context=".PackageDeliveredActivity">
 
     <com.google.android.material.progressindicator.LinearProgressIndicator
@@ -47,4 +49,24 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/failedBt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="36dp"
+        android:text="Take Picture"
+        app:layout_constraintBottom_toTopOf="@+id/closeButtonDeliveredPackage"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageView
+        android:id="@+id/failedImageView"
+        android:layout_width="303dp"
+        android:layout_height="199dp"
+        app:layout_constraintBottom_toTopOf="@+id/failedBt"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/packageDeliveredTextView"
+        tools:srcCompat="@color/white" />
 </androidx.constraintlayout.widget.ConstraintLayout>

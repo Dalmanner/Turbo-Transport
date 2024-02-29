@@ -172,8 +172,7 @@ class PackageActivity : AppCompatActivity() {
                         val format = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
                         val dateString = format.format(date)
                         textViewETA.text = "Package was delivered at $dateString"
-
-                        if (thisPackage.signatureLink != null) {
+                          if (thisPackage.signatureLink != null) {
                             Glide.with(this).load(thisPackage.signatureLink).centerCrop()
                                 .into(imageView)
                         } else {
@@ -187,6 +186,12 @@ class PackageActivity : AppCompatActivity() {
                         val format = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
                         val dateString = format.format(date)
                         textViewETA.text = dateString
+                        if ( thisPackage.failedPictureLink != null  ) {
+                            Glide.with(this).load(thisPackage.failedPictureLink).centerCrop()
+                                .into(imageView)
+                        } else {
+                            imageView.setImageResource(R.drawable.boxes)
+                        }
                     }
                 }
             } else {

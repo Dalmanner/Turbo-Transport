@@ -27,6 +27,7 @@ var documentId : String? = null,
     var deliveryStatus: Boolean? = null,
     var identityCheck: Boolean? = null,
     var signatureLink: String? = null, //for fire storage
+    var failedPictureLink: String? = null,
     var kolliId: String? = null,
     var latitude: Double? = null,
     var longitude: Double? = null,
