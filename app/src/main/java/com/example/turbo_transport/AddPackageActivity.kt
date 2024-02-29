@@ -43,7 +43,6 @@ class AddPackageActivity : AppCompatActivity() {
 
         val btnSubmit: Button = findViewById(R.id.btnSubmit)
 
-
         btnSubmit.setOnClickListener {
             val nameOfReceiver = etNameOfReceiver.text.toString()
             val postCodeAddress = etPostCodeAddress.text.toString()
@@ -105,15 +104,13 @@ class AddPackageActivity : AppCompatActivity() {
                 .addOnFailureListener { e ->
                     Toast.makeText(this, "Error adding package: ${e.message}", Toast.LENGTH_SHORT).show()
                 }
-
         }
-
     }
+
     private fun showLocation() {
         val intent = Intent(this,MapsActivity::class.java)
         startActivity(intent)
     }
-
 
 private fun bottomMenu(){
     val bottomNavigation = findViewById<NavigationBarView>(R.id.bottom_navigation)
@@ -131,7 +128,6 @@ private fun bottomMenu(){
             }
 
             R.id.item_3 -> {
-
                 true
             }
             else -> false
@@ -148,12 +144,10 @@ private fun bottomMenu(){
             R.id.item_2 -> {
                 showLocation()
                 true
-
             }
             R.id.item_3 -> {
                 true
             }
-
         }
     }
 }
