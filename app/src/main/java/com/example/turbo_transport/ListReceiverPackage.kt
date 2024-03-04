@@ -89,6 +89,7 @@ class ListReceiverPackage : AppCompatActivity() {
         topAppBar.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.user -> {
+                    goToReceiverProfile()
                     // Handle edit text press
                     true
                 }
@@ -150,8 +151,6 @@ class ListReceiverPackage : AppCompatActivity() {
                 }
                 val token = task.result
                 Log.d("!!!", "this user token:$token")
-
-                // Flytta uppdateringslogiken här inne
                 if (user != null) {
                     db.collection("users").document(user.uid)
                         .set(
@@ -160,6 +159,10 @@ class ListReceiverPackage : AppCompatActivity() {
                         )
                 }
             })
+    }
+    private fun goToReceiverProfile() {
+        val intent = Intent(this,ReceiverInforamtionActivity::class.java)
+        startActivity(intent)
     }
     private fun initializeViews() {
         topAppBar = findViewById(R.id.topAppBar1)
