@@ -128,12 +128,18 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
             binding.mapPostCodeTextView.text = deliveryList?.postCodeAddress ?: "N/A"
             binding.mapCityNameTextView.text = deliveryList?.cityName ?: "N/A"
             binding.mapKolliIdTextView.text = deliveryList?.kolliId ?: "N/A"
-            binding.mapLATDTextView.text = deliveryList?.leaveAtTheDoor.toString()
+            if (deliveryList?.leaveAtTheDoor == true) {
+                binding.mapLATDTextView.text = "LATD"
+
+
+            }else
+                binding.mapLATDTextView.text = ""
 
         }.addOnFailureListener { exception ->
             Log.e("MapsActivity", "Error fetching package details: ", exception)
         }
     }
+
 
     private fun fetchAllPackages() {
         db.collection("packages").get().addOnSuccessListener { result ->
@@ -143,12 +149,11 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
                 val lng = packageLocation.longitude
                 if (lat != null && lng != null) {
                     val location = LatLng(lat, lng)
-                    mMap.addMarker(MarkerOptions().position(location).title("Package ID: ${document.id}"))
-                    setCameraAndMap(packageLocation, mMap)
                     val marker = mMap.addMarker(MarkerOptions().position(location).title("Package ID: ${document.id}"))
                     if (marker != null) {
                         marker.tag = document.id
                     }  //Set the package ID as the package tag
+                    setCameraAndMap(packageLocation, mMap)
                 }
             }
         }.addOnFailureListener { exception ->
