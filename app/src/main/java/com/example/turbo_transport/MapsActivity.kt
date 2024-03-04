@@ -8,10 +8,7 @@ import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.widget.Button
-import android.widget.ImageButton
 import androidx.core.content.ContextCompat
-
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -51,28 +48,15 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
         bottomMenu()
         db = Firebase.firestore
 
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
     }
 
-    /**
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
-     * If Google Play services is not installed on the device, the user will be prompted to install
-     * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
-     */
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
-        // Add a marker to each package location and move the camera
         fetchAllPackages()
-        //display the package information in textViews in activity_maps when a marker on the map is clicked:
         mMap.setOnMarkerClickListener(this)
-
     }
 
     @SuppressLint("MissingPermission")
@@ -87,9 +71,9 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
             override fun onLocationResult(locationResult: LocationResult) {
                 locationResult ?: return
                 for (location in locationResult.locations) {
-                    //Update location
+
                     val currentLatLng = LatLng(location.latitude, location.longitude)
-                            //move the camera to view all markers
+
                     mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 12f))
                     val firstPackage = db.collection("packages").document("package1")
                     firstPackage.get().addOnSuccessListener { document ->
@@ -122,7 +106,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
         val packageRef = db.collection("packages").document(packageId)
         packageRef.get().addOnSuccessListener { document ->
             val deliveryList = document.toObject(Package::class.java)
-            // No need to inflate the layout again, use the existing 'binding' variable
+
             binding.mapUserNameReceiverTextView.text = deliveryList?.nameOfReceiver ?: "N/A"
             binding.mapAdressTextView.text = deliveryList?.address ?: "N/A"
             binding.mapPostCodeTextView.text = deliveryList?.postCodeAddress ?: "N/A"
@@ -130,8 +114,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
             binding.mapKolliIdTextView.text = deliveryList?.kolliId ?: "N/A"
             if (deliveryList?.leaveAtTheDoor == true) {
                 binding.mapLATDTextView.text = "LATD"
-
-
             }else
                 binding.mapLATDTextView.text = ""
 
@@ -140,10 +122,10 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
         }
     }
 
-
     private fun fetchAllPackages() {
+
         db.collection("packages").get().addOnSuccessListener { result ->
-            for (document in result) {
+            for (document in result)if (document.getBoolean("banankaka") == false && document.getBoolean("deliveryStatus") == true){
                 val packageLocation = document.toObject(Package::class.java)
                 val lat = packageLocation.latitude
                 val lng = packageLocation.longitude
@@ -152,7 +134,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
                     val marker = mMap.addMarker(MarkerOptions().position(location).title("Package ID: ${document.id}"))
                     if (marker != null) {
                         marker.tag = document.id
-                    }  //Set the package ID as the package tag
+                    }
                     setCameraAndMap(packageLocation, mMap)
                 }
             }
@@ -160,6 +142,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
             Log.d("MapsActivity", "Error fetching packages: ", exception)
         }
     }
+
     private fun setMarkersAndRoute(startLatLng: LatLng, endLatLng: LatLng) {
         mMap.addMarker(MarkerOptions().position(startLatLng).title("Start"))
         endLatLng?.let { MarkerOptions().position(it).title("End") }
@@ -182,24 +165,18 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
             }
         }
 
-        //Get user current position
         val currentUserLocation =
             LocationServices.getFusedLocationProviderClient(this)
         currentUserLocation.lastLocation.addOnSuccessListener { location ->
 
-            //Check to see if it is not null, then get coordinates
             if (location != null) {
                 val startLatLng = LatLng(location.latitude, location.longitude)
                 endLatLng?.let { setMarkersAndRoute(startLatLng, it) }
             }
         }
-
-        //Show position on map
         mMap.isMyLocationEnabled = true
-
     }
 
-    //Get the directions
     private fun fetchDirections(
         startLatLng: LatLng,
         endLatLng: LatLng,
@@ -229,19 +206,18 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
                     if (directionsResult.routes.isNotEmpty() && directionsResult.routes[0].legs.isNotEmpty()) {
                         val steps = directionsResult.routes[0].legs[0].steps
 
-                        //Update map on main thread
                         runOnUiThread {
                             val polylineOptions = PolylineOptions().width(10f)
-                                .color(Color.BLUE) //Custom design of route
+                                .color(Color.BLUE)
                             steps.forEach { step ->
                                 val decodedPath =
-                                    decodePolyline(step.polyline.points) //decode each line to latlng
+                                    decodePolyline(step.polyline.points)
                                 polylineOptions.addAll(decodedPath)
                             }
                             googleMap.addPolyline(polylineOptions)
                         }
                     } else {
-                        //If results are empty, handle that...
+                        Log.d("MapsActivity", "No routes found")
                     }
                 }
             }
@@ -304,9 +280,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 startLocationUpdates()
             } else {
-
+                Log.d("MapsActivity", "Permission denied")
             }
-
         }
     }
 
@@ -320,7 +295,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
                     true
                 }
                 R.id.item_2 -> {
-                    // Handle item 2 selection
+                    val intent = Intent(this, MapsActivity::class.java)
+                    startActivity(intent)
                     true
                 }
                 R.id.item_3 -> {
@@ -340,7 +316,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
                     true
                 }
                 R.id.item_2 -> {
-                    // Handle item 2 reselection
+                    val intent = Intent(this, MapsActivity::class.java)
+                    startActivity(intent)
                     true
                 }
                 R.id.item_3 -> {
