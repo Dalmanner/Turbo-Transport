@@ -186,7 +186,7 @@ class PackageActivity : AppCompatActivity() {
                         val format = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
                         val dateString = format.format(date)
                         textViewETA.text = dateString
-                        if ( thisPackage.failedPictureLink != null  ) {
+                        if ( thisPackage.failedPictureLink != null && thisPackage.failedPictureLink != ""  ) {
                             Glide.with(this).load(thisPackage.failedPictureLink).centerCrop()
                                 .into(imageView)
                         } else {

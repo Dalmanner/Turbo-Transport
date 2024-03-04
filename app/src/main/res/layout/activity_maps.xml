@@ -109,8 +109,7 @@
                 android:textSize="20sp"
                 app:layout_constraintBottom_toTopOf="@+id/mapUserNameReceiverTextView"
                 app:layout_constraintEnd_toEndOf="@+id/mapUserNameReceiverTextView"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:text="LATD" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/mapPostCodeTextView"
