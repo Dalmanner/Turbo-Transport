@@ -18,13 +18,16 @@ import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
 import com.google.android.material.progressindicator.LinearProgressIndicator
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.ktx.storage
 import java.io.ByteArrayOutputStream
 import java.io.File
+import java.lang.Package
 import java.util.UUID
 
 const val REQUEST_IMAGE_CAPTURE = 1
@@ -34,7 +37,7 @@ const val REQUEST_IMAGE_CAPTURE = 1
 
 class PackageDeliveredActivity : AppCompatActivity() {
     private lateinit var storage: FirebaseStorage
-
+    private lateinit var auth: FirebaseAuth
 
     private lateinit var packageDeliveredProgressBar: LinearProgressIndicator
     private lateinit var imageViewPackageDelivered: ImageView
@@ -44,23 +47,15 @@ class PackageDeliveredActivity : AppCompatActivity() {
 
     private lateinit var failedDeliveryPictureButton: Button
 
-    //private lateinit var cameraProvider: ProcessCameraProvider
-  //  private lateinit var cameraSelector: CameraSelector
-   // private lateinit var preview: Preview
-   // private lateinit var imageAnalysis: ImageAnalysis
-   // private lateinit var imageCapture: ImageCapture
-
-
     private lateinit var documentId: String
     private var failedDelivery = false
 
     private lateinit var db: FirebaseFirestore
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_package_delivered)
-
+        auth = Firebase.auth
         storage = com.google.firebase.ktx.Firebase.storage
         db = com.google.firebase.ktx.Firebase.firestore
 
@@ -71,6 +66,20 @@ class PackageDeliveredActivity : AppCompatActivity() {
 
         if (failedDelivery == true){
             updateFirestoreDocument(documentId)
+        }
+        if (auth.currentUser != null) {
+            val user = auth.currentUser
+            if (user != null) {
+                db.collection("packages").document(documentId)
+                    .get().addOnSuccessListener { document ->
+                        val item = document.toObject(com.example.turbo_transport.Package::class.java)
+                        if (item?.banankaka == true) {
+                            failedDeliveryPictureButton.visibility = View.GONE
+                        } else if (item?.banankaka == false) {
+                            failedDeliveryPictureButton.visibility = View.VISIBLE
+                        }
+                    }
+            }
         }
 
         initializeViews()
@@ -95,7 +104,7 @@ class PackageDeliveredActivity : AppCompatActivity() {
             // Nu kan du använda imageBitmap som du vill.
            failedDeliveryImageView.setImageBitmap(imageBitmap)
             val data = getBitmapData(imageBitmap)
-            uploadSignatureToFirebaseStorage(data)
+            uploadFailedPictureToFirebaseStorage(data)
         }
     }
 
@@ -105,26 +114,19 @@ class PackageDeliveredActivity : AppCompatActivity() {
         return byteArrayOutputStream.toByteArray()
     }
 
-    private fun uploadSignatureToFirebaseStorage(data: ByteArray) {
+    private fun uploadFailedPictureToFirebaseStorage(data: ByteArray) {
         val storageReference = storage.reference
-        val signatureRef = storageReference.child("failedPictures/${UUID.randomUUID()}.png")
-
-        val uploadTask = signatureRef.putBytes(data)
+        val failedPictureRef = storageReference.child("failedPictures/${UUID.randomUUID()}.png")
+        val uploadTask = failedPictureRef.putBytes(data)
         uploadTask.addOnSuccessListener { taskSnapshot ->
-            //After successfully uploaded the image/signature, get the link and save it to firestore
             taskSnapshot.storage.downloadUrl.addOnSuccessListener { downloadUri ->
-                val signatureUrl = downloadUri.toString()
-                updateFirestoreDocument(signatureUrl) // Uppdatera med korrekt URL
+                val failedPictureUrl = downloadUri.toString()
+                updateFirestoreDocument(failedPictureUrl)
             }
         }.addOnFailureListener {
             Log.e("Upload", "Error uploading signature", it)
         }
     }
-
-
-
-
-
     private fun goBackToStartPage(){
         //clear all running activites in the background before moving "back" in the pile, ie now
         //the "delivery loop" is finished
@@ -132,15 +134,12 @@ class PackageDeliveredActivity : AppCompatActivity() {
         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
         startActivity(intent)
     }
-    private fun updateFirestoreDocument(signatureUrl: String) {
+    private fun updateFirestoreDocument(failedPictureUrl: String) {
         val collectionPath = "packages"
-        //Update database with link to signature
         db.collection(collectionPath).document(documentId)
-            .update("failedPictureLink", signatureUrl,"deliveryStatus", false)
+            .update("failedPictureLink", failedPictureUrl,"deliveryStatus", false)
             .addOnSuccessListener {
-                //display error message
                 packageDeliveredTextView.text = "Error delivering package... "
-
             }
             .addOnFailureListener { e ->
                 Log.w("!!!", "Error updating document", e)
