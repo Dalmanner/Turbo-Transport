@@ -68,9 +68,9 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
      */
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
-        // Add a marker to each package location and move the camera
+
         fetchAllPackages()
-        //display the package information in textViews in activity_maps when a marker on the map is clicked:
+
         mMap.setOnMarkerClickListener(this)
 
     }
@@ -87,9 +87,9 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
             override fun onLocationResult(locationResult: LocationResult) {
                 locationResult ?: return
                 for (location in locationResult.locations) {
-                    //Update location
+
                     val currentLatLng = LatLng(location.latitude, location.longitude)
-                            //move the camera to view all markers
+
                     mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 12f))
                     val firstPackage = db.collection("packages").document("package1")
                     firstPackage.get().addOnSuccessListener { document ->
@@ -122,7 +122,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
         val packageRef = db.collection("packages").document(packageId)
         packageRef.get().addOnSuccessListener { document ->
             val deliveryList = document.toObject(Package::class.java)
-            // No need to inflate the layout again, use the existing 'binding' variable
+
             binding.mapUserNameReceiverTextView.text = deliveryList?.nameOfReceiver ?: "N/A"
             binding.mapAdressTextView.text = deliveryList?.address ?: "N/A"
             binding.mapPostCodeTextView.text = deliveryList?.postCodeAddress ?: "N/A"
@@ -182,24 +182,24 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
             }
         }
 
-        //Get user current position
+
         val currentUserLocation =
             LocationServices.getFusedLocationProviderClient(this)
         currentUserLocation.lastLocation.addOnSuccessListener { location ->
 
-            //Check to see if it is not null, then get coordinates
+
             if (location != null) {
                 val startLatLng = LatLng(location.latitude, location.longitude)
                 endLatLng?.let { setMarkersAndRoute(startLatLng, it) }
             }
         }
 
-        //Show position on map
+
         mMap.isMyLocationEnabled = true
 
     }
 
-    //Get the directions
+
     private fun fetchDirections(
         startLatLng: LatLng,
         endLatLng: LatLng,
@@ -229,7 +229,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
                     if (directionsResult.routes.isNotEmpty() && directionsResult.routes[0].legs.isNotEmpty()) {
                         val steps = directionsResult.routes[0].legs[0].steps
 
-                        //Update map on main thread
+
                         runOnUiThread {
                             val polylineOptions = PolylineOptions().width(10f)
                                 .color(Color.BLUE) //Custom design of route
@@ -241,7 +241,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
                             googleMap.addPolyline(polylineOptions)
                         }
                     } else {
-                        //If results are empty, handle that...
+                        Log.d("MapsActivity", "No routes found")
                     }
                 }
             }
