@@ -120,8 +120,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
             binding.mapKolliIdTextView.text = deliveryList?.kolliId ?: "N/A"
             if (deliveryList?.leaveAtTheDoor == true) {
                 binding.mapLATDTextView.text = "LATD"
-
-
             }else
                 binding.mapLATDTextView.text = ""
 
@@ -172,7 +170,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
             }
         }
 
-
         val currentUserLocation =
             LocationServices.getFusedLocationProviderClient(this)
         currentUserLocation.lastLocation.addOnSuccessListener { location ->
@@ -214,7 +211,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
 
                     if (directionsResult.routes.isNotEmpty() && directionsResult.routes[0].legs.isNotEmpty()) {
                         val steps = directionsResult.routes[0].legs[0].steps
-
 
                         runOnUiThread {
                             val polylineOptions = PolylineOptions().width(10f)
@@ -266,7 +262,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
             val p = LatLng(lat.toDouble() / 1E5, lng.toDouble() / 1E5)
             poly.add(p)
         }
-
         return poly
     }
 
@@ -292,7 +287,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
             } else {
 
             }
-
         }
     }
 
