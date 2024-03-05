@@ -60,6 +60,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
         mMap = googleMap
 
         fetchAllPackages()
+        binding.mapUserNameReceiverTextView.text = "Start location"
 
         mMap.setOnMarkerClickListener(this)
 
