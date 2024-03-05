@@ -60,6 +60,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
         mMap = googleMap
 
         fetchAllPackages()
+        binding.mapUserNameReceiverTextView.text = "Start location"
 
         mMap.setOnMarkerClickListener(this)
 
@@ -130,7 +131,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
 
 
     private fun fetchAllPackages() {
-        db.collection("packages").get().addOnSuccessListener { result ->
+
+        db.collection("packages").whereEqualTo("banankaka", false).whereEqualTo("deliveryStatus", true).get().addOnSuccessListener { result ->
             for (document in result) {
                 val packageLocation = document.toObject(Package::class.java)
                 val lat = packageLocation.latitude
@@ -140,7 +142,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
                     val marker = mMap.addMarker(MarkerOptions().position(location).title("Package ID: ${document.id}"))
                     if (marker != null) {
                         marker.tag = document.id
-                    }  //Set the package ID as the package tag
+                    }
                     setCameraAndMap(packageLocation, mMap)
                 }
             }
