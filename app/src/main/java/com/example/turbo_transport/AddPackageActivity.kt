@@ -62,6 +62,7 @@ class AddPackageActivity : AppCompatActivity() {
             val leaveAtTheDoor = etLeaveAtTheDoor.isChecked.or(false)
             val cityName = etCityName.text.toString()
             val banankaka = false
+            val deliveryStatus = true
 
             if (nameOfReceiver.isEmpty() || cityName.isEmpty() || senderName.isEmpty() || address.isEmpty() || postCodeAddress.isEmpty() || telephoneNumber.isEmpty() || deliveryNote.isEmpty() || packageWeight.isNaN() || packageHeight.isNaN() || packageLength.isNaN() || packageDepth.isNaN() || requestedDeliveryTime.isEmpty() || kolliId.isEmpty() || latitude.isNaN() || longitude.isNaN()) {
                 Toast.makeText(this, "Please fill in all required fields", Toast.LENGTH_SHORT).show()
@@ -74,6 +75,7 @@ class AddPackageActivity : AppCompatActivity() {
             }
 
             val packageInfo = Package(
+                deliveryStatus = deliveryStatus,
                 banankaka = banankaka,
                 nameOfReceiver = nameOfReceiver,
                 cityName = cityName,
