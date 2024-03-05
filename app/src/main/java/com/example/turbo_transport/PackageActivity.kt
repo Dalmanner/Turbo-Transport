@@ -116,14 +116,18 @@ class PackageActivity : AppCompatActivity() {
     }
 
     private fun getSignatureImage(documentId: String, callback: (String) -> Unit) {
+        //1.
         db.collection("packages").document(documentId).get()
             .addOnSuccessListener { document ->
+                //2.
                 val signatureLink = document.getString("signatureLink") ?: "Package"
                 callback(signatureLink)
+                //3.
             }
             .addOnFailureListener { exception ->
                 Log.d("!!!", "GET failed with ", exception)
             }
+        //4.
     }
 
     private fun getPackage(documentId: String) {

@@ -8,7 +8,10 @@ import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.Button
+import android.widget.ImageButton
 import androidx.core.content.ContextCompat
+
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -55,8 +58,11 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
 
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
+
         fetchAllPackages()
+
         mMap.setOnMarkerClickListener(this)
+
     }
 
     @SuppressLint("MissingPermission")
@@ -122,10 +128,10 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
         }
     }
 
-    private fun fetchAllPackages() {
 
+    private fun fetchAllPackages() {
         db.collection("packages").get().addOnSuccessListener { result ->
-            for (document in result)if (document.getBoolean("banankaka") == false && document.getBoolean("deliveryStatus") == true){
+            for (document in result) {
                 val packageLocation = document.toObject(Package::class.java)
                 val lat = packageLocation.latitude
                 val lng = packageLocation.longitude
@@ -134,7 +140,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
                     val marker = mMap.addMarker(MarkerOptions().position(location).title("Package ID: ${document.id}"))
                     if (marker != null) {
                         marker.tag = document.id
-                    }
+                    }  //Set the package ID as the package tag
                     setCameraAndMap(packageLocation, mMap)
                 }
             }
@@ -142,7 +148,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
             Log.d("MapsActivity", "Error fetching packages: ", exception)
         }
     }
-
     private fun setMarkersAndRoute(startLatLng: LatLng, endLatLng: LatLng) {
         mMap.addMarker(MarkerOptions().position(startLatLng).title("Start"))
         endLatLng?.let { MarkerOptions().position(it).title("End") }
@@ -177,6 +182,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
         mMap.isMyLocationEnabled = true
     }
 
+
     private fun fetchDirections(
         startLatLng: LatLng,
         endLatLng: LatLng,
@@ -208,10 +214,10 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
 
                         runOnUiThread {
                             val polylineOptions = PolylineOptions().width(10f)
-                                .color(Color.BLUE)
+                                .color(Color.BLUE) //Custom design of route
                             steps.forEach { step ->
                                 val decodedPath =
-                                    decodePolyline(step.polyline.points)
+                                    decodePolyline(step.polyline.points) //decode each line to latlng
                                 polylineOptions.addAll(decodedPath)
                             }
                             googleMap.addPolyline(polylineOptions)
@@ -256,7 +262,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
             val p = LatLng(lat.toDouble() / 1E5, lng.toDouble() / 1E5)
             poly.add(p)
         }
-
         return poly
     }
 
@@ -280,7 +285,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 startLocationUpdates()
             } else {
-                Log.d("MapsActivity", "Permission denied")
+
             }
         }
     }
@@ -295,8 +300,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
                     true
                 }
                 R.id.item_2 -> {
-                    val intent = Intent(this, MapsActivity::class.java)
-                    startActivity(intent)
+
                     true
                 }
                 R.id.item_3 -> {
@@ -316,8 +320,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
                     true
                 }
                 R.id.item_2 -> {
-                    val intent = Intent(this, MapsActivity::class.java)
-                    startActivity(intent)
+
                     true
                 }
                 R.id.item_3 -> {
