@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
+import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.navigation.NavigationBarView
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
@@ -22,11 +23,12 @@ class ListDeliveries : AppCompatActivity() {
     private lateinit var tabLayout: TabLayout
     private lateinit var auth : FirebaseAuth
     private lateinit var db : FirebaseFirestore
+    private lateinit var topAppBar1 : MaterialToolbar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_listdeliveries)
-
+        initializeViews()
         db = Firebase.firestore
         auth = Firebase.auth
 
@@ -36,6 +38,7 @@ class ListDeliveries : AppCompatActivity() {
         setupViewPager()
         setupTabLayout()
         bottomMenu()
+        topBar()
 
     }
 
@@ -76,6 +79,31 @@ class ListDeliveries : AppCompatActivity() {
                 else -> throw IllegalStateException("Unexpected position $position")
             }
         }
+    }
+    private fun topBar(){
+        topAppBar1.setNavigationOnClickListener {
+            auth.signOut()
+            val intent = Intent(this,MainActivity::class.java)
+            startActivity(intent)
+        }
+        topAppBar1.setOnMenuItemClickListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.user -> {
+                    goToDriverProfile()
+                    // Handle edit text press
+                    true
+                }
+                R.id.help -> {
+                    // Handle favorite icon press
+                    true
+                }
+                else -> false
+            }
+        }
+    }
+    private fun  goToDriverProfile() {
+        val intent = Intent(this,DriverInformationActivity::class.java)
+        startActivity(intent)
     }
 
     private fun bottomMenu(){
@@ -119,5 +147,10 @@ class ListDeliveries : AppCompatActivity() {
 
             }
         }
+    }
+    private fun initializeViews() {
+        topAppBar1 = findViewById(R.id.topAppBar)
+
+
     }
 }
