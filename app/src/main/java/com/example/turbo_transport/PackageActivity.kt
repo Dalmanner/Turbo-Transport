@@ -58,23 +58,20 @@ class PackageActivity : AppCompatActivity() {
     private lateinit var headlineETA: TextView
     private lateinit var textViewETA: TextView
     private lateinit var button: Button
-    //private lateinit var textViewPostCodeAddress: TextView
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_package)
 
-        //Setup firebase variables
         db = Firebase.firestore
         auth = Firebase.auth
         storage = Firebase.storage
 
-        //Initialize all of our views
         initializeViews()
 
         showMenu()
 
-        //Get documentId
         val documentId = intent.getStringExtra("documentId")
         if (documentId != null) {
             getPackage(documentId)
@@ -97,11 +94,9 @@ class PackageActivity : AppCompatActivity() {
                     true
                 }
                 R.id.help -> {
-                    //
                     showFAQDialog()
                     true
                 }
-
                 else -> false
             }
         }
@@ -128,29 +123,23 @@ class PackageActivity : AppCompatActivity() {
         Handler(Looper.getMainLooper()).postDelayed({
             progressBar.visibility = View.GONE
         }, 2000)
-
     }
 
     private fun getSignatureImage(documentId: String, callback: (String) -> Unit) {
-        //1.
         db.collection("packages").document(documentId).get()
             .addOnSuccessListener { document ->
-                //2.
                 val signatureLink = document.getString("signatureLink") ?: "Package"
                 callback(signatureLink)
-                //3.
             }
             .addOnFailureListener { exception ->
                 Log.d("!!!", "GET failed with ", exception)
             }
-        //4.
     }
 
     private fun getPackage(documentId: String) {
         db.collection("packages").document(documentId).get().addOnSuccessListener { documentSnapshot ->
             if (documentSnapshot.exists()) {
                 val thisPackage = documentSnapshot.toObject(Package::class.java)
-               // db.collection("packages").document(documentId).get().addOnSuccessListener { documentSnapshot ->
                     val isDelivered = documentSnapshot.getBoolean("isDelivered")
                    Log.d("PackageDeliveryCheck", "isDelivered: $isDelivered")
                 //}
@@ -167,23 +156,18 @@ class PackageActivity : AppCompatActivity() {
                     textViewPackageInfoDimensions.text = "${it.packageHeight} cm x ${it.packageLength} cm x ${it.packageDepth} cm"
                      
                     if (thisPackage.leaveAtTheDoor == true){
-                        
                         textViewLeaveAtTheDoor.text = "Yes"
                     }
                     else {
                         textViewLeaveAtTheDoor.text = "No"
                     }
-                    
                     if (it.identityCheck == true){
-
                         textViewSign.text = "Yes"
                     }
                     else {
                         textViewSign.text = "No"
                     }
-
                     textViewKolliId.text = it.kolliId
-
 
                     if (thisPackage.banankaka == true){
                         button.visibility = View.GONE
@@ -198,7 +182,6 @@ class PackageActivity : AppCompatActivity() {
                         } else {
                             imageView.setImageResource(R.drawable.boxes)
                         }
-
                     }
                     else {
                         val timestamp = it.expectedDeliveryTime

@@ -55,7 +55,6 @@ class MainActivity : AppCompatActivity() {
 
         auth = Firebase.auth
         db = Firebase.firestore
-       // auth.signOut()
 
         initializeViews()
         requestPermission()
@@ -71,10 +70,8 @@ class MainActivity : AppCompatActivity() {
             login()
         }
 
-
         //Keep user logged in
        if (auth.currentUser != null) {
-//            auth.signOut()
             val user = auth.currentUser
             if (user != null) {
                 db.collection("users").document(user.uid)
@@ -87,20 +84,11 @@ class MainActivity : AppCompatActivity() {
                         }  else if (item?.level == 2){
                             val intent = Intent(this, ListDeliveries::class.java)
                             startActivity(intent)
-
                         }
                     }
             }
-
-            //val intent = Intent(this, ListDeliveries::class.java)
-           // startActivity(intent)
         }
 
-
-
-
-
-        //Hide keyboard on enter
         email.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 hideKeyboard()
@@ -256,14 +244,14 @@ class MainActivity : AppCompatActivity() {
             Manifest.permission.CAMERA
         ) == PackageManager.PERMISSION_GRANTED
     }
-    // Declare the launcher at the top of your Activity/Fragment:
+
     private val requestPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestPermission(),
     ) { isGranted: Boolean ->
         if (isGranted) {
-            // FCM SDK (and your app) can post notifications.
+            Toast.makeText(this, "You will be able to receive notifications", Toast.LENGTH_SHORT).show()
         } else {
-            // TODO: Inform user that that your app will not show notifications.
+            Toast.makeText(this, "You will not be able to receive notifications", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -273,7 +261,7 @@ class MainActivity : AppCompatActivity() {
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) ==
                 PackageManager.PERMISSION_GRANTED
             ) {
-                // FCM SDK (and your app) can post notifications.
+                // FCM SDK and the app can post notifications.
             } else if (shouldShowRequestPermissionRationale(Manifest.permission.POST_NOTIFICATIONS)) {
                 // TODO: display an educational UI explaining to the user the features that will be enabled
                 //       by them granting the POST_NOTIFICATION permission. This UI should provide the user

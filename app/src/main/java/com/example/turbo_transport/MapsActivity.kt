@@ -69,7 +69,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
         binding.mapUserNameReceiverTextView.text = "Start location"
 
         mMap.setOnMarkerClickListener(this)
-
     }
 
     @SuppressLint("MissingPermission")
@@ -158,8 +157,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
     }
     private fun setMarkersAndRoute(startLatLng: LatLng, endLatLng: LatLng) {
         mMap.addMarker(MarkerOptions().position(startLatLng).title("Start"))
-        endLatLng?.let { MarkerOptions().position(it).title("End") }
-            ?.let { mMap.addMarker(it) }
+        endLatLng.let { MarkerOptions().position(it).title("End") }
+            .let { mMap.addMarker(it) }
         mMap.moveCamera(CameraUpdateFactory.newLatLng(startLatLng))
 
         val cameraUpdate = CameraUpdateFactory.newLatLngZoom(startLatLng, 11.5f)
@@ -222,10 +221,10 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
 
                         runOnUiThread {
                             val polylineOptions = PolylineOptions().width(10f)
-                                .color(Color.BLUE) //Custom design of route
+                                .color(Color.BLUE)
                             steps.forEach { step ->
                                 val decodedPath =
-                                    decodePolyline(step.polyline.points) //decode each line to latlng
+                                    decodePolyline(step.polyline.points)
                                 polylineOptions.addAll(decodedPath)
                             }
                             googleMap.addPolyline(polylineOptions)
@@ -313,7 +312,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
                     showFAQDialog()
                     true
                 }
-
                 else -> false
             }
         }
@@ -322,7 +320,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
         val dialog = AlertDialog.Builder(this)
             .setView(R.layout.faq_layout)
             .create()
-
         dialog.show()
     }
     private fun goToDriverProfile() {
