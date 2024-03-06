@@ -102,7 +102,7 @@ class ListReceiverPackage : AppCompatActivity() {
     }
     private fun showFAQDialog() {
         val dialog = AlertDialog.Builder(this)
-            .setView(R.layout.faq_layout)
+            .setView(R.layout.faq_receiver_layout)
             .create()
 
         dialog.show()

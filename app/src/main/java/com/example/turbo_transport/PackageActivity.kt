@@ -89,7 +89,8 @@ class PackageActivity : AppCompatActivity() {
         topAppBar.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.user -> {
-                    goToReceiverProfile()
+                    goToDriverProfile()
+                    // Handle edit text press
                     true
                 }
                 R.id.help -> {
@@ -107,9 +108,10 @@ class PackageActivity : AppCompatActivity() {
 
         dialog.show()
     }
-    private fun goToReceiverProfile() {
-        val intent = Intent(this,ReceiverInforamtionActivity::class.java)
+    private fun goToDriverProfile() {
+        val intent = Intent(this, DriverInformationActivity::class.java)
         startActivity(intent)
+
     }
     private fun sendToRoute(documentId: String){
         val progressBar = findViewById<ProgressBar>(R.id.packageProgressBar)
