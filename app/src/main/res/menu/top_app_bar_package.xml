@@ -6,15 +6,15 @@
         android:icon="@drawable/baseline_help_24"
         android:title="Help"
         android:contentDescription="Help"
-        app:showAsAction="ifRoom"
-        />
+        app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/user"
         android:contentDescription="User profile"
         app:showAsAction="ifRoom"
         android:title="Profile"
-        android:icon="@drawable/baseline_person_pin_24"
-      />
+        android:icon="@drawable/baseline_person_pin_24" />
+
+/>
 
 </menu>

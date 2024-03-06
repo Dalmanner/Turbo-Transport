@@ -5,12 +5,14 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.gms.tasks.OnCompleteListener
+import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.navigation.NavigationBarView
 import com.google.android.material.tabs.TabLayout
@@ -28,6 +30,7 @@ class ListReceiverPackage : AppCompatActivity() {
     lateinit var db : FirebaseFirestore
     lateinit var auth : FirebaseAuth
     private lateinit var topAppBar: MaterialToolbar
+    private lateinit var appBarLayout: AppBarLayout
     private lateinit var bottomBar: NavigationBarView
     private lateinit var viewPager: ViewPager2
     private lateinit var tabLayout: TabLayout
@@ -41,12 +44,14 @@ class ListReceiverPackage : AppCompatActivity() {
 
         db = Firebase.firestore
         auth = Firebase.auth
-        initializeViews()
+
+
 
         setupViewPager()
         setupTabLayout()
         setTokenDb()
-        topBar()
+        initializeViews()
+        showMenu()
         bottomMenu()
     }
     override fun onBackPressed() {
@@ -80,26 +85,35 @@ class ListReceiverPackage : AppCompatActivity() {
         }
     }
 
-    private fun topBar(){
+    private fun showMenu(){
         topAppBar.setNavigationOnClickListener {
-            auth.signOut()
-            val intent = Intent(this,MainActivity::class.java)
-            startActivity(intent)
+            finish()
         }
         topAppBar.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.user -> {
                     goToReceiverProfile()
-                    // Handle edit text press
                     true
                 }
                 R.id.help -> {
-                    // Handle favorite icon press
+                    showFAQDialog()
                     true
                 }
+
                 else -> false
             }
         }
+    }
+    private fun showFAQDialog() {
+        val dialog = AlertDialog.Builder(this)
+            .setView(R.layout.faq_layout)
+            .create()
+
+        dialog.show()
+    }
+    private fun goToReceiverProfile() {
+        val intent = Intent(this,ReceiverInforamtionActivity::class.java)
+        startActivity(intent)
     }
     private fun bottomMenu(){
 
@@ -123,7 +137,7 @@ class ListReceiverPackage : AppCompatActivity() {
             }
         }
 
-       bottomBar.setOnItemReselectedListener { item ->
+        bottomBar.setOnItemReselectedListener { item ->
             when (item.itemId) {
                 R.id.item_1 -> {
 
@@ -160,14 +174,11 @@ class ListReceiverPackage : AppCompatActivity() {
                 }
             })
     }
-    private fun goToReceiverProfile() {
-        val intent = Intent(this,ReceiverInforamtionActivity::class.java)
-        startActivity(intent)
-    }
-    private fun initializeViews() {
-        topAppBar = findViewById(R.id.topAppBar1)
-        bottomBar = findViewById(R.id.bottom_navigation1)
 
+    private fun initializeViews() {
+        topAppBar = findViewById(R.id.topAppBar)
+        appBarLayout = findViewById(R.id.appBarLayout)
+        bottomBar = findViewById(R.id.bottom_navigation)
     }
 
 }

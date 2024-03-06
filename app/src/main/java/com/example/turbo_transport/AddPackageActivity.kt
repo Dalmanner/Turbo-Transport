@@ -8,7 +8,9 @@ import android.widget.Button
 import android.widget.CheckBox
 import android.widget.ImageButton
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.navigation.NavigationBarView
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.Timestamp
@@ -16,10 +18,14 @@ import com.google.firebase.firestore.FirebaseFirestore
 
 class AddPackageActivity : AppCompatActivity() {
 
+    private lateinit var topAppBar: MaterialToolbar
+
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_package)
+        topAppBar = findViewById(R.id.topAppBar)
+        showMenu()
         bottomMenu()
 
         val etNameOfReceiver: TextInputEditText = findViewById(R.id.etNameOfReceiver)
@@ -113,7 +119,36 @@ class AddPackageActivity : AppCompatActivity() {
         val intent = Intent(this,MapsActivity::class.java)
         startActivity(intent)
     }
+    private fun showMenu(){
+        topAppBar.setNavigationOnClickListener {
+            finish()
+        }
+        topAppBar.setOnMenuItemClickListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.user -> {
+                    goToReceiverProfile()
+                    true
+                }
+                R.id.help -> {
+                    showFAQDialog()
+                    true
+                }
 
+                else -> false
+            }
+        }
+    }
+    private fun showFAQDialog() {
+        val dialog = AlertDialog.Builder(this)
+            .setView(R.layout.faq_layout)
+            .create()
+
+        dialog.show()
+    }
+    private fun goToReceiverProfile() {
+        val intent = Intent(this,ReceiverInforamtionActivity::class.java)
+        startActivity(intent)
+    }
 private fun bottomMenu(){
     val bottomNavigation = findViewById<NavigationBarView>(R.id.bottom_navigation)
     bottomNavigation.setOnItemSelectedListener { item ->
