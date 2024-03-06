@@ -25,13 +25,14 @@ class ListDeliveries : AppCompatActivity() {
     private lateinit var tabLayout: TabLayout
     private lateinit var auth : FirebaseAuth
     private lateinit var db : FirebaseFirestore
-    private lateinit var topAppBar: MaterialToolbar
+
+    private lateinit var topAppBar1 : MaterialToolbar
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_listdeliveries)
-
+        initializeViews()
         db = Firebase.firestore
         auth = Firebase.auth
 
@@ -43,6 +44,7 @@ class ListDeliveries : AppCompatActivity() {
         setupTabLayout()
         showMenu()
         bottomMenu()
+        topBar()
 
     }
 
@@ -84,18 +86,22 @@ class ListDeliveries : AppCompatActivity() {
             }
         }
     }
-    private fun showMenu(){
-        topAppBar.setNavigationOnClickListener {
-            finish()
+
+    private fun topBar(){
+        topAppBar1.setNavigationOnClickListener {
+            auth.signOut()
+            val intent = Intent(this,MainActivity::class.java)
+            startActivity(intent)
         }
-        topAppBar.setOnMenuItemClickListener { menuItem ->
+        topAppBar1.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.user -> {
-                    goToReceiverProfile()
+                    goToDriverProfile()
+                    // Handle edit text press
                     true
                 }
                 R.id.help -> {
-                    showFAQDialog()
+                     showFAQDialog()
                     true
                 }
 
@@ -107,6 +113,12 @@ class ListDeliveries : AppCompatActivity() {
         val dialog = AlertDialog.Builder(this)
             .setView(R.layout.faq_layout)
             .create()
+
+    private fun  goToDriverProfile() {
+        val intent = Intent(this,DriverInformationActivity::class.java)
+        startActivity(intent)
+    }
+
 
         dialog.show()
     }
@@ -155,5 +167,10 @@ class ListDeliveries : AppCompatActivity() {
 
             }
         }
+    }
+    private fun initializeViews() {
+        topAppBar1 = findViewById(R.id.topAppBar)
+
+
     }
 }

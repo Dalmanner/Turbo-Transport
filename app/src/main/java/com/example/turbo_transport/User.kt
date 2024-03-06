@@ -15,6 +15,7 @@ import com.google.firebase.firestore.ServerTimestamp
     var postCode : String? = null,
     var userPhoneNumber : String? = null,
     var approveNotifications : Boolean? = null,
+    var vehicleModel : String? = null,
     var vehicleId : String? = null,
     var notificationToken: String? = null,
     var Email: String? = null,
