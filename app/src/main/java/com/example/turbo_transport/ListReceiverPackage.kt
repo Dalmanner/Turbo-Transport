@@ -30,7 +30,6 @@ class ListReceiverPackage : AppCompatActivity() {
     lateinit var db : FirebaseFirestore
     lateinit var auth : FirebaseAuth
     private lateinit var topAppBar: MaterialToolbar
-    private lateinit var appBarLayout: AppBarLayout
     private lateinit var bottomBar: NavigationBarView
     private lateinit var viewPager: ViewPager2
     private lateinit var tabLayout: TabLayout
@@ -44,13 +43,12 @@ class ListReceiverPackage : AppCompatActivity() {
 
         db = Firebase.firestore
         auth = Firebase.auth
-
+        initializeViews()
 
 
         setupViewPager()
         setupTabLayout()
         setTokenDb()
-        initializeViews()
         showMenu()
         bottomMenu()
     }
@@ -176,9 +174,8 @@ class ListReceiverPackage : AppCompatActivity() {
     }
 
     private fun initializeViews() {
-        topAppBar = findViewById(R.id.topAppBar)
-        appBarLayout = findViewById(R.id.appBarLayout)
-        bottomBar = findViewById(R.id.bottom_navigation)
+        topAppBar = findViewById(R.id.topAppBar1)
+        bottomBar = findViewById(R.id.bottom_navigation1)
     }
 
 }
