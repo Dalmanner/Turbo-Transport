@@ -2,10 +2,13 @@ package com.example.turbo_transport
 
 import android.content.Intent
 import android.os.Bundle
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
+import com.google.android.material.appbar.AppBarLayout
+import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.navigation.NavigationBarView
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
@@ -22,6 +25,8 @@ class ListDeliveries : AppCompatActivity() {
     private lateinit var tabLayout: TabLayout
     private lateinit var auth : FirebaseAuth
     private lateinit var db : FirebaseFirestore
+    private lateinit var topAppBar: MaterialToolbar
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,9 +37,11 @@ class ListDeliveries : AppCompatActivity() {
 
         viewPager = findViewById(R.id.view_pager)
         tabLayout = findViewById(R.id.tabs)
+        topAppBar = findViewById(R.id.topAppBar)
 
         setupViewPager()
         setupTabLayout()
+        showMenu()
         bottomMenu()
 
     }
@@ -77,7 +84,36 @@ class ListDeliveries : AppCompatActivity() {
             }
         }
     }
+    private fun showMenu(){
+        topAppBar.setNavigationOnClickListener {
+            finish()
+        }
+        topAppBar.setOnMenuItemClickListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.user -> {
+                    goToReceiverProfile()
+                    true
+                }
+                R.id.help -> {
+                    showFAQDialog()
+                    true
+                }
 
+                else -> false
+            }
+        }
+    }
+    private fun showFAQDialog() {
+        val dialog = AlertDialog.Builder(this)
+            .setView(R.layout.faq_layout)
+            .create()
+
+        dialog.show()
+    }
+    private fun goToReceiverProfile() {
+        val intent = Intent(this,ReceiverInforamtionActivity::class.java)
+        startActivity(intent)
+    }
     private fun bottomMenu(){
         val bottomNavigation = findViewById<NavigationBarView>(R.id.bottom_navigation)
         bottomNavigation.setOnItemSelectedListener { item ->

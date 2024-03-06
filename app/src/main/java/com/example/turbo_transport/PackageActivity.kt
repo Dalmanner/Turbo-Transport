@@ -15,6 +15,7 @@ import android.widget.ScrollView
 import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContentProviderCompat.requireContext
 import com.bumptech.glide.Glide
 import com.google.android.material.appbar.AppBarLayout
@@ -91,16 +92,29 @@ class PackageActivity : AppCompatActivity() {
         topAppBar.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.user -> {
-                    // Handle edit text press
+                    goToReceiverProfile()
                     true
                 }
                 R.id.help -> {
-                    // Handle favorite icon press
+                    //
+                    showFAQDialog()
                     true
                 }
+
                 else -> false
             }
         }
+    }
+    private fun showFAQDialog() {
+        val dialog = AlertDialog.Builder(this)
+            .setView(R.layout.faq_layout)
+            .create()
+
+        dialog.show()
+    }
+    private fun goToReceiverProfile() {
+        val intent = Intent(this,ReceiverInforamtionActivity::class.java)
+        startActivity(intent)
     }
     private fun sendToRoute(documentId: String){
         val progressBar = findViewById<ProgressBar>(R.id.packageProgressBar)

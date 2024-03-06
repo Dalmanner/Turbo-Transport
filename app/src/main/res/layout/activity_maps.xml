@@ -34,7 +34,7 @@
             android:minHeight="?attr/actionBarSize"
             app:menu="@menu/top_app_bar_package"
             app:navigationIcon="@drawable/baseline_arrow_back_ios_24"
-            app:title="Package details"
+            app:title="Map"
             app:titleCentered="false" />
 
     </com.google.android.material.appbar.AppBarLayout>

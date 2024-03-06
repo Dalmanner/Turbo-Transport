@@ -10,6 +10,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.ImageButton
+import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -26,6 +27,7 @@ import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.PolylineOptions
+import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.navigation.NavigationBarView
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.FirebaseFirestore
@@ -42,12 +44,16 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
     private lateinit var db: FirebaseFirestore
     private lateinit var locationCallback: LocationCallback
     private lateinit var fusedLocationClient: FusedLocationProviderClient
+    private lateinit var topAppBar: MaterialToolbar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = ActivityMapsBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        topAppBar = findViewById(R.id.topAppBar)
+
+        showMenu()
         bottomMenu()
         db = Firebase.firestore
 
@@ -194,7 +200,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
         val client = OkHttpClient()
         val request = Request.Builder()
 
-        .url("https://maps.googleapis.com/maps/api/directions/json?origin=${startLatLng.latitude},${startLatLng.longitude}&destination=${endLatLng.latitude},${endLatLng.longitude}&mode=driving&key=$apiKey")
+            .url("https://maps.googleapis.com/maps/api/directions/json?origin=${startLatLng.latitude},${startLatLng.longitude}&destination=${endLatLng.latitude},${endLatLng.longitude}&mode=driving&key=$apiKey")
             .build()
 
         client.newCall(request).enqueue(object : okhttp3.Callback {
@@ -291,7 +297,36 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
             }
         }
     }
+    private fun showMenu(){
+        topAppBar.setNavigationOnClickListener {
+            finish()
+        }
+        topAppBar.setOnMenuItemClickListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.user -> {
+                    goToReceiverProfile()
+                    true
+                }
+                R.id.help -> {
+                    showFAQDialog()
+                    true
+                }
 
+                else -> false
+            }
+        }
+    }
+    private fun showFAQDialog() {
+        val dialog = AlertDialog.Builder(this)
+            .setView(R.layout.faq_layout)
+            .create()
+
+        dialog.show()
+    }
+    private fun goToReceiverProfile() {
+        val intent = Intent(this,ReceiverInforamtionActivity::class.java)
+        startActivity(intent)
+    }
     private fun bottomMenu() {
         val bottomNavigation = findViewById<NavigationBarView>(R.id.bottom_navigation)
         bottomNavigation.setOnItemSelectedListener { item ->
