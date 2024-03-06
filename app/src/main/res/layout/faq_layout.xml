@@ -10,17 +10,177 @@
         android:id="@+id/faq_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Package information"
-        android:textStyle="bold"
-        android:textSize="18sp"/>
+        android:text="Information"
+        android:textSize="18sp"
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/faq_info"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Here is information about something..."
-        android:textStyle="bold"
-        android:textSize="12sp"/>
+        android:layout_marginTop="10dp"
+        android:text="Deliveries"
+        android:textSize="12sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="• This is a list of your active, done and failed deliveries"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="• To arrange your active deliveries; press, hold and move"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/textView11"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="• Tap on a delivery to view package details"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/faq_info6"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="Package Details"
+        android:textSize="12sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/textView12"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="• Shows information about a delivery"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/textView13"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="• Press &quot;Start Delivery&quot; to begin a delivery"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/textView14"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="• Follow the instructions to deliver the package"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/faq_info3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="Map"
+        android:textSize="12sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="• Press the map icon to view all your deliveries on a map"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="• Press a marker to view more info"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/textView9"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="• The small icons in the bottom right will open Google Maps"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/faq_info4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="Add Package"
+        android:textSize="12sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="• Fill in all required fields"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/textView15"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="• Leave &quot;Kolli ID&quot; empty to automatically generate a unique ID"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="• Press the blue package to add it to the database"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/faq_info5"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="LATD"
+        android:textSize="12sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/textView7"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="• Leave At The Door"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/faq_info7"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="Time stamp"
+        android:textSize="12sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/textView16"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="• When a delivery is started, the estimated delivery time is updated to calculate the new arrival time"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/faq_info8"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="Log out"
+        android:textSize="12sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/textView17"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="• To log out, first tap the driver info icon"
+        android:textSize="12sp" />
 
 
 </LinearLayout>
