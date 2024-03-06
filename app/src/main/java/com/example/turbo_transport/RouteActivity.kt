@@ -628,14 +628,12 @@ class RouteActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     private fun sendToBarCodeReader(packageBarcode: String) {
-
         val intent = Intent(this, BarCodeReaderActivity::class.java)
         intent.putExtra("barcodeValue", packageBarcode)
         intent.putExtra("documentId", documentId)
         startActivity(intent)
     }
     private fun sendToEnd() {
-
         val intent = Intent(this, PackageDeliveredActivity::class.java)
         intent.putExtra("failedDelivery", true)
         intent.putExtra("documentId", documentId)
@@ -651,17 +649,13 @@ class RouteActivity : AppCompatActivity(), OnMapReadyCallback {
             if (snapshot != null && snapshot.exists()) {
                 val thisPackage = snapshot.toObject(Package::class.java)
                 if (thisPackage != null) {
-                    //Start setting values from Firebase
                     topAdressTextView.text = thisPackage.address
-                   // postCodeTextView.text = thisPackage.postCodeAddress
-                   // travelTimeTextView.text = thisPackage.requestedDeliveryTime
                     kmLeftTextView.text = thisPackage.kmLeft
                     
                     val timestamp = thisPackage.expectedDeliveryTime
                     val date = timestamp?.toDate() //Convert to date
                     val format = SimpleDateFormat("HH:mm", Locale.getDefault())
                     val dateString = format.format(date)
-//                    postCodeTextView.text = dateString
 
                     if (!driverMode) {
                         postCodeTextView.text =
@@ -671,9 +665,6 @@ class RouteActivity : AppCompatActivity(), OnMapReadyCallback {
                         postCodeTextView.text =
                             "Estimated delivery time: $dateString"
                     }
-//                    postCodeTextView.text = thisPackage.expectedDeliveryTime.toString()
-
-
                     barcode = thisPackage.kolliId.toString()
                 }
             } else {
@@ -689,15 +680,11 @@ class RouteActivity : AppCompatActivity(), OnMapReadyCallback {
         topAppBar.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.user -> {
-                    // Handle edit text press
                     true
                 }
-
                 R.id.help -> {
-                    // Handle favorite icon press
                     true
                 }
-
                 else -> false
             }
         }
@@ -716,6 +703,5 @@ class RouteActivity : AppCompatActivity(), OnMapReadyCallback {
 
         mapProgressBar = findViewById(R.id.mapProgressBar)
         mapProgressBar.visibility = View.VISIBLE
-
     }
 }

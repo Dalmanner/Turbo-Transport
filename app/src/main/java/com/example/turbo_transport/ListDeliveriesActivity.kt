@@ -7,7 +7,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
-import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.navigation.NavigationBarView
 import com.google.android.material.tabs.TabLayout
@@ -39,12 +38,10 @@ class ListDeliveries : AppCompatActivity() {
         viewPager = findViewById(R.id.view_pager)
         tabLayout = findViewById(R.id.tabs)
 
-
         setupViewPager()
         setupTabLayout()
         bottomMenu()
         topBar()
-
     }
 
     override fun onBackPressed() {
@@ -103,7 +100,6 @@ class ListDeliveries : AppCompatActivity() {
                      showFAQDialog()
                     true
                 }
-
                 else -> false
             }
         }
@@ -118,7 +114,6 @@ class ListDeliveries : AppCompatActivity() {
         private fun goToDriverProfile() {
             val intent = Intent(this, DriverInformationActivity::class.java)
             startActivity(intent)
-
         }
 
         private fun bottomMenu() {
@@ -135,7 +130,6 @@ class ListDeliveries : AppCompatActivity() {
                     }
 
                     R.id.item_3 -> {
-                        //start addPackageActivity:
                         val intent = Intent(this, AddPackageActivity::class.java)
                         startActivity(intent)
                         true
@@ -170,5 +164,4 @@ class ListDeliveries : AppCompatActivity() {
         private fun initializeViews() {
             topAppBar1 = findViewById(R.id.topAppBar)
         }
-
 }
