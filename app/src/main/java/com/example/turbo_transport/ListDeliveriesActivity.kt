@@ -38,11 +38,10 @@ class ListDeliveries : AppCompatActivity() {
 
         viewPager = findViewById(R.id.view_pager)
         tabLayout = findViewById(R.id.tabs)
-        topAppBar = findViewById(R.id.topAppBar)
+
 
         setupViewPager()
         setupTabLayout()
-        showMenu()
         bottomMenu()
         topBar()
 
@@ -113,64 +112,63 @@ class ListDeliveries : AppCompatActivity() {
         val dialog = AlertDialog.Builder(this)
             .setView(R.layout.faq_layout)
             .create()
-
-    private fun  goToDriverProfile() {
-        val intent = Intent(this,DriverInformationActivity::class.java)
-        startActivity(intent)
-    }
-
-
         dialog.show()
     }
-    private fun goToReceiverProfile() {
-        val intent = Intent(this,ReceiverInforamtionActivity::class.java)
-        startActivity(intent)
-    }
-    private fun bottomMenu(){
-        val bottomNavigation = findViewById<NavigationBarView>(R.id.bottom_navigation)
-        bottomNavigation.setOnItemSelectedListener { item ->
-            when (item.itemId) {
-                R.id.item_1 -> {
-                    true
-                }
 
-                R.id.item_2 -> {
-                    showLocation()
-                    true
-                }
+        private fun goToDriverProfile() {
+            val intent = Intent(this, DriverInformationActivity::class.java)
+            startActivity(intent)
 
-                R.id.item_3 -> {
-                    //start addPackageActivity:
-                    val intent = Intent(this, AddPackageActivity::class.java)
-                    startActivity(intent)
-                    true
+        }
+
+        private fun bottomMenu() {
+            val bottomNavigation = findViewById<NavigationBarView>(R.id.bottom_navigation)
+            bottomNavigation.setOnItemSelectedListener { item ->
+                when (item.itemId) {
+                    R.id.item_1 -> {
+                        true
+                    }
+
+                    R.id.item_2 -> {
+                        showLocation()
+                        true
+                    }
+
+                    R.id.item_3 -> {
+                        //start addPackageActivity:
+                        val intent = Intent(this, AddPackageActivity::class.java)
+                        startActivity(intent)
+                        true
+                    }
+
+                    else -> false
                 }
-                else -> false
+            }
+
+            bottomNavigation.setOnItemReselectedListener { item ->
+                when (item.itemId) {
+                    R.id.item_1 -> {
+                        true
+                    }
+
+                    R.id.item_2 -> {
+                        showLocation()
+                        true
+
+                    }
+
+                    R.id.item_3 -> {
+                        val intent = Intent(this, AddPackageActivity::class.java)
+                        startActivity(intent)
+                        true
+                    }
+
+                }
             }
         }
 
-        bottomNavigation.setOnItemReselectedListener { item ->
-            when (item.itemId) {
-                R.id.item_1 -> {
-                    true
-                }
-                R.id.item_2 -> {
-                    showLocation()
-                    true
-
-                }
-                R.id.item_3 -> {
-                    val intent = Intent(this, AddPackageActivity::class.java)
-                    startActivity(intent)
-                    true
-                }
-
-            }
+        private fun initializeViews() {
+            topAppBar1 = findViewById(R.id.topAppBar)
         }
-    }
-    private fun initializeViews() {
-        topAppBar1 = findViewById(R.id.topAppBar)
 
-
-    }
 }
