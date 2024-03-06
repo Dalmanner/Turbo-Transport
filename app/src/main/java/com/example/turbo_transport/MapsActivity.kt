@@ -303,8 +303,10 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
         }
         topAppBar.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
+
                 R.id.user -> {
-                    goToReceiverProfile()
+                    goToDriverProfile()
+                    // Handle edit text press
                     true
                 }
                 R.id.help -> {
@@ -323,9 +325,10 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
 
         dialog.show()
     }
-    private fun goToReceiverProfile() {
-        val intent = Intent(this,ReceiverInforamtionActivity::class.java)
+    private fun goToDriverProfile() {
+        val intent = Intent(this, DriverInformationActivity::class.java)
         startActivity(intent)
+
     }
     private fun bottomMenu() {
         val bottomNavigation = findViewById<NavigationBarView>(R.id.bottom_navigation)

@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.firebase.Firebase
@@ -16,7 +17,7 @@ import java.util.Locale
 
 class ReceiverPackageActivity : AppCompatActivity() {
 
-    private lateinit var topBarrA:MaterialToolbar
+    private lateinit var topAppBar:MaterialToolbar
     private lateinit var AppBarLayout:AppBarLayout
     private lateinit var imageView: ImageView
     private lateinit var deliveryA: TextView
@@ -51,7 +52,8 @@ class ReceiverPackageActivity : AppCompatActivity() {
         if (documentId != null) {
             getPackage(documentId)
         }
-        topBar()
+
+        showMenu()
     }
 
     private fun getPackage(documentId: String) {
@@ -101,28 +103,40 @@ class ReceiverPackageActivity : AppCompatActivity() {
             }
         }
     }
-    private fun topBar(){
-        topBarrA.setNavigationOnClickListener {
-          finish()
+    private fun showMenu(){
+        topAppBar.setNavigationOnClickListener {
+            finish()
         }
-        topBarrA.setOnMenuItemClickListener { menuItem ->
+        topAppBar.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.user -> {
-                    // Handle edit text press
+                    goToReceiverProfile()
                     true
                 }
                 R.id.help -> {
-                    // Handle favorite icon press
+                    showFAQDialog()
                     true
                 }
+
                 else -> false
             }
         }
     }
+    private fun showFAQDialog() {
+        val dialog = AlertDialog.Builder(this)
+            .setView(R.layout.faq_receiver_layout)
+            .create()
+
+        dialog.show()
+    }
+    private fun goToReceiverProfile() {
+        val intent = Intent(this,ReceiverInforamtionActivity::class.java)
+        startActivity(intent)
+    }
     fun initializeViews(){
 
         AppBarLayout = findViewById(R.id.appBarLayout)
-        topBarrA = findViewById(R.id.topBarrA)
+        topAppBar = findViewById(R.id.topBarrA)
         imageView = findViewById(R.id.imageView)
         deliveryA = findViewById(R.id.deliveryA)
         adressA = findViewById(R.id.adressA)
